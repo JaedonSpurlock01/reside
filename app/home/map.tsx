@@ -6,8 +6,7 @@ import { MapMouseEvent } from "mapbox-gl";
 
 let hoveredPolygonId: Number | null = null;
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiamFlZG9uMDEiLCJhIjoiY2x0eXlodHVjMGlhejJrczNpaHBxNXJhMiJ9.RNn_iXR_1qqPXVoU6FYDEw";
+mapboxgl.accessToken = "MAP_KEY";
 
 export default function ResideMap() {
   const mapContainer = useRef<any>(null);
