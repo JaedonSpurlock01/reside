@@ -5,9 +5,10 @@ import Map, { Marker, Layer, Source, MapMouseEvent, Popup } from "react-map-gl";
 import { stateCenter, stateCodes } from "@/public/stateConversion";
 import "mapbox-gl/dist/mapbox-gl.css"; // For some reason mapbox doesn't handle attribution/children attributes
 import { motion } from "framer-motion";
+import { CircularProgress } from "@mui/material";
 
 // Define your mapbox access token
-const MAPBOX_TOKEN = "API";
+const MAPBOX_TOKEN = "API KEY";
 
 const fadeInAnimationVariants = {
   initial: { opacity: 0, y: 100 },
@@ -29,6 +30,8 @@ export default function ResideMap() {
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [selectedCity, setSelectedCity] = useState<any>(null);
   const [hoveredCity, setHoveredCity] = useState<any>(null);
+
+  const [loadingRentals, setLoadingRentals] = useState<boolean>(false);
 
   const [viewport, setViewport] = React.useState<any>({
     width: "100%",
@@ -110,6 +113,7 @@ export default function ResideMap() {
 
     if (cityFeatures && cityFeatures.length > 0) {
       setSelectedCity(cityFeatures[0].properties.NAMELSAD);
+      setLoadingRentals(true);
       mapRef.current?.flyTo({
         // Move the camera to the left when clicked so it stays center
         center: [e.lngLat.lng, e.lngLat.lat],
@@ -117,30 +121,41 @@ export default function ResideMap() {
         zoom: 12,
       });
     } else {
+      setLoadingRentals(false);
       setSelectedCity(null);
     }
   };
+
+  useEffect(() => {
+    if (loadingRentals) {
+      const timeoutId = setTimeout(() => {
+        setLoadingRentals(false);
+      }, 1500);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [loadingRentals, setLoadingRentals]);
 
   return (
     <div className="w-full h-full">
       {selectedCity && (
         <>
           <div className="w-screen h-[2.5rem] transition-all duration-1000" />
-          <div className="w-screen flex flex-row space-x-3 text-center border-y border-black transition-all duration-1000">
-            <div className="border border-black w-60 p-2 h-3/4 rounded-lg my-1 text-left overflow-hidden">
+          <div className="w-screen flex flex-row space-x-3 text-center border-y border-black transition-all duration-1000 pl-3">
+            <div className="border border-black w-60 p-2 h-3/4 rounded-md my-1 text-left overflow-hidden">
               <input
                 type="text"
                 placeholder={selectedCity}
                 className="bg-transparent"
               />
             </div>
-            <div className="border border-black w-20 p-2 h-3/4 rounded-lg  my-1">
+            <div className="border border-black w-20 p-2 h-3/4 rounded-md  my-1">
               Price
             </div>
-            <div className="border border-black w-40 p-2 h-3/4 rounded-lg  my-1">
+            <div className="border border-black w-40 p-2 h-3/4 rounded-md  my-1">
               Beds & Baths
             </div>
-            <div className="bg-green-600 p-2 w-36 h-3/4 rounded-lg text-white  my-1">
+            <div className="bg-green-600 p-2 w-36 h-3/4 rounded-md text-white  my-1">
               Apply Filter
             </div>
           </div>
@@ -235,46 +250,92 @@ export default function ResideMap() {
           <>
             <div className="w-[40%] h-full p-5 overflow-y-scroll">
               <div className="h-full">
-                <h1 className="relative font-medium overflow-hidden">
+                <h1 className="relative font-bold overflow-hidden text-lg text-[#2a2a33]">
                   {selectedCity} {selectedStateCode?.toUpperCase()} Rental
                   Listings
                 </h1>
-                <div className=" flex flex-row">
-                  <p>100 results</p>
+                <div className="flex flex-row">
+                  <p className="font-medium text-[#2f2f34]">100 results</p>
                   <button className="ml-auto text-blue-400">
                     Sort: Recommended
                   </button>
                 </div>
-                <ul className="flex flex-row flex-wrap mt-4">
-                  {[
-                    "House 1",
-                    "House 2",
-                    "House 3",
-                    "House 4",
-                    "House 5",
-                    "House 6",
-                    "House 7",
-                    "House 8",
-                    "House 9",
-                    "House 10",
-                    "House 11",
-                    "House 12",
-                  ].map((house, index) => (
-                    <motion.li
-                      className="bg-white borderBlack rounded-lg mr-3 mb-4"
-                      key={index}
-                      variants={fadeInAnimationVariants}
-                      initial="initial"
-                      whileInView="animate"
-                      viewport={{ once: true }}
-                      custom={index}
-                    >
-                      <div className="w-[215px] h-[135px] rounded-lg bg-slate-800">
-                        {house}
-                      </div>
-                    </motion.li>
-                  ))}
-                </ul>
+                {loadingRentals && (
+                  <div className="flex flex-col items-center justify-center mt-10">
+                    <CircularProgress
+                      size={20}
+                      thickness={5}
+                      color={"inherit"}
+                    />
+                  </div>
+                )}
+                {!loadingRentals && (
+                  <ul className="mt-4 grid gap-[8px] grid-cols-auto-fill min-w-[286px] grid-flow-row">
+                    {[
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                      "House",
+                    ].map((house, index) => (
+                      <motion.li
+                        className="relative borderBlack min-h-[265px] list-item border border-[#d1d1d5] shadow-lg rounded-md"
+                        key={index}
+                        variants={fadeInAnimationVariants}
+                        initial="initial"
+                        whileInView="animate"
+                        viewport={{ once: true }}
+                        custom={index}
+                      >
+                        <div className="h-full">
+                          <div>
+                            <picture>
+                              <source
+                                srcSet="/example_apartment.jpg"
+                                type="image/jpg"
+                              ></source>
+                              <img
+                                src="/example_apartment.jpg"
+                                alt="HOUSE"
+                                className="object-cover w-full min-h-full rounded-t-md"
+                              ></img>
+                            </picture>
+                          </div>
+                          <div className="bg-neutral-100 rounded-b-md p-2 pb-4">
+                            <div>
+                              <span className="font-bold text-xl text-[#2a2a33]">
+                                $2,729/mo
+                              </span>
+                            </div>
+                            <div>3 bds | 2 ba | 1,344 sqft - Home for sale</div>
+                            <div>
+                              3340 This Random Blvd, San Marcos, CA 92024
+                            </div>
+                          </div>
+                        </div>
+                      </motion.li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
           </>
