@@ -6,3 +6,15 @@
     grid-template-columns: repeat(auto-fill, minmax(286px, 1fr));
 }
 
+.grid-cols-listing{
+    grid-template-columns: minmax(572px, 2fr) minmax(286px, 1fr);
+}
+
+.no-scrollbar{
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}

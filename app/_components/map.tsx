@@ -6,9 +6,13 @@ import { stateCenter, stateCodes } from "@/public/stateConversion";
 import "mapbox-gl/dist/mapbox-gl.css"; // For some reason mapbox doesn't handle attribution/children attributes
 import { motion } from "framer-motion";
 import { CircularProgress } from "@mui/material";
+import { IoIosArrowDown } from "react-icons/io";
+import Link from "next/link";
+import Image from "next/image";
 
 // Define your mapbox access token
-const MAPBOX_TOKEN = "API KEY";
+const MAPBOX_TOKEN =
+  "APIO";
 
 const fadeInAnimationVariants = {
   initial: { opacity: 0, y: 100 },
@@ -19,7 +23,7 @@ const fadeInAnimationVariants = {
   }),
 };
 
-export default function ResideMap() {
+export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
   const mapRef = useRef<any>();
   const [hoveredPolygonId, setHoveredPolygonId] = useState<
     string | number | null
@@ -114,14 +118,15 @@ export default function ResideMap() {
     if (cityFeatures && cityFeatures.length > 0) {
       setSelectedCity(cityFeatures[0].properties.NAMELSAD);
       setLoadingRentals(true);
+      setMapOnly(false);
       mapRef.current?.flyTo({
-        // Move the camera to the left when clicked so it stays center
         center: [e.lngLat.lng, e.lngLat.lat],
-        duration: 800,
-        zoom: 12,
+        duration: 3000,
+        zoom: 11,
       });
     } else {
       setLoadingRentals(false);
+      setMapOnly(true);
       setSelectedCity(null);
     }
   };
@@ -138,32 +143,9 @@ export default function ResideMap() {
 
   return (
     <div className="w-full h-full">
-      {selectedCity && (
-        <>
-          <div className="w-screen h-[2.5rem] transition-all duration-1000" />
-          <div className="w-screen flex flex-row space-x-3 text-center border-y border-black transition-all duration-1000 pl-3">
-            <div className="border border-black w-60 p-2 h-3/4 rounded-md my-1 text-left overflow-hidden">
-              <input
-                type="text"
-                placeholder={selectedCity}
-                className="bg-transparent"
-              />
-            </div>
-            <div className="border border-black w-20 p-2 h-3/4 rounded-md  my-1">
-              Price
-            </div>
-            <div className="border border-black w-40 p-2 h-3/4 rounded-md  my-1">
-              Beds & Baths
-            </div>
-            <div className="bg-green-600 p-2 w-36 h-3/4 rounded-md text-white  my-1">
-              Apply Filter
-            </div>
-          </div>
-        </>
-      )}
       <div className="relative w-full h-full flex flex-row">
         <div
-          className="transition-all duration-1000 h-full"
+          className="transition-all duration-1000"
           style={selectedCity ? { width: "60%" } : { width: "100%" }}
         >
           <Map
@@ -175,7 +157,7 @@ export default function ResideMap() {
             onMove={(evt) => setViewport(evt.viewState)}
             mapboxAccessToken={MAPBOX_TOKEN}
             ref={mapRef}
-            mapStyle="mapbox://styles/mapbox/dark-v10"
+            mapStyle="mapbox://styles/mapbox/navigation-night-v1"
             attributionControl={false}
             onMouseMove={handleMouseMove}
             onClick={handleMouseClick}
@@ -220,7 +202,7 @@ export default function ResideMap() {
                   id="city-fills"
                   type="fill"
                   paint={{
-                    "fill-color": "#ffffff",
+                    "fill-color": "#bbbbbb",
                     "fill-opacity": [
                       "case",
                       ["boolean", ["feature-state", "hover"], false],
@@ -233,7 +215,7 @@ export default function ResideMap() {
                   id="city-borders"
                   type="line"
                   paint={{
-                    "line-color": "#b5b5b5",
+                    "line-color": "#bbbbbb",
                     "line-width": 1,
                   }}
                 />
@@ -242,103 +224,117 @@ export default function ResideMap() {
           </Map>
         </div>
         {showPopup && (
-          <div className="absolute top-10 left-2 w-72 p-3 bg-neutral-800 rounded-lg text-xs">
+          <div className="absolute top-36 left-2 w-72 p-3  rounded-lg text-xs backdrop-blur-lg">
             <h1 className=" text-neutral-100">CITY: {hoveredCity.name}</h1>
           </div>
         )}
         {selectedCity && (
-          <>
-            <div className="w-[40%] h-full p-5 overflow-y-scroll">
-              <div className="h-full">
-                <h1 className="relative font-bold overflow-hidden text-lg text-[#2a2a33]">
-                  {selectedCity} {selectedStateCode?.toUpperCase()} Rental
-                  Listings
-                </h1>
-                <div className="flex flex-row">
-                  <p className="font-medium text-[#2f2f34]">100 results</p>
-                  <button className="ml-auto text-blue-400">
-                    Sort: Recommended
-                  </button>
+          <div className="p-5 w-[40%] overflow-y-scroll bg-neutral-800 no-scrollbar mt-20">
+            <div>
+              <h1 className="relative font-bold overflow-hidden text-lg text-[#f7f7f7]">
+                {selectedCity} {selectedStateCode?.toUpperCase()} Rental
+                Listings
+              </h1>
+
+              <div className="w-full h-20 flex flex-row flex-wrap text-white space-x-2 items-center text-center">
+                <div className="rounded-lg bg-[#3a3838] w-24 h-12 relative">
+                  <h1 className="absolute left-2 top-1/2 transform -translate-y-1/2">
+                    Price
+                  </h1>
+                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                    <IoIosArrowDown />
+                  </span>
                 </div>
-                {loadingRentals && (
-                  <div className="flex flex-col items-center justify-center mt-10">
-                    <CircularProgress
-                      size={20}
-                      thickness={5}
-                      color={"inherit"}
-                    />
-                  </div>
-                )}
-                {!loadingRentals && (
-                  <ul className="mt-4 grid gap-[8px] grid-cols-auto-fill min-w-[286px] grid-flow-row">
-                    {[
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                      "House",
-                    ].map((house, index) => (
-                      <motion.li
-                        className="relative borderBlack min-h-[265px] list-item border border-[#d1d1d5] shadow-lg rounded-md"
-                        key={index}
-                        variants={fadeInAnimationVariants}
-                        initial="initial"
-                        whileInView="animate"
-                        viewport={{ once: true }}
-                        custom={index}
-                      >
-                        <div className="h-full">
+                <div className="rounded-lg bg-[#3a3838] w-36 h-12 pl-2 relative">
+                  <h1 className="absolute left-2 top-1/2 transform -translate-y-1/2">
+                    Beds/baths
+                  </h1>
+                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2">
+                    <IoIosArrowDown />
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex flex-row">
+                <p className="font-medium text-[#c8c8c8]">100 results</p>
+                <button className="ml-auto text-blue-400 flex flex-row items-center">
+                  Sort: Recommended <IoIosArrowDown />
+                </button>
+              </div>
+              {loadingRentals && (
+                <div className="flex flex-col items-center justify-center mt-10">
+                  <CircularProgress size={20} thickness={5} />
+                </div>
+              )}
+              {!loadingRentals && (
+                <ul className="mt-4 grid gap-[12px] grid-cols-auto-fill min-w-[286px] grid-flow-row">
+                  {[
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                    "House",
+                  ].map((house, index) => (
+                    <motion.li
+                      className="relative min-h-[265px] list-item shadow-lg rounded-xl hover:border hover:border-white"
+                      key={index}
+                      variants={fadeInAnimationVariants}
+                      initial="initial"
+                      whileInView="animate"
+                      viewport={{ once: true }}
+                      custom={index}
+                    >
+                      <Link href="/listing">
+                        <div className="h-full bg-[#3a3838] rounded-xl p-2 hover:cursor-pointer">
                           <div>
-                            <picture>
-                              <source
-                                srcSet="/example_apartment.jpg"
-                                type="image/jpg"
-                              ></source>
-                              <img
-                                src="/example_apartment.jpg"
-                                alt="HOUSE"
-                                className="object-cover w-full min-h-full rounded-t-md"
-                              ></img>
-                            </picture>
+                            <Image
+                              src="/example_apartment.jpg"
+                              alt="HOUSE"
+                              className="object-cover w-full min-h-full rounded-xl"
+                              width={1024}
+                              height={576}
+                            ></Image>
                           </div>
-                          <div className="bg-neutral-100 rounded-b-md p-2 pb-4">
+                          <div className="p-2 pb-4 ">
                             <div>
-                              <span className="font-bold text-xl text-[#2a2a33]">
+                              <span className="font-bold text-xl text-neutral-300">
                                 $2,729/mo
                               </span>
                             </div>
-                            <div>3 bds | 2 ba | 1,344 sqft - Home for sale</div>
-                            <div>
-                              3340 This Random Blvd, San Marcos, CA 92024
+                            <div className="text-neutral-400">
+                              3 bds | 2 ba | 1,344 sqft
+                            </div>
+                            <div className="text-neutral-400">
+                              3340 Random Blvd, San Marcos, CA 92024
                             </div>
                           </div>
                         </div>
-                      </motion.li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+                      </Link>
+                    </motion.li>
+                  ))}
+                </ul>
+              )}
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>
