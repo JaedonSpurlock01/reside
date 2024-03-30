@@ -8,7 +8,7 @@ import { FcGoogle } from "react-icons/fc";
 
 import Image from "next/image";
 import img from "@/public/background.png";
-import ResideLogo from "../_components/logo";
+import ResideLogo from "../_components/Logo";
 
 export default function Auth() {
   return (

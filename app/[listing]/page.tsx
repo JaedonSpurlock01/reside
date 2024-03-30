@@ -1,10 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import Header from "../_components/header";
-import Footer from "../_components/footer";
+import Header from "../_components/Header";
+import Footer from "../_components/Footer";
+
+import { rentcastTestData } from "@/lib/data";
+import { usePathname } from "next/navigation";
 
 export default function ResideHome() {
+  const pathname = decodeURIComponent(usePathname());
+  const queries: Array<string> = pathname.split("/");
+  const address = queries[1];
+  let selectedListing;
+
+  for (const listing of rentcastTestData) {
+    if (listing.formattedAddress == address) {
+      selectedListing = listing;
+    }
+  }
+
   return (
     <main className="relative bg-neutral-800 flex justify-center items-center flex-col">
       <Header mapOnly={false} />
@@ -24,24 +38,26 @@ export default function ResideHome() {
             <div className="bg-red-400 rounded-full w-3 h-3" />
             <p className="font-semibold">For Rent</p>
           </span>
-          <p className="text-lg font-light text-neutral-300">
-            1 Homs Ct,Hillsborough, CA 94010
-          </p>
+          <p className="text-lg font-light text-neutral-300">{address}</p>
           <div className="flex flex-row text-3xl space-x-8">
             <div>
-              <h1 className="font-bold">$42,000/mo</h1>
+              <h1 className="font-bold">
+                ${selectedListing?.price.toLocaleString()}/mo
+              </h1>
               <p className="font-light text-neutral-400">Price</p>
             </div>
             <div>
-              <h1 className="font-bold">7</h1>
+              <h1 className="font-bold">{selectedListing?.bedrooms}</h1>
               <p className="font-light text-neutral-400">Beds</p>
             </div>
             <div>
-              <h1 className="font-bold">8.5</h1>
+              <h1 className="font-bold">{selectedListing?.bathrooms}</h1>
               <p className="font-light text-neutral-400">Baths</p>
             </div>
             <div>
-              <h1 className="font-bold">11,673</h1>
+              <h1 className="font-bold">
+                {selectedListing?.squareFootage.toLocaleString()}
+              </h1>
               <p className="font-light text-neutral-400">Sq Ft</p>
             </div>
           </div>

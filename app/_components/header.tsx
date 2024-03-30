@@ -15,10 +15,10 @@ export default function Header({ mapOnly }: { mapOnly: boolean }) {
     >
       <div className="w-full h-full relative font-light text-white">
         <div className="absolute left-1/2 top-1/2 text-3xl tracking-wider font-semibold transform -translate-x-1/2 -translate-y-1/2">
-          <a href="/listings">RESIDE</a>
+          <a href="/">RESIDE</a>
         </div>
         <div className="absolute left-0 top-1/2 text-lg transform -translate-y-1/2">
-          <a href="/listings">Rent</a>
+          <a href="/">Rent</a>
         </div>
         <div className="absolute right-0 top-1/2 text-lg transform -translate-y-1/2 flex flex-row space-x-8">
           <button>Favorites</button>

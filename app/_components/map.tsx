@@ -5,14 +5,20 @@ import Map, { Marker, Layer, Source, MapMouseEvent, Popup } from "react-map-gl";
 import { stateCenter, stateCodes } from "@/public/stateConversion";
 import "mapbox-gl/dist/mapbox-gl.css"; // For some reason mapbox doesn't handle attribution/children attributes
 import { motion } from "framer-motion";
-import { CircularProgress } from "@mui/material";
-import { IoIosArrowDown } from "react-icons/io";
+import { CardContent, CircularProgress } from "@mui/material";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Link from "next/link";
 import Image from "next/image";
 
+import { rentcastTestData } from "@/lib/data";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ListingPagination } from "./ListingPagination";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+
 // Define your mapbox access token
-const MAPBOX_TOKEN =
-  "APIO";
+const MAPBOX_TOKEN = "";
 
 const fadeInAnimationVariants = {
   initial: { opacity: 0, y: 100 },
@@ -34,6 +40,8 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [selectedCity, setSelectedCity] = useState<any>(null);
   const [hoveredCity, setHoveredCity] = useState<any>(null);
+  const [showChangePrice, setShowChangePrice] = useState<boolean>(false);
+  const [showChangeBB, setShowChangeBB] = useState<boolean>(false);
 
   const [loadingRentals, setLoadingRentals] = useState<boolean>(false);
 
@@ -229,30 +237,147 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
           </div>
         )}
         {selectedCity && (
-          <div className="p-5 w-[40%] overflow-y-scroll bg-neutral-800 no-scrollbar mt-20">
+          <div className="p-5 w-[40%] overflow-y-scroll bg-neutral-800 mt-20">
             <div>
               <h1 className="relative font-bold overflow-hidden text-lg text-[#f7f7f7]">
                 {selectedCity} {selectedStateCode?.toUpperCase()} Rental
                 Listings
               </h1>
 
-              <div className="w-full h-20 flex flex-row flex-wrap text-white space-x-2 items-center text-center">
-                <div className="rounded-lg bg-[#3a3838] w-24 h-12 relative">
+              <div className="relative w-full h-20 flex flex-row flex-wrap text-white space-x-2 items-center text-center">
+                <button
+                  className="rounded-lg bg-[#3a3838] w-24 h-12 relative"
+                  onClick={() => {
+                    setShowChangePrice(!showChangePrice);
+                    setShowChangeBB(false);
+                  }}
+                >
                   <h1 className="absolute left-2 top-1/2 transform -translate-y-1/2">
                     Price
                   </h1>
+
                   <span className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                    <IoIosArrowDown />
+                    {!showChangePrice ? <IoIosArrowDown /> : <IoIosArrowUp />}
                   </span>
-                </div>
-                <div className="rounded-lg bg-[#3a3838] w-36 h-12 pl-2 relative">
+                </button>
+
+                {showChangePrice && (
+                  <Card className="-left-2 absolute z-50 top-20 w-[400px] bg-[#3a3838] text-white">
+                    <CardContent>
+                      <div className="flex flex-row">
+                        <div className="w-1/2 flex flex-col h-full p-2">
+                          <h1 className="text-left font-semibold">Minimum</h1>
+                          <Input
+                            type="text"
+                            placeholder="No Min"
+                            className="bg-neutral-800"
+                          />
+                        </div>
+                        <div className="mt-[3.2rem] w-3 h-[0.1rem] bg-[#acacac]" />
+                        <div className="w-1/2 flex flex-col h-full p-2">
+                          <h1 className="text-left font-semibold">Maximum</h1>
+                          <Input
+                            type="text"
+                            placeholder="No Max"
+                            className=" bg-neutral-800"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button className="w-full bg-neutral-800">Apply</Button>
+                    </CardFooter>
+                  </Card>
+                )}
+
+                <button
+                  onClick={() => {
+                    setShowChangeBB(!showChangeBB);
+                    setShowChangePrice(false);
+                  }}
+                  className="rounded-lg bg-[#3a3838] w-36 h-12 pl-2 relative"
+                >
                   <h1 className="absolute left-2 top-1/2 transform -translate-y-1/2">
                     Beds/baths
                   </h1>
                   <span className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                    <IoIosArrowDown />
+                    {!showChangeBB ? <IoIosArrowDown /> : <IoIosArrowUp />}
                   </span>
-                </div>
+                </button>
+
+                {showChangeBB && (
+                  <Card className="absolute w-[440px] z-50 top-20 left-24 bg-[#3a3838] text-white">
+                    <CardContent>
+                      <div className="w-full h-16 px-2 mb-14">
+                        <h1 className="text-left mb-2 font-semibold text-neutral-400">
+                          Bedrooms
+                        </h1>
+                        <div className="w-full flex flex-row h-4/5 mb-4">
+                          <button className="w-full h-full border border-[#5a5a5a] rounded-l-lg hover:bg-neutral-800">
+                            Any
+                          </button>
+                          <button className="w-full h-full border-y border-[#5a5a5a] hover:bg-neutral-800">
+                            1+
+                          </button>
+                          <button className="w-full h-full border-y border-l border-[#5a5a5a] hover:bg-neutral-800">
+                            2+
+                          </button>
+                          <button className="w-full h-full border border-[#5a5a5a] hover:bg-neutral-800">
+                            3+
+                          </button>
+                          <button className="w-full h-full border-y border-[#5a5a5a] hover:bg-neutral-800">
+                            4+
+                          </button>
+                          <button className="w-full h-full border border-[#5a5a5a] rounded-r-lg hover:bg-neutral-800">
+                            5+
+                          </button>
+                        </div>
+                        <div className="w-full text-neutral-200 text-left flex flex-row items-center space-x-2">
+                          <Checkbox
+                            id="exact-match"
+                            className="w-6 h-6 border-[#5a5a5a]"
+                          />
+                          <label
+                            htmlFor="exact-match"
+                            className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            Use exact match
+                          </label>
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardContent>
+                      <div className="w-full h-16 px-2 mb-4">
+                        <h1 className="text-left mb-2 font-semibold text-neutral-400">
+                          Bathrooms
+                        </h1>
+                        <div className="w-full flex flex-row h-4/5">
+                          <button className="w-full h-full border border-[#5a5a5a] rounded-l-lg hover:bg-neutral-800">
+                            Any
+                          </button>
+                          <button className="w-full h-full border-y border-[#5a5a5a] hover:bg-neutral-800">
+                            1
+                          </button>
+                          <button className="w-full h-full border-y border-l border-[#5a5a5a] hover:bg-neutral-800">
+                            2
+                          </button>
+                          <button className="w-full h-full border border-[#5a5a5a] hover:bg-neutral-800">
+                            3
+                          </button>
+                          <button className="w-full h-full border-y border-[#5a5a5a] hover:bg-neutral-800">
+                            4
+                          </button>
+                          <button className="w-full h-full border border-[#5a5a5a] rounded-r-lg hover:bg-neutral-800">
+                            5
+                          </button>
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button className="w-full bg-neutral-800">Apply</Button>
+                    </CardFooter>
+                  </Card>
+                )}
               </div>
 
               <div className="flex flex-row">
@@ -267,71 +392,56 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
                 </div>
               )}
               {!loadingRentals && (
-                <ul className="mt-4 grid gap-[12px] grid-cols-auto-fill min-w-[286px] grid-flow-row">
-                  {[
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                    "House",
-                  ].map((house, index) => (
-                    <motion.li
-                      className="relative min-h-[265px] list-item shadow-lg rounded-xl hover:border hover:border-white"
-                      key={index}
-                      variants={fadeInAnimationVariants}
-                      initial="initial"
-                      whileInView="animate"
-                      viewport={{ once: true }}
-                      custom={index}
-                    >
-                      <Link href="/listing">
-                        <div className="h-full bg-[#3a3838] rounded-xl p-2 hover:cursor-pointer">
-                          <div>
-                            <Image
-                              src="/example_apartment.jpg"
-                              alt="HOUSE"
-                              className="object-cover w-full min-h-full rounded-xl"
-                              width={1024}
-                              height={576}
-                            ></Image>
-                          </div>
-                          <div className="p-2 pb-4 ">
+                <div className="overflow-hidden">
+                  <ul className="mt-4 grid gap-[12px] grid-cols-auto-fill min-w-[286px] grid-flow-row mb-16">
+                    {rentcastTestData.map((listing, index) => (
+                      <motion.li
+                        className="relative min-h-[265px] list-item shadow-lg rounded-xl hover:border hover:border-white"
+                        key={index}
+                        variants={fadeInAnimationVariants}
+                        initial="initial"
+                        whileInView="animate"
+                        viewport={{ once: true }}
+                        custom={index}
+                      >
+                        <Link
+                          href={{
+                            pathname: `/${encodeURIComponent(
+                              listing.formattedAddress
+                            )}`,
+                          }}
+                        >
+                          <div className="h-full bg-[#3a3838] rounded-xl p-2 hover:cursor-pointer">
                             <div>
-                              <span className="font-bold text-xl text-neutral-300">
-                                $2,729/mo
-                              </span>
+                              <Image
+                                src="/example_apartment.jpg"
+                                alt={listing.formattedAddress}
+                                className="object-cover w-full min-h-full rounded-xl"
+                                width={1024}
+                                height={576}
+                              ></Image>
                             </div>
-                            <div className="text-neutral-400">
-                              3 bds | 2 ba | 1,344 sqft
-                            </div>
-                            <div className="text-neutral-400">
-                              3340 Random Blvd, San Marcos, CA 92024
+                            <div className="p-2 pb-4 ">
+                              <div>
+                                <span className="font-bold text-xl text-neutral-300">
+                                  ${listing.price.toLocaleString()}/mo
+                                </span>
+                              </div>
+                              <div className="text-neutral-400">
+                                {listing.bedrooms} bds | {listing.bathrooms} ba
+                                | {listing.squareFootage.toLocaleString()} sqft
+                              </div>
+                              <div className="text-neutral-400">
+                                {listing.formattedAddress}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </Link>
-                    </motion.li>
-                  ))}
-                </ul>
+                        </Link>
+                      </motion.li>
+                    ))}
+                  </ul>
+                  <ListingPagination />
+                </div>
               )}
             </div>
           </div>
