@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Header from "../_components/Header";
-import Footer from "../_components/Footer";
+import Footer from "../_components/Listings/Footer";
 
 import { rentcastTestData } from "@/lib/data";
 import { usePathname } from "next/navigation";
