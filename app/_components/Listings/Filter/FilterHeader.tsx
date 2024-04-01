@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import ShowPriceButton from "./ShowPriceButton";
 import ShowBBButton from "./ShowBBButton";
-import BBFilter from "./PriceFilter";
 import { IoIosArrowDown } from "react-icons/io";
-import PriceFilter from "./BBFilter";
+import PriceFilter from "./PriceFilter";
+import BBFilter from "./BBFilter";
 
 export default function FilterHeader() {
   const [showChangePrice, setShowChangePrice] = useState<boolean>(false);
