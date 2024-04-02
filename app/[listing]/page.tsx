@@ -6,6 +6,7 @@ import Footer from "../_components/Listings/Footer";
 
 import { rentcastTestData } from "@/lib/data";
 import { usePathname } from "next/navigation";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ResideHome() {
   const pathname = decodeURIComponent(usePathname());
