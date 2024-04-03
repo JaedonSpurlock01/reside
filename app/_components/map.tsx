@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import Map, { Marker, Layer, Source, MapMouseEvent, Popup } from "react-map-gl";
-import { stateCenter, stateCodes } from "@/public/stateConversion";
+import { stateCenter, stateCodes } from "@/lib/stateConversion";
 import "mapbox-gl/dist/mapbox-gl.css"; // For some reason mapbox doesn't handle attribution/children attributes
 import ListContainer from "./Listings/ListContainer";
 import {
@@ -25,7 +25,7 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [selectedCity, setSelectedCity] = useState<any>(null);
   const [hoveredCity, setHoveredCity] = useState<any>(null);
-
+  const [mapReady, setMapReady] = useState<boolean>(false);
   const [loadingRentals, setLoadingRentals] = useState<boolean>(false);
   const [mapDraggable, setMapDraggable] = useState<boolean>(true);
 
@@ -40,6 +40,7 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
   });
 
   const handleMouseLeave = (e: MapMouseEvent) => {
+    if (!mapReady) return;
     if (hoveredPolygonId !== null) {
       mapRef.current.setFeatureState(
         { source: "states", id: hoveredPolygonId },
@@ -50,6 +51,7 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
   };
 
   const handleMouseMove = (e: MapMouseEvent) => {
+    if (!mapReady) return;
     const features = mapRef.current?.queryRenderedFeatures(e.point, {
       layers: ["state-fills"],
     });
@@ -91,6 +93,7 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
   };
 
   const handleMouseClick = (e: MapMouseEvent) => {
+    if (!mapReady) return;
     const features = mapRef.current.queryRenderedFeatures(e.point, {
       layers: ["state-fills"],
     });
@@ -155,6 +158,7 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
               onMouseLeave={handleMouseLeave}
               cursor={hoveredPolygonId ? "pointer" : "default"}
               dragPan={mapDraggable}
+              onLoad={() => setMapReady(true)}
             >
               <Source
                 id="states"
