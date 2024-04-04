@@ -1,12 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "~react-image-gallery/styles/css/image-gallery.css";
 
-.grid-cols-auto-fill{
+.image-gallery-image {
+  border-radius: 0.75rem;
+}
+
+.image-gallery-slide img {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.fullscreen .image-gallery-slide img {
+  max-height: 100vh;
+}
+
+.image-gallery-left-nav,
+.image-gallery-right-nav {
+  .image-gallery-svg {
+    height: 90px;
+    width: 35px;
+  }
+}
+
+.grid-cols-auto-fill {
   grid-template-columns: repeat(auto-fill, minmax(286px, 1fr));
 }
 
-.grid-cols-listing{
+.grid-cols-listing {
   grid-template-columns: minmax(572px, 2fr) minmax(286px, 1fr);
 }
 

@@ -3,7 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
+import ImageGallery from "react-image-gallery";
 
 const fadeInAnimationVariants = {
   initial: { opacity: 0, y: 100 },
@@ -27,21 +27,41 @@ export default function Grid() {
           viewport={{ once: true }}
           custom={index}
         >
-          <Link
-            href={{
-              pathname: `/${encodeURIComponent(listing.formattedAddress)}`,
-            }}
-          >
-            <div className="h-full bg-[#3a3838] rounded-xl p-2 hover:cursor-pointer">
-              <div>
-                <Image
-                  src="/example_apartment.jpg"
-                  alt={listing.formattedAddress}
-                  className="object-cover w-full min-h-full rounded-xl"
-                  width={1024}
-                  height={576}
-                ></Image>
+          <div className="h-full bg-[#3a3838] rounded-xl p-2 hover:cursor-pointer">
+            <div>
+              <div className="w-full min-h-full">
+                <ImageGallery
+                  showNav={true}
+                  showBullets={true}
+                  showFullscreenButton={true}
+                  showPlayButton={false}
+                  showThumbnails={false}
+                  items={[
+                    {
+                      original: "/example_house.jpeg",
+                      thumbnail: "/example_house.jpeg",
+                    },
+                    {
+                      original: "/example_apartment.jpg",
+                      thumbnail: "/example_apartment.jpg",
+                    },
+                    {
+                      original: "/example_house.jpeg",
+                      thumbnail: "/example_house.jpeg",
+                    },
+                    {
+                      original: "/example_apartment.jpg",
+                      thumbnail: "/example_apartment.jpg",
+                    },
+                  ]}
+                />
               </div>
+            </div>
+            <Link
+              href={{
+                pathname: `/${encodeURIComponent(listing.formattedAddress)}`,
+              }}
+            >
               <div className="p-2 pb-4 ">
                 <div>
                   <span className="font-bold text-xl text-neutral-300">
@@ -56,8 +76,8 @@ export default function Grid() {
                   {listing.formattedAddress}
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </div>
         </motion.li>
       ))}
     </ul>
