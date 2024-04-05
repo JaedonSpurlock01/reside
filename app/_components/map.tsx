@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/resizable";
 
 // Define your mapbox access token
-const MAPBOX_TOKEN = "";
+const MAPBOX_TOKEN =
+  "";
 
 export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
   const mapRef = useRef<any>();

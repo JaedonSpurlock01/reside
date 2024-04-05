@@ -3,19 +3,16 @@
 @tailwind utilities;
 @import "~react-image-gallery/styles/css/image-gallery.css";
 
-.image-gallery-image {
-  border-radius: 0.75rem;
-}
-
 .image-gallery-slide img {
-  width: 100%;
-  height: auto;
-  max-height: 80vh;
-  object-fit: cover;
-  overflow: hidden;
+  border-radius: 0.75rem;
+  height: 200px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  overflow: hidden !important;
 }
 
 .fullscreen .image-gallery-slide img {
+  min-height: 100vh;
   max-height: 100vh;
 }
 

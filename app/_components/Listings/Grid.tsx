@@ -19,7 +19,7 @@ export default function Grid() {
     <ul className="mt-4 grid gap-[12px] grid-cols-auto-fill min-w-[286px] grid-flow-row mb-16">
       {rentcastTestData.map((listing, index) => (
         <motion.li
-          className="relative min-h-[265px] list-item shadow-lg rounded-xl hover:border hover:border-white"
+          className="relative min-h-[265px] list-item shadow-lg rounded-xl border border-transparent hover:border-white"
           key={index}
           variants={fadeInAnimationVariants}
           initial="initial"
@@ -27,8 +27,8 @@ export default function Grid() {
           viewport={{ once: true }}
           custom={index}
         >
-          <div className="h-full bg-[#3a3838] rounded-xl p-2 hover:cursor-pointer">
-            <div>
+          <div className="h-full bg-[#3a3838] rounded-xl p-2 hover:cursor-pointer flex flex-col">
+            <div className="flex-grow">
               <div className="w-full min-h-full">
                 <ImageGallery
                   showNav={true}
