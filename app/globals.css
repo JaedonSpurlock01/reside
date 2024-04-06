@@ -3,6 +3,11 @@
 @tailwind utilities;
 @import "~react-image-gallery/styles/css/image-gallery.css";
 
+/* html body :root {
+  width: 100%;
+  height: 100%;
+} */
+
 .image-gallery-slide img {
   border-radius: 0.75rem;
   height: 200px !important;

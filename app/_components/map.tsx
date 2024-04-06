@@ -6,10 +6,12 @@ import React, {
   useEffect,
   Dispatch,
   SetStateAction,
+  useCallback,
 } from "react";
 import Map, { Marker, Layer, Source, MapMouseEvent, Popup } from "react-map-gl";
-import { stateCenter, stateCodes } from "@/lib/stateConversion";
+import { stateCenter, stateCodes, stateName } from "@/lib/stateConversion";
 import "mapbox-gl/dist/mapbox-gl.css"; // For some reason mapbox doesn't handle attribution/children attributes
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 // Define your mapbox access token
 const MAPBOX_TOKEN =
@@ -48,10 +50,29 @@ export default function ResideMap({
   >(null);
   const [mapReady, setMapReady] = useState<boolean>(false);
 
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      params.set(name, value);
+
+      if (name === "state") {
+        params.delete("city");
+      }
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   const handleMouseLeave = (e: MapMouseEvent) => {
     if (!mapReady) return;
     if (hoveredPolygonId !== null) {
-      mapRef.current.setFeatureState(
+      mapRef.current?.setFeatureState(
         { source: "states", id: hoveredPolygonId },
         { hover: false }
       );
@@ -66,7 +87,7 @@ export default function ResideMap({
     });
 
     if (hoveredPolygonId !== null) {
-      mapRef.current.setFeatureState(
+      mapRef.current?.setFeatureState(
         { source: "states", id: hoveredPolygonId },
         { hover: false }
       );
@@ -106,15 +127,23 @@ export default function ResideMap({
     const features = mapRef.current.queryRenderedFeatures(e.point, {
       layers: ["state-fills"],
     });
-    if (features <= 0) return;
-    const state: string =
+    if (features <= 0) {
+      router.push(pathname);
+      setSelectedStateCode(null);
+      return;
+    }
+    const stateCode: string =
       stateCodes[features[0].properties.STATE_NAME.toLowerCase()];
     mapRef.current?.flyTo({
-      center: [stateCenter[state][1], stateCenter[state][0]],
+      center: [stateCenter[stateCode][1], stateCenter[stateCode][0]],
       duration: 2000,
       zoom: 6,
     });
-    setSelectedStateCode(state);
+    setSelectedStateCode(stateCode);
+
+    router.push(
+      pathname + "?" + createQueryString("state", stateName[stateCode])
+    );
 
     const cityFeatures = mapRef.current?.queryRenderedFeatures(e.point, {
       layers: ["city-fills"],
@@ -128,6 +157,11 @@ export default function ResideMap({
         duration: 3000,
         zoom: 11,
       });
+      router.push(
+        pathname +
+          "?" +
+          createQueryString("city", cityFeatures[0].properties.NAMELSAD)
+      );
     } else {
       setMapDraggable(true);
       setLoadingRentals(false);

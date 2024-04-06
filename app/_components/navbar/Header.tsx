@@ -7,7 +7,7 @@ import Logo from "../Logo";
 
 export default function Header() {
   return (
-    <div className="bg-[#262626] w-full border-b-[1px] border-[#373737] h-20 py-4 px-16 flex items-center justify-center z-10">
+    <div className="bg-[#262626] w-full border-b-[1px] border-[#373737] h-[14vh] py-4 px-16 flex items-center justify-center z-10">
       <div className="w-full h-full relative font-light text-white">
         <div className="absolute left-1/2 top-1/2 text-3xl tracking-wider font-semibold transform -translate-x-1/2 -translate-y-1/2">
           <a href="/">

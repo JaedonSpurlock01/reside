@@ -40,7 +40,7 @@ export function searchCities(
         foundResults.push(city);
       }
     }
-    if (foundResults.length > 15)
+    if (foundResults.length > 30)
       callback([]); // Found results are way too long for UI
     else callback(foundResults);
   }, 300); // Debounce behavior (So that searching doesn't get spammed)
@@ -58,12 +58,13 @@ export function searchCity(
   searchTimeout = setTimeout(() => {
     let cityFound = null;
     for (let city of cities) {
+      // Check if the city name in the data set contains the provided city query
       if (
-        city.city.toLowerCase() === cityQuery.toLowerCase() &&
+        city.city.toLowerCase().includes(cityQuery.toLowerCase()) &&
         city.state_name.toLowerCase() === stateQuery.toLowerCase()
       ) {
         cityFound = city;
-        break; // Once a matching city is found, no need to continue searching
+        break;
       }
     }
     callback(cityFound);

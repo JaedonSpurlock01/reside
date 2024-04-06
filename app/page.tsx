@@ -37,10 +37,6 @@ export default function ResideHome() {
   const initialState: string | null = searchParams.get("state");
   const initialCity: string | null = searchParams.get("city");
 
-  // possible outcomes
-  //?state=1
-  //?state=1&city=2
-
   useEffect(() => {
     if (initialState && !initialCity) {
       // Only state
@@ -59,13 +55,13 @@ export default function ResideHome() {
           setSelectedStateCode(stateCode);
         }
       } else {
-        router.push(pathname);
+        //router.push(pathname);
       }
     } else if (initialState && initialCity) {
       // state, city
       searchCity(initialCity, initialState, (cityFound) => {
         if (!cityFound) {
-          router.push(pathname);
+          //router.push(pathname);
         } else {
           setSelectedCity(initialCity);
           setSelectedStateCode(stateCodes[initialState.toLowerCase()]);
@@ -85,60 +81,57 @@ export default function ResideHome() {
   }, [initialState, initialCity]); // Add dependencies here
 
   return (
-    <main className="relative w-screen h-screen bg-neutral-800">
-      <div className="w-full h-full">
-        <div className="relative w-full h-full flex flex-row">
-          <ResizablePanelGroup direction="horizontal">
-            <ResizablePanel>
-              <ResideMap
-                viewport={viewport}
-                setViewport={setViewport}
-                loadingRentals={loadingRentals}
-                setLoadingRentals={setLoadingRentals}
-                setShowPopup={setShowPopup}
-                setSelectedCity={setSelectedCity}
-                setHoveredCity={setHoveredCity}
-                mapDraggable={mapDraggable}
-                setMapDraggable={setMapDraggable}
-                selectedStateCode={selectedStateCode}
-                setSelectedStateCode={setSelectedStateCode}
+    <div className="w-full h-[86vh] bg-neutral-800 overflow-hidden">
+      <div className="relative w-full h-full">
+        <ResizablePanelGroup direction="horizontal">
+          <ResizablePanel>
+            <ResideMap
+              viewport={viewport}
+              setViewport={setViewport}
+              loadingRentals={loadingRentals}
+              setLoadingRentals={setLoadingRentals}
+              setShowPopup={setShowPopup}
+              setSelectedCity={setSelectedCity}
+              setHoveredCity={setHoveredCity}
+              mapDraggable={mapDraggable}
+              setMapDraggable={setMapDraggable}
+              selectedStateCode={selectedStateCode}
+              setSelectedStateCode={setSelectedStateCode}
+            />
+          </ResizablePanel>
+          {selectedCity && (
+            <>
+              <ResizableHandle
+                className="bg-transparent w-[0.2rem] hover:bg-gray-400 transition"
+                onChange={() => {
+                  setMapDraggable(false);
+                }}
+                onDragEnd={() => setMapDraggable(true)}
+                withHandle
               />
-            </ResizablePanel>
-            {selectedCity && (
-              <>
-                <ResizableHandle
-                  className="bg-transparent w-[0.2rem] hover:bg-gray-400 transition"
-                  onChange={() => {
-                    setMapDraggable(false);
-                  }}
-                  onDragEnd={() => setMapDraggable(true)}
+              <ResizablePanel
+                minSize={32}
+                maxSize={95}
+                defaultSize={35}
+                style={{ overflow: "auto" }}
+              >
+                <ListContainer
+                  selectedCity={selectedCity}
+                  selectedStateCode={selectedStateCode}
+                  loadingRentals={loadingRentals}
+                  className="p-5 bg-neutral-800"
                 />
-                <ResizablePanel
-                  minSize={32}
-                  maxSize={95}
-                  defaultSize={35}
-                  style={{ overflow: "auto" }}
-                >
-                  <ListContainer
-                    selectedCity={selectedCity}
-                    selectedStateCode={selectedStateCode}
-                    loadingRentals={loadingRentals}
-                    className="p-5 bg-neutral-800"
-                  />
-                </ResizablePanel>
-              </>
-            )}
-          </ResizablePanelGroup>
-
-          {!selectedCity && showPopup && (
-            <div className="absolute bottom-[6rem] left-2 w-72 p-3 bg-neutral-800 font-light rounded-lg">
-              <h1 className=" text-neutral-100 truncate">
-                {hoveredCity?.name}
-              </h1>
-            </div>
+              </ResizablePanel>
+            </>
           )}
-        </div>
+        </ResizablePanelGroup>
+
+        {!selectedCity && showPopup && (
+          <div className="absolute bottom-[6rem] left-2 w-72 p-3 bg-neutral-800 font-light rounded-lg">
+            <h1 className=" text-neutral-100 truncate">{hoveredCity?.name}</h1>
+          </div>
+        )}
       </div>
-    </main>
+    </div>
   );
 }
