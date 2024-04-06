@@ -130,6 +130,7 @@ export default function ResideMap({
     if (features <= 0) {
       router.push(pathname);
       setSelectedStateCode(null);
+      setSelectedCity(null);
       return;
     }
     const stateCode: string =
