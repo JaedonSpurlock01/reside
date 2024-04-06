@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Nunito_Sans } from "next/font/google";
 import "./globals.css";
+import Header from "./_components/navbar/Header";
 
 const inter = Inter({ subsets: ["latin"] });
+const font = Nunito_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Reside",
@@ -16,7 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${font.className} overflow-hidden`}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

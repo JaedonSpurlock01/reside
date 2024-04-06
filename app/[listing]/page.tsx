@@ -1,12 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Header from "../_components/Header";
 import Footer from "../_components/Listings/Footer";
 
 import { rentcastTestData } from "@/lib/data";
 import { usePathname } from "next/navigation";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ResideHome() {
   const pathname = decodeURIComponent(usePathname());
@@ -22,8 +20,6 @@ export default function ResideHome() {
 
   return (
     <main className="relative bg-neutral-800 flex justify-center items-center flex-col">
-      <Header mapOnly={false} />
-
       <div className="w-[70rem] bg-[#636262]d flex flex-col items-center mt-36 mb-16">
         <div className="rounded-xl p-4 bg-[#3a3838] h-[38rem] mb-4">
           <Image

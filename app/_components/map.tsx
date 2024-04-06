@@ -1,44 +1,52 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import Map, { Marker, Layer, Source, MapMouseEvent, Popup } from "react-map-gl";
 import { stateCenter, stateCodes } from "@/lib/stateConversion";
 import "mapbox-gl/dist/mapbox-gl.css"; // For some reason mapbox doesn't handle attribution/children attributes
-import ListContainer from "./Listings/ListContainer";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
 
 // Define your mapbox access token
 const MAPBOX_TOKEN =
-  "";
+  "pk.eyJ1IjoiamFlZG9uMDEiLCJhIjoiY2x0eXlodHVjMGlhejJrczNpaHBxNXJhMiJ9.RNn_iXR_1qqPXVoU6FYDEw";
 
-export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
+type ResideMapProps = {
+  setShowPopup: Dispatch<SetStateAction<boolean>>;
+  setSelectedCity: Dispatch<SetStateAction<any>>;
+  setHoveredCity: Dispatch<SetStateAction<any>>;
+  loadingRentals: boolean;
+  setLoadingRentals: Dispatch<SetStateAction<boolean>>;
+  mapDraggable: boolean;
+  setMapDraggable: Dispatch<SetStateAction<boolean>>;
+  selectedStateCode: string | null;
+  setSelectedStateCode: Dispatch<SetStateAction<string | null>>;
+  viewport: any;
+  setViewport: Dispatch<SetStateAction<any>>;
+};
+
+export default function ResideMap({
+  viewport,
+  setViewport,
+  loadingRentals,
+  setLoadingRentals,
+  setShowPopup,
+  setSelectedCity,
+  setHoveredCity,
+  mapDraggable,
+  setMapDraggable,
+  selectedStateCode,
+  setSelectedStateCode,
+}: ResideMapProps) {
   const mapRef = useRef<any>();
   const [hoveredPolygonId, setHoveredPolygonId] = useState<
     string | number | null
   >(null);
-  const [selectedStateCode, setSelectedStateCode] = useState<string | null>(
-    null
-  );
-  const [showPopup, setShowPopup] = useState<boolean>(false);
-  const [selectedCity, setSelectedCity] = useState<any>(null);
-  const [hoveredCity, setHoveredCity] = useState<any>(null);
   const [mapReady, setMapReady] = useState<boolean>(false);
-  const [loadingRentals, setLoadingRentals] = useState<boolean>(false);
-  const [mapDraggable, setMapDraggable] = useState<boolean>(true);
-
-  const [viewport, setViewport] = React.useState<any>({
-    width: "100%",
-    height: "100%",
-    latitude: 38.8058,
-    longitude: -97.6114,
-    zoom: 4,
-    pitch: 0,
-    bearing: 0,
-  });
 
   const handleMouseLeave = (e: MapMouseEvent) => {
     if (!mapReady) return;
@@ -99,7 +107,8 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
       layers: ["state-fills"],
     });
     if (features <= 0) return;
-    const state: string = stateCodes[features[0].properties.STATE_NAME];
+    const state: string =
+      stateCodes[features[0].properties.STATE_NAME.toLowerCase()];
     mapRef.current?.flyTo({
       center: [stateCenter[state][1], stateCenter[state][0]],
       duration: 2000,
@@ -114,7 +123,6 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
     if (cityFeatures && cityFeatures.length > 0) {
       setSelectedCity(cityFeatures[0].properties.NAMELSAD);
       setLoadingRentals(true);
-      setMapOnly(false);
       mapRef.current?.flyTo({
         center: [e.lngLat.lng, e.lngLat.lat],
         duration: 3000,
@@ -123,7 +131,6 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
     } else {
       setMapDraggable(true);
       setLoadingRentals(false);
-      setMapOnly(true);
       setSelectedCity(null);
     }
   };
@@ -139,119 +146,81 @@ export default function ResideMap({ setMapOnly }: { setMapOnly: any }) {
   }, [loadingRentals, setLoadingRentals]);
 
   return (
-    <div className="w-full h-full">
-      <div className="relative w-full h-full flex flex-row">
-        <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel>
-            <Map
-              {...viewport}
-              maxBounds={[
-                [-136.736342, 17.521208], //Southwest
-                [-60.945392, 58.382808], //Northeast
-              ]}
-              onMove={(evt) => setViewport(evt.viewState)}
-              mapboxAccessToken={MAPBOX_TOKEN}
-              ref={mapRef}
-              mapStyle="mapbox://styles/mapbox/navigation-night-v1"
-              attributionControl={false}
-              onMouseMove={handleMouseMove}
-              onClick={handleMouseClick}
-              onMouseLeave={handleMouseLeave}
-              cursor={hoveredPolygonId ? "pointer" : "default"}
-              dragPan={mapDraggable}
-              onLoad={() => setMapReady(true)}
-            >
-              <Source
-                id="states"
-                type="geojson"
-                data="https://docs.mapbox.com/mapbox-gl-js/assets/us_states.geojson"
-              >
-                <Layer
-                  id="state-fills"
-                  type="fill"
-                  paint={{
-                    "fill-color": "#627BC1",
-                    "fill-opacity": [
-                      "case",
-                      ["boolean", ["feature-state", "hover"], false],
-                      0.5,
-                      0.15,
-                    ],
-                  }}
-                />
-                <Layer
-                  id="state-borders"
-                  type="line"
-                  paint={{
-                    "line-color": "#627BC1",
-                    "line-width": 2,
-                  }}
-                />
-              </Source>
+    <Map
+      {...viewport}
+      maxBounds={[
+        [-136.736342, 17.521208], //Southwest
+        [-60.945392, 58.382808], //Northeast
+      ]}
+      onMove={(evt) => setViewport(evt.viewState)}
+      mapboxAccessToken={MAPBOX_TOKEN}
+      ref={mapRef}
+      mapStyle="mapbox://styles/mapbox/navigation-night-v1"
+      attributionControl={false}
+      onMouseMove={handleMouseMove}
+      onClick={handleMouseClick}
+      onMouseLeave={handleMouseLeave}
+      cursor={hoveredPolygonId ? "pointer" : "default"}
+      dragPan={mapDraggable}
+      onLoad={() => setMapReady(true)}
+    >
+      <Source
+        id="states"
+        type="geojson"
+        data="https://docs.mapbox.com/mapbox-gl-js/assets/us_states.geojson"
+      >
+        <Layer
+          id="state-fills"
+          type="fill"
+          paint={{
+            "fill-color": "#627BC1",
+            "fill-opacity": [
+              "case",
+              ["boolean", ["feature-state", "hover"], false],
+              0.5,
+              0.15,
+            ],
+          }}
+        />
+        <Layer
+          id="state-borders"
+          type="line"
+          paint={{
+            "line-color": "#627BC1",
+            "line-width": 2,
+          }}
+        />
+      </Source>
 
-              {selectedStateCode && (
-                <Source
-                  id="cities"
-                  type="geojson"
-                  data={`/states/${selectedStateCode}.json`}
-                >
-                  <Layer
-                    id="city-fills"
-                    type="fill"
-                    paint={{
-                      "fill-color": "#bbbbbb",
-                      "fill-opacity": [
-                        "case",
-                        ["boolean", ["feature-state", "hover"], false],
-                        0.5,
-                        0.15,
-                      ],
-                    }}
-                  />
-                  <Layer
-                    id="city-borders"
-                    type="line"
-                    paint={{
-                      "line-color": "#bbbbbb",
-                      "line-width": 1,
-                    }}
-                  />
-                </Source>
-              )}
-            </Map>
-          </ResizablePanel>
-          {selectedCity && (
-            <>
-              <ResizableHandle
-                className="bg-transparent"
-                onChange={() => {
-                  setMapDraggable(false);
-                }}
-                onDragEnd={() => setMapDraggable(true)}
-              />
-              <ResizablePanel
-                minSize={32}
-                maxSize={95}
-                defaultSize={35}
-                style={{ overflow: "auto" }}
-              >
-                <ListContainer
-                  selectedCity={selectedCity}
-                  selectedStateCode={selectedStateCode}
-                  loadingRentals={loadingRentals}
-                  className="p-5 bg-neutral-800 mt-20"
-                />
-              </ResizablePanel>
-            </>
-          )}
-        </ResizablePanelGroup>
-
-        {!selectedCity && showPopup && (
-          <div className="absolute top-[6rem] left-2 w-72 p-3 backdrop-filter backdrop-blur-[1rem] font-light rounded-lg text-lg">
-            <h1 className=" text-neutral-100">CITY: {hoveredCity?.name}</h1>
-          </div>
-        )}
-      </div>
-    </div>
+      {selectedStateCode && (
+        <Source
+          id="cities"
+          type="geojson"
+          data={`/states/${selectedStateCode}.json`}
+        >
+          <Layer
+            id="city-fills"
+            type="fill"
+            paint={{
+              "fill-color": "#bbbbbb",
+              "fill-opacity": [
+                "case",
+                ["boolean", ["feature-state", "hover"], false],
+                0.5,
+                0.15,
+              ],
+            }}
+          />
+          <Layer
+            id="city-borders"
+            type="line"
+            paint={{
+              "line-color": "#bbbbbb",
+              "line-width": 1,
+            }}
+          />
+        </Source>
+      )}
+    </Map>
   );
 }

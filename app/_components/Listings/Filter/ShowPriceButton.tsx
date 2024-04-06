@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
+import { FaDollarSign } from "react-icons/fa";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 export default function ShowPriceButton({
@@ -20,8 +21,8 @@ export default function ShowPriceButton({
         setShowChangeBB(false);
       }}
     >
-      <h1 className="absolute left-2 top-1/2 transform -translate-y-1/2">
-        Price
+      <h1 className="absolute left-2 top-1/2 transform -translate-y-1/2 flex flex-row items-center gap-1">
+        <FaDollarSign /> Price
       </h1>
 
       <span className="absolute right-2 top-1/2 transform -translate-y-1/2">

@@ -26,7 +26,7 @@ export default function FilterHeader() {
           showChangeBB={showChangeBB}
           setShowChangeBB={setShowChangeBB}
           setShowChangePrice={setShowChangePrice}
-          className="rounded-lg bg-[#3a3838] w-36 h-12 pl-2 relative"
+          className="rounded-lg bg-[#3a3838] w-[9.2rem] h-12 pl-2 relative"
         />
 
         {showChangeBB && (

@@ -1,15 +1,16 @@
+"use client";
+
 import React from "react";
+import Image from "next/image";
 
-import { BsHouseDoorFill } from "react-icons/bs";
-
-export default function ResideLogo() {
+export default function Logo() {
   return (
-    <h1 className="text-5xl md:text-6xl font-bold flex flex-row mb-8">
-      RESI
-      <span className="mt-[0.3rem] text-[3.1rem]">
-        <BsHouseDoorFill />
-      </span>
-      E
-    </h1>
+    <Image
+      alt="logo"
+      className="hidden md:block mb-4"
+      height="170"
+      width="170"
+      src="/images/logo.png"
+    ></Image>
   );
 }
