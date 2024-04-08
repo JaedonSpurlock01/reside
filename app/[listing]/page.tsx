@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Footer from "../_components/Listings/Footer";
+import Footer from "../../components/listings/Footer";
 
 import { rentcastTestData } from "@/lib/data";
 import { usePathname } from "next/navigation";

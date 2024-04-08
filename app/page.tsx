@@ -4,8 +4,8 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import ResideMap from "./_components/Map";
-import ListContainer from "./_components/Listings/ListContainer";
+import ResideMap from "../components/Map";
+import ListContainer from "../components/listings/ListContainer";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { searchCity } from "@/lib/geosearch/citySearch";
@@ -36,6 +36,23 @@ export default function ResideHome() {
 
   const initialState: string | null = searchParams.get("state");
   const initialCity: string | null = searchParams.get("city");
+
+  const testEndpoint = async () => {
+    try {
+      const response = await fetch("/api/fetch", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status: ${response.status}`);
+      }
+
+      // console.log("RESPONSE: ", response.json());
+      //console.log("JSON: ", );
+    } catch (error) {
+      console.log("Could not send request: ", error);
+    }
+  };
 
   useEffect(() => {
     if (initialState && !initialCity) {
@@ -108,6 +125,7 @@ export default function ResideHome() {
                 }}
                 onDragEnd={() => setMapDraggable(true)}
                 withHandle
+                onClick={testEndpoint}
               />
               <ResizablePanel
                 minSize={32}
