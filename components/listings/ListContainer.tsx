@@ -4,17 +4,19 @@ import FilterHeader from "./filter/FilterHeader";
 import Grid from "./Grid";
 import { ListingPagination } from "./ListingPagination";
 
+interface ListContainerProps {
+  selectedCity?: string;
+  selectedStateCode?: string | null;
+  loadingRentals?: boolean;
+  className?: string;
+}
+
 export default function ListContainer({
   selectedCity,
   selectedStateCode,
   loadingRentals,
   className,
-}: {
-  selectedCity: string;
-  selectedStateCode: string | null;
-  loadingRentals: boolean;
-  className: string;
-}) {
+}: ListContainerProps) {
   return (
     <div className={className}>
       <h1 className="relative font-bold text-lg text-[#f7f7f7]">

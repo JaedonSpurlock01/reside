@@ -4,6 +4,7 @@ import { AiOutlineMenu } from "react-icons/ai";
 import Search from "./Search";
 import Avatar from "./Avatar";
 import Logo from "../Logo";
+import UserMenu from "./UserMenu";
 
 export default function Header() {
   return (
@@ -20,17 +21,8 @@ export default function Header() {
         </div>
 
         <div className="absolute right-0 top-1/2 text-lg transform -translate-y-1/2 flex flex-row space-x-8">
-          <button className="hidden sm:block">Favorites</button>
           <button className="hidden sm:block">Help</button>
-          <div
-            onClick={() => {}}
-            className="p-4 md:py-1 md:px-2 border border-[#606060] flex flex-row items-center gap-3 rounded-lg cursor-pointer hover:shadow-sm transition"
-          >
-            <AiOutlineMenu />
-            <div className="hidden md:block">
-              <Avatar />
-            </div>
-          </div>
+          <UserMenu />
         </div>
       </div>
     </div>

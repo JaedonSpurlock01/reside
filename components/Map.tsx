@@ -14,8 +14,7 @@ import "mapbox-gl/dist/mapbox-gl.css"; // For some reason mapbox doesn't handle 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 // Define your mapbox access token
-const MAPBOX_TOKEN =
-  "pk.eyJ1IjoiamFlZG9uMDEiLCJhIjoiY2x0eXlodHVjMGlhejJrczNpaHBxNXJhMiJ9.RNn_iXR_1qqPXVoU6FYDEw";
+const MAPBOX_TOKEN = "";
 
 type ResideMapProps = {
   setShowPopup: Dispatch<SetStateAction<boolean>>;

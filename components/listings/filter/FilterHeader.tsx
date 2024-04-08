@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import Button from "./Button";

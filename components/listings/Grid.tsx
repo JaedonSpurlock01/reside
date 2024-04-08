@@ -1,3 +1,5 @@
+"use client";
+
 import { rentcastTestData } from "@/lib/data";
 import React from "react";
 import { motion } from "framer-motion";
