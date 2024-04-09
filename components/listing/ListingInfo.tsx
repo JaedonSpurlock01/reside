@@ -4,32 +4,17 @@ import Avatar from "../navbar/Avatar";
 import Seperator from "../Seperator";
 import ListingCategory from "./ListingCategory";
 import Image from "next/image";
-import { amenities, facilities } from "@/lib/categories";
+import { amenities, facilities, propertyTypes } from "@/lib/categories";
 import AmenityItem from "./AmenityItem";
 import Button from "../modals/Button";
 import TextRow from "./TextRow";
 
 interface ListingInfoProps {
-  propertyType?:
-    | {
-        icon: IconType;
-        label: string;
-        description: string;
-      }
-    | undefined;
   description?: string;
-  bathroomCount?: number;
-  bedroomCount?: number;
-  squareFootage?: number;
+  listing: any;
 }
 
-const ListingInfo: React.FC<ListingInfoProps> = ({
-  propertyType,
-  description,
-  bathroomCount,
-  bedroomCount,
-  squareFootage,
-}) => {
+const ListingInfo: React.FC<ListingInfoProps> = ({ description, listing }) => {
   return (
     <div className="col-span-4 flex flex-col gap-8">
       <div className="flex flex-col gap-2">
@@ -38,19 +23,19 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           <Avatar />
         </div>
         <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
-          <div>{bathroomCount} baths</div>
-          <div>{bedroomCount} beds</div>
-          <div>{squareFootage?.toLocaleString()} Sq Ft</div>
+          <div>{listing.bathroomCount} baths</div>
+          <div>{listing.bedroomCount} beds</div>
+          <div>{listing.squareFootage?.toLocaleString()} Sq Ft</div>
         </div>
       </div>
 
       <Seperator />
 
-      {propertyType && (
+      {propertyTypes[0] && (
         <ListingCategory
-          icon={propertyType.icon}
-          label={propertyType.label}
-          description={propertyType.description}
+          icon={propertyTypes[0].icon}
+          label={propertyTypes[0].label}
+          description={propertyTypes[0].description}
         />
       )}
 
@@ -119,37 +104,37 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
         <span className="text-2xl font-bold mb-4">Rental History</span>
         <TextRow
           leftText="Year Built"
-          rightText="2005"
+          rightText={listing.yearBuilt}
           leftClassName="font-semibold"
         />
         <TextRow
           leftText="Status"
-          rightText="Active"
+          rightText={listing.status}
           leftClassName="font-semibold"
         />
         <TextRow
           leftText="Listed on"
-          rightText="2024-03-29"
+          rightText={listing.listedDate}
           leftClassName="font-semibold"
         />
         <TextRow
           leftText="Created on"
-          rightText="2024-03-29"
+          rightText={listing.createdDate}
           leftClassName="font-semibold"
         />
         <TextRow
           leftText="Days on market"
-          rightText="12"
+          rightText={listing.daysOnMarket}
           leftClassName="font-semibold"
         />
         <TextRow
           leftText="Latitude"
-          rightText="37.7749"
+          rightText={`${listing.latitude}°`}
           leftClassName="font-semibold"
         />
         <TextRow
           leftText="Longitude"
-          rightText="-122.4194"
+          rightText={`${listing.longitude}°`}
           leftClassName="font-semibold"
         />
       </div>

@@ -55,15 +55,12 @@ const ListingClient: React.FC<ListingClientProps> = ({ listing }) => {
 
           <div className=" grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <ListingInfo
-              propertyType={propertyTypes[0]}
+              listing={listing}
               description="Built in the 19th century, with a 360 degrees view over the sea and surroundings on the top floor.
               It features a Bedroom with a king size bed, a very well-decorated living room with kitchenette, and a WC.
               Free WiFi, air conditioning, Led TV and DVD player.
               Private parking inside the premises, providing extra security.
               Perfect for an unforgettable honeymoon experience."
-              bathroomCount={listing.bathrooms}
-              bedroomCount={listing.bedrooms}
-              squareFootage={listing.squareFootage}
             />
 
             <div className="relative order-first mb-10 md:order-last md:col-span-3">

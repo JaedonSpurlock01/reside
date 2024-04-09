@@ -1,11 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import Footer from "../../../components/listings/Footer";
-
 import { rentcastTestData } from "@/lib/data";
 import { usePathname } from "next/navigation";
-import Seperator from "@/components/Seperator";
 import EmptyState from "@/components/EmptyState";
 import ListingClient from "@/components/listing/ListingClient";
 
