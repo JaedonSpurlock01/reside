@@ -101,7 +101,7 @@ export default function ResideHome() {
     <div className="w-full h-[86vh] bg-neutral-800 overflow-hidden">
       <div className="relative w-full h-full">
         <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel>
+          <ResizablePanel className="z-0" defaultSize={100}>
             <ResideMap
               viewport={viewport}
               setViewport={setViewport}
@@ -119,7 +119,7 @@ export default function ResideHome() {
           {selectedCity && (
             <>
               <ResizableHandle
-                className="bg-transparent w-[0.2rem] hover:bg-gray-400 transition"
+                className="bg-transparent w-[0.2rem] hover:bg-gray-400"
                 onChange={() => {
                   setMapDraggable(false);
                 }}

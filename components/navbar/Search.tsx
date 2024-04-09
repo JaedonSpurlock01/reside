@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { City, searchCities } from "@/lib/geosearch/citySearch";
 import React, { useState } from "react";
 import { IoIosSearch } from "react-icons/io";
+import MenuItem from "./MenuItem";
 
 export default function Search({ className }: { className: string }) {
   const [results, setResults] = useState<City[]>([]);
@@ -43,20 +44,23 @@ export default function Search({ className }: { className: string }) {
 
       {showSearchResults && (
         <div
-          className="absolute z-20 rounded-lg border w-[18rem] bg-neutral-400 bg-opacity-20 p-1 top-12 space-y-1"
+          className="absolute z-20 rounded-xl shadow-md border w-[50vw] sm:w-[40vw] md:w-[30vw] lg:w-[20vw] bg-neutral-700 bg-opacity-20 top-12 space-y-1"
           style={{
             borderColor: "rgb(55 55 55)",
             backgroundColor: "rgb(58 56 56)",
           }}
         >
-          {results.map((location) => (
-            <p
-              key={location.id}
-              className="truncate z-20 text-xs p-2 rounded-md hover:bg-neutral-800"
-            >
-              {location.city}, {location.state_name}
-            </p>
-          ))}
+          <div className="w-full h-full overflow-hidden rounded-xl">
+            <div className="flex flex-col cursor-pointer !text-sm">
+              {results.map((location) => (
+                <MenuItem
+                  key={location.id}
+                  onClick={() => {}}
+                  label={`${location.city}, ${location.state_name}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

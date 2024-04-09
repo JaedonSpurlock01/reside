@@ -8,6 +8,30 @@
   height: 100%;
 } */
 
+.rdrMonth {
+  width: 100% !important;
+  
+}
+
+.rdrDay * {
+  color: rgb(212 212 212) !important;
+}
+
+.rdrMonthPicker, .rdrYearPicker {
+  background: rgb(212 212 212);
+  border-radius: 0.75rem;
+}
+
+.rdrCalendarWrapper {
+  font-size: 16px !important;
+  width: 100% !important;
+  background-color: transparent;
+}
+
+.rdrNextPrevButton {
+  background: rgb(212 212 212);
+}
+
 .image-gallery-slide img {
   border-radius: 0.75rem;
   height: 200px !important;
