@@ -3,14 +3,19 @@
 import Image from "next/image";
 import React from "react";
 
-export default function Avatar() {
+interface AvatarProps {
+  size?: number;
+  imageSrc?: string;
+}
+
+export default function Avatar({ size, imageSrc }: AvatarProps) {
   return (
     <Image
       className="rounded-full"
-      height={30}
-      width={30}
+      height={size || 30}
+      width={size || 30}
       alt="Avatar"
-      src="/images/placeholder.png"
+      src={imageSrc || "/images/placeholder.png"}
     />
   );
 }

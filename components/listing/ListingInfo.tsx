@@ -22,7 +22,8 @@ const ListingInfo: React.FC<ListingInfoProps> = ({ description, listing }) => {
           <div className="text-neutral-300 font-light">
             Hosted by <span className="font-semibold">RentCast & Redfin</span>
           </div>
-          <Avatar />
+          <Avatar imageSrc="/images/RentCast.png" />
+          <Avatar imageSrc="/images/Redfin.png" />
         </div>
         <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
           <div>{listing.bathrooms} baths</div>

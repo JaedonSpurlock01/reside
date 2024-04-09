@@ -1,39 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Container from "../Container";
 import ListingHead from "./ListingHead";
-import Footer from "../listings/Footer";
+import Footer from "../Footer";
 import ListingInfo from "./ListingInfo";
-import { propertyTypes } from "@/lib/categories";
 import ListingPrice from "./ListingPrice";
 import Seperator from "../Seperator";
 import Image from "next/image";
+import ListingHost from "./ListingHost";
 
 interface ListingClientProps {
   listing: any;
 }
-
-// formattedAddress: "123 Main St",
-// addressLine1: "123 Main St",
-// addressLine2: "Apt 101",
-// city: "Anytown",
-// state: "CA",
-// zipCode: "12345",
-// county: "Any County",
-// latitude: 37.7749,
-// longitude: -122.4194,
-// propertyType: "Single Family Home",
-// bedrooms: 3,
-// bathrooms: 2,
-// squareFootage: 1800,
-// lotSize: 0.25,
-// yearBuilt: 2005,
-// status: "Active",
-// price: 5000,
-// listedDate: "2024-03-29",
-// removedDate: null,
-// createdDate: "2024-03-29",
-// lastSeenDate: "2024-03-29",
-// daysOnMarket: 0,
 
 const ListingClient: React.FC<ListingClientProps> = ({ listing }) => {
   return (
@@ -83,10 +60,38 @@ const ListingClient: React.FC<ListingClientProps> = ({ listing }) => {
               className="object-cover rounded-xl w-full mt-1"
             />
           </div>
-        </div>
-      </div>
 
-      <Footer />
+          <Seperator />
+
+          <ListingHost
+            hostName="RentCast"
+            reviews={365}
+            rating={4.93}
+            hostSpan={9}
+            location="San Diego, California"
+            description="Helps real estate investors and property managers grow, track and
+            optimize their rental property portfolios."
+            imageSrc="/images/RentCast.png"
+          />
+
+          <Seperator className="bg-transparent my-8" />
+
+          <ListingHost
+            hostName="Redfin"
+            reviews={243}
+            rating={4.32}
+            hostSpan={17}
+            location="Seattle, Washington"
+            description="Provides residential real estate brokerage and mortgage origination services."
+            imageSrc="/images/Redfin.png"
+            heading={false}
+          />
+
+          <Seperator className="bg-transparent my-10" />
+        </div>
+
+        <Footer />
+      </div>
     </Container>
   );
 };

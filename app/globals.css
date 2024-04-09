@@ -10,14 +10,14 @@
 
 .rdrMonth {
   width: 100% !important;
-  
 }
 
 .rdrDay * {
   color: rgb(212 212 212) !important;
 }
 
-.rdrMonthPicker, .rdrYearPicker {
+.rdrMonthPicker,
+.rdrYearPicker {
   background: rgb(212 212 212);
   border-radius: 0.75rem;
 }
