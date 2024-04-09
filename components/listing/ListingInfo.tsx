@@ -25,8 +25,8 @@ const ListingInfo: React.FC<ListingInfoProps> = ({ description, listing }) => {
           <Avatar />
         </div>
         <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
-          <div>{listing.bathroomCount} baths</div>
-          <div>{listing.bedroomCount} beds</div>
+          <div>{listing.bathrooms} baths</div>
+          <div>{listing.bedrooms} beds</div>
           <div>{listing.squareFootage?.toLocaleString()} Sq Ft</div>
         </div>
       </div>
