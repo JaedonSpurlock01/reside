@@ -36,7 +36,7 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
       <Seperator className="bg-neutral-600" />
 
       <TextRow
-        leftText={`${price} x 10 months`}
+        leftText={`${price.toLocaleString()} x 12 months`}
         rightText={`$ ${totalPrice.toLocaleString()}`}
         leftClassName="underline text-neutral-400"
         rightClassName="text-neutral-300"

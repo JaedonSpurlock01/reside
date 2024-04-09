@@ -19,7 +19,9 @@ const ListingInfo: React.FC<ListingInfoProps> = ({ description, listing }) => {
     <div className="col-span-4 flex flex-col gap-8">
       <div className="flex flex-col gap-2">
         <div className="text-xl font-semibold flex flex-row items-center gap-2">
-          <div className="text-neutral-300">Hosted by RentCast</div>
+          <div className="text-neutral-300 font-light">
+            Hosted by <span className="font-semibold">RentCast & Redfin</span>
+          </div>
           <Avatar />
         </div>
         <div className="flex flex-row items-center gap-4 font-light text-neutral-500">
