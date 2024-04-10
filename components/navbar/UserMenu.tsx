@@ -4,6 +4,7 @@ import React, { useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
 import MenuItem from "./MenuItem";
+import { HoverBorderGradient } from "../HoverBorderGradient";
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -21,19 +22,23 @@ const UserMenu = () => {
         >
           Add Listing
         </div>
-        <div
+        <HoverBorderGradient
+          containerClassName="rounded-xl"
+          className="bg-neutral-700 shadow-2xl"
+          as="div"
           onClick={toggleOpen}
-          className="p-4 md:py-1 md:px-2 border border-[#606060] flex flex-row items-center gap-3 rounded-lg cursor-pointer hover:shadow-sm transition"
         >
-          <AiOutlineMenu />
-          <div className="hidden md:block">
-            <Avatar />
+          <div className="p-4 md:py-1 md:px-2 flex flex-row items-center gap-3 rounded-lg cursor-pointer hover:shadow-sm transition">
+            <AiOutlineMenu />
+            <div className="hidden md:block">
+              <Avatar />
+            </div>
           </div>
-        </div>
+        </HoverBorderGradient>
       </div>
 
       {isOpen && (
-        <div className="absolute rounded-xl shadow-md w-[15vw] bg-neutral-700 overflow-hidden right-0 top-[3.3rem] text-sm">
+        <div className="absolute rounded-xl shadow-md w-[15vw] bg-neutral-700 overflow-hidden right-0 top-[4.5rem] text-sm">
           <div className="flex flex-col cursor-pointer">
             <>
               <MenuItem onClick={() => {}} label="Login" />

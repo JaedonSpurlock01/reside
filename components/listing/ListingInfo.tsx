@@ -8,13 +8,20 @@ import { amenities, facilities, propertyTypes } from "@/lib/categories";
 import AmenityItem from "./AmenityItem";
 import Button from "../modals/Button";
 import TextRow from "./TextRow";
+import LocationMap from "./LocationMap";
+import Heading from "../Heading";
 
 interface ListingInfoProps {
   description?: string;
   listing: any;
+  propertyType?: string;
 }
 
-const ListingInfo: React.FC<ListingInfoProps> = ({ description, listing }) => {
+const ListingInfo: React.FC<ListingInfoProps> = ({
+  description,
+  listing,
+  propertyType = "Multi-Family",
+}) => {
   return (
     <div className="col-span-4 flex flex-col gap-8">
       <div className="flex flex-col gap-2">
@@ -34,29 +41,32 @@ const ListingInfo: React.FC<ListingInfoProps> = ({ description, listing }) => {
 
       <Seperator />
 
-      {propertyTypes[0] && (
-        <ListingCategory
-          icon={propertyTypes[0].icon}
-          label={propertyTypes[0].label}
-          description={propertyTypes[0].description}
-        />
+      {propertyTypes.map(
+        (type, index) =>
+          type.label === propertyType && (
+            <ListingCategory
+              key={index}
+              icon={type.icon}
+              label={type.label}
+              description={type.description}
+            />
+          )
       )}
 
       <Seperator />
 
-      <div className="text-lg font-light text-neutral-400">{description}</div>
+      <div className="text-lg font-light text-neutral-400 flex flex-col">
+        <Heading title="Description" className="text-neutral-300" />
+        {description}
+      </div>
 
       <Seperator />
 
       <div className="text-lg font-semibold text-neutral-300">
-        Location
-        <Image
-          src="/temp_map.png"
-          alt=""
-          width={1024}
-          height={576}
-          className="object-cover rounded-xl w-full mt-1"
-        />
+        <Heading title="Location" />
+        <div className="relative rounded-xl h-[20rem] w-full mt-1">
+          <LocationMap lat={listing.latitude} lon={listing.longitude} />
+        </div>
       </div>
 
       <Seperator />
@@ -117,12 +127,12 @@ const ListingInfo: React.FC<ListingInfoProps> = ({ description, listing }) => {
         />
         <TextRow
           leftText="Listed on"
-          rightText={listing.listedDate}
+          rightText={new Date(listing.listedDate).toDateString()}
           leftClassName="font-semibold"
         />
         <TextRow
           leftText="Created on"
-          rightText={listing.createdDate}
+          rightText={new Date(listing.createdDate).toDateString()}
           leftClassName="font-semibold"
         />
         <TextRow

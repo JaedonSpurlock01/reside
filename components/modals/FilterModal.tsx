@@ -10,7 +10,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import useFilterModal from "@/hooks/useFilterModal";
 
 import Modal from "./Modal";
-import Calendar from "../inputs/Calendar";
 import Counter from "../inputs/Counter";
 import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
 import Heading from "../Heading";
@@ -142,10 +141,6 @@ const SearchModal = () => {
         <Heading
           title="When do you plan to go?"
           subtitle="Make sure everyone is free!"
-        />
-        <Calendar
-          onChange={(value) => setDateRange(value.selection)}
-          value={dateRange}
         />
       </div>
     );

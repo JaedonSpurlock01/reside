@@ -12,7 +12,7 @@ const HeartButton = () => {
   return (
     <div
       onClick={toggleFavorite}
-      className="relative hover:opacity-80 transition cursor-pointer"
+      className="relative hover:opacity-80 transition cursor-pointer z-[9999]"
     >
       <AiOutlineHeart
         size={34}

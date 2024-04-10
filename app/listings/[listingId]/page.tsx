@@ -1,25 +1,19 @@
-"use client";
+"use server";
 
-import { rentcastTestData } from "@/lib/data";
-import { usePathname } from "next/navigation";
 import EmptyState from "@/components/EmptyState";
 import ListingClient from "@/components/listing/ListingClient";
+import getListingById from "@/actions/getListingById";
 
-export default function ResideHome() {
-  const pathname = decodeURIComponent(usePathname());
-  const queries: Array<string> = pathname.split("/");
-  const address = queries[2];
-  let selectedListing = null;
+interface IParams {
+  listingId?: string;
+}
 
-  for (const listing of rentcastTestData) {
-    if (listing.formattedAddress == address) {
-      selectedListing = listing;
-    }
-  }
+export default async function ListingPage({ params }: { params: IParams }) {
+  const listing = await getListingById(params);
 
-  if (!selectedListing) {
+  if (!listing) {
     return <EmptyState />;
   }
 
-  return <ListingClient listing={selectedListing} />;
+  return <ListingClient listing={listing.body} images={listing.images} />;
 }

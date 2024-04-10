@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Container from "../Container";
 import ListingHead from "./ListingHead";
@@ -7,19 +9,24 @@ import ListingPrice from "./ListingPrice";
 import Seperator from "../Seperator";
 import Image from "next/image";
 import ListingHost from "./ListingHost";
+import LocationMap from "./LocationMap";
 
 interface ListingClientProps {
   listing: any;
+  images?: string[];
 }
 
-const ListingClient: React.FC<ListingClientProps> = ({ listing }) => {
+const ListingClient: React.FC<ListingClientProps> = ({
+  listing,
+  images = [],
+}) => {
   return (
     <Container>
-      <div className="w-[90%] lg:w-3/4 xl:w-[65%] 2xl:w-1/2 mx-auto mb-10">
+      <div className="w-[90%] xl:w-[85%] 2xl:w-[50%] mx-auto mb-10">
         <div className="flex flex-col gap-6">
           <ListingHead
             title={listing.formattedAddress}
-            imageSrc={"/example_house.jpeg"}
+            images={images}
             city={listing.city}
             state={listing.state}
             zipCode={listing.zipCode}
@@ -30,7 +37,7 @@ const ListingClient: React.FC<ListingClientProps> = ({ listing }) => {
             <p className="font-semibold text-neutral-300">For Rent</p>
           </span>
 
-          <div className=" grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <ListingInfo
               listing={listing}
               description="Built in the 19th century, with a 360 degrees view over the sea and surroundings on the top floor.
@@ -38,9 +45,10 @@ const ListingClient: React.FC<ListingClientProps> = ({ listing }) => {
               Free WiFi, air conditioning, Led TV and DVD player.
               Private parking inside the premises, providing extra security.
               Perfect for an unforgettable honeymoon experience."
+              propertyType={listing.propertyType}
             />
 
-            <div className="relative order-first mb-10 md:order-last md:col-span-3">
+            <div className="relative order-first md:order-last md:col-span-3">
               <ListingPrice
                 price={listing.price}
                 totalPrice={listing.price * 12}
@@ -52,13 +60,9 @@ const ListingClient: React.FC<ListingClientProps> = ({ listing }) => {
           <Seperator />
 
           <div className="text-lg font-semibold text-neutral-300">
-            <Image
-              src="/temp_map.png"
-              alt=""
-              width={1024}
-              height={576}
-              className="object-cover rounded-xl w-full mt-1"
-            />
+            <div className="relative rounded-xl h-[30rem] w-full mt-1">
+              <LocationMap lat={listing.latitude} lon={listing.longitude} />
+            </div>
           </div>
 
           <Seperator />

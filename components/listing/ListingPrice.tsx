@@ -1,9 +1,10 @@
 import React from "react";
 
-import { Calendar, Range } from "react-date-range";
 import Seperator from "../Seperator";
 import Button from "../modals/Button";
 import TextRow from "./TextRow";
+import { HoverBorderGradient } from "../HoverBorderGradient";
+import { CalendarForm } from "../inputs/CalendarForm";
 
 interface ListingPriceProps {
   price: number;
@@ -17,10 +18,14 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
   onSubmit,
 }) => {
   return (
-    <div className="bg-neutral-700 rounded-xl overflow-hidden shadow-2xl sticky top-4">
+    <HoverBorderGradient
+      containerClassName="rounded-xl p-1 sticky top-8 w-full mb-10 md:mb-0"
+      className="bg-neutral-700 shadow-2xl overflow-hidden w-full"
+      as="div"
+    >
       <div className="flex flex-row items-end gap-1 p-4">
-        <div className="text-2xl font-semibold text-neutral-300">
-          $ {price.toLocaleString()}
+        <div className="text-2xl font-semibold text-neutral-100">
+          $ {price?.toLocaleString()}
         </div>
         <div className="font-light text-neutral-300 mb-[1px]">month</div>
       </div>
@@ -29,31 +34,32 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
         Estimate your cost at this rental
       </div>
 
-      <div className="!bg-neutral-700 mt-[1px] mb-[1px]">
-        <Calendar />
+      <div className="my-10 flex flex-row justify-between gap-1 px-4">
+        <CalendarForm title="Starting month" label="Choose date" />
+        <CalendarForm title="Ending month" label="Choose date" />
       </div>
 
       <Seperator className="bg-neutral-600" />
 
       <TextRow
-        leftText={`${price.toLocaleString()} x 12 months`}
+        leftText={`${price?.toLocaleString()} x 12 months`}
         rightText={`$ ${totalPrice.toLocaleString()}`}
         leftClassName="underline text-neutral-400"
-        rightClassName="text-neutral-300"
+        rightClassName="text-neutral-100"
       />
 
       <TextRow
         leftText={`Utilites Cost`}
         rightText={`$ ${(90).toLocaleString()}`}
         leftClassName="underline text-neutral-400"
-        rightClassName="text-neutral-300"
+        rightClassName="text-neutral-100"
       />
 
       <TextRow
         leftText={`Amneities Cost`}
         rightText={`$ ${(205).toLocaleString()}`}
         leftClassName="underline text-neutral-400"
-        rightClassName="text-neutral-300"
+        rightClassName="text-neutral-100"
       />
 
       <Seperator className="bg-neutral-600" />
@@ -68,9 +74,9 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
       <TextRow
         leftText={`Total before taxes`}
         rightText={`$ ${(totalPrice + 90 + 205).toLocaleString()}`}
-        className="text-neutral-300 font-semibold"
+        className="text-neutral-100 font-semibold"
       />
-    </div>
+    </HoverBorderGradient>
   );
 };
 
