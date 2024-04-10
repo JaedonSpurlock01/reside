@@ -76,7 +76,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
               {bedrooms} bds | {bathrooms} ba | {squareFootage.toLocaleString()}{" "}
               sqft
             </div>
-            <div className="text-neutral-400">{address}</div>
+            <div className="text-neutral-400 truncate">{address}</div>
           </div>
         </Link>
       </div>
