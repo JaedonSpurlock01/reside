@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/resizable";
 import ResideMap from "../components/Map";
 import ListContainer from "../components/listings/ListContainer";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { searchCity } from "@/lib/geosearch/citySearch";
 import { stateCenter, stateCodes } from "@/lib/stateConversion";
@@ -29,6 +29,7 @@ export default function ResideHome() {
     pitch: 0,
     bearing: 0,
   });
+  const [listings, setListings] = useState<any>(null);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -37,22 +38,31 @@ export default function ResideHome() {
   const initialState: string | null = searchParams.get("state");
   const initialCity: string | null = searchParams.get("city");
 
-  const testEndpoint = async () => {
+  const gatherListings = useCallback(async () => {
     try {
-      const response = await fetch("/api/fetch", {
-        method: "POST",
-      });
+      const response = await fetch(
+        `/api/fetchListings/?city=${selectedCity}&state=${selectedStateCode}`,
+        {
+          method: "GET",
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Request failed with status: ${response.status}`);
       }
 
-      // console.log("RESPONSE: ", response.json());
-      //console.log("JSON: ", );
+      const listings = await response.json();
+
+      setListings(listings);
     } catch (error) {
       console.log("Could not send request: ", error);
     }
-  };
+  }, [selectedCity, selectedStateCode]);
+
+  useEffect(() => {
+    if (!selectedCity || !selectedStateCode) return;
+    gatherListings();
+  }, [selectedCity, selectedStateCode, gatherListings]);
 
   useEffect(() => {
     if (initialState && !initialCity) {
@@ -125,7 +135,6 @@ export default function ResideHome() {
                 }}
                 onDragEnd={() => setMapDraggable(true)}
                 withHandle
-                onClick={testEndpoint}
               />
               <ResizablePanel
                 minSize={32}
@@ -138,6 +147,7 @@ export default function ResideHome() {
                   selectedStateCode={selectedStateCode}
                   loadingRentals={loadingRentals}
                   className="p-5 bg-neutral-800"
+                  listings={listings}
                 />
               </ResizablePanel>
             </>

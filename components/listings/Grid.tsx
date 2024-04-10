@@ -3,19 +3,25 @@
 import { rentcastTestData } from "@/lib/data";
 import React from "react";
 import ListingCard from "./ListingCard";
+import { RentCastListing } from "@/types/RentCastListing";
 
-export default function Grid() {
+interface GridProps {
+  listings: RentCastListing[];
+}
+
+export default function Grid({ listings = [] }: GridProps) {
   return (
     <ul className="mt-4 grid gap-[12px] grid-cols-auto-fill min-w-[286px] grid-flow-row mb-16">
-      {rentcastTestData.map((listing, index) => (
+      {listings?.map((listing, index) => (
         <ListingCard
           key={index}
-          address={listing.formattedAddress}
-          price={listing.price}
-          bedrooms={listing.bedrooms}
-          bathrooms={listing.bathrooms}
-          squareFootage={listing.squareFootage}
-          imageSrc="/example_apartment.jpg"
+          address={listing.body.formattedAddress}
+          price={listing.body.price}
+          bedrooms={listing.body.bedrooms}
+          bathrooms={listing.body.bathrooms}
+          squareFootage={listing.body.squareFootage}
+          images={listing.images}
+          listingId={listing.id}
         />
       ))}
     </ul>

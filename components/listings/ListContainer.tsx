@@ -1,14 +1,16 @@
 import { CircularProgress } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import FilterHeader from "./filter/FilterHeader";
 import Grid from "./Grid";
 import { ListingPagination } from "./ListingPagination";
+import { RentCastListing } from "@/types/RentCastListing";
 
 interface ListContainerProps {
   selectedCity?: string;
   selectedStateCode?: string | null;
   loadingRentals?: boolean;
   className?: string;
+  listings?: RentCastListing[];
 }
 
 export default function ListContainer({
@@ -16,6 +18,7 @@ export default function ListContainer({
   selectedStateCode,
   loadingRentals,
   className,
+  listings = [],
 }: ListContainerProps) {
   return (
     <div className={className}>
@@ -23,7 +26,7 @@ export default function ListContainer({
         {selectedCity} {selectedStateCode?.toUpperCase()} Rental Listings
       </h1>
 
-      <FilterHeader />
+      <FilterHeader listings={listings} />
 
       {loadingRentals ? (
         <div className="flex flex-col items-center justify-center mt-10">
@@ -31,7 +34,7 @@ export default function ListContainer({
         </div>
       ) : (
         <>
-          <Grid />
+          <Grid listings={listings} />
           <ListingPagination />
         </>
       )}

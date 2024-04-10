@@ -1,68 +1,31 @@
-export interface IListingsParams {
-  listedDate?: string;
-  daysOnMarket?: number;
-  roomCount?: number;
-  bathroomCount?: number;
-  price?: string;
-  propertyType?: string;
-  squareFootage?: number;
-  lotSize?: string;
+export interface IParams {
+  city: string | null;
+  state: string | null;
 }
 
-export default async function getListings(params: IListingsParams) {
+export default async function getListings(params: IParams) {
   try {
-    const {
-      listedDate,
-      daysOnMarket,
-      roomCount,
-      bathroomCount,
-      price,
-      propertyType,
-      squareFootage,
-      lotSize,
-    } = params;
+    const { city, state } = params;
 
-    let query: any = {};
+    const requestOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
 
-    if (listedDate) {
-      query.listedDate = listedDate;
+    const response = await fetch(
+      `https://reside-backend-b43qx6tlcq-uw.a.run.app/listings/getByCityState?city=${city}&state=${state?.toUpperCase()}`,
+      requestOptions
+    );
+
+    const listings = await response.json();
+
+    if (!listings) {
+      return null;
     }
-
-    if (daysOnMarket) {
-      query.daysOnMarket = daysOnMarket;
-    }
-
-    if (roomCount) {
-      query.roomCount = {
-        gte: +roomCount,
-      };
-    }
-
-    if (bathroomCount) {
-      query.bathroomCount = {
-        gte: +bathroomCount,
-      };
-    }
-
-    if (price) {
-      query.price = price;
-    }
-
-    if (propertyType) {
-      query.propertyType = propertyType;
-    }
-
-    if (squareFootage) {
-      query.squareFootage = squareFootage;
-    }
-
-    if (lotSize) {
-      query.lotSize = lotSize;
-    }
-
-    const listings = await (() => {}); // In the future, grab listings from here
-    return null;
+    return listings;
   } catch (error: any) {
-    throw new Error(error);
+    return null;
   }
 }

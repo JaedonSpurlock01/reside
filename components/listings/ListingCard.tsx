@@ -16,21 +16,23 @@ const fadeInAnimationVariants = {
 };
 
 interface ListingCardProps {
-  imageSrc?: string;
+  images?: string[];
   price?: number;
   bedrooms?: number;
   bathrooms?: number;
   squareFootage?: number;
   address: string;
+  listingId: string;
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
-  imageSrc = "",
+  images = [],
   price = 0,
   bedrooms = 1,
   bathrooms = 1,
   squareFootage = 0,
   address = "No Address",
+  listingId,
 }) => {
   return (
     <motion.li
@@ -45,28 +47,14 @@ const ListingCard: React.FC<ListingCardProps> = ({
           <div className="w-full min-h-full">
             <ImageGallery
               showNav={true}
-              showBullets={true}
+              showBullets={false}
               showFullscreenButton={true}
               showPlayButton={false}
               showThumbnails={false}
-              items={[
-                {
-                  original: imageSrc,
-                  thumbnail: imageSrc,
-                },
-                {
-                  original: imageSrc,
-                  thumbnail: imageSrc,
-                },
-                {
-                  original: imageSrc,
-                  thumbnail: imageSrc,
-                },
-                {
-                  original: imageSrc,
-                  thumbnail: imageSrc,
-                },
-              ]}
+              items={images.map((imageSrc) => ({
+                original: imageSrc,
+                thumbnail: imageSrc,
+              }))}
             />
             <div className="absolute top-6 right-6 z-30">
               <HeartButton />
@@ -75,7 +63,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
         </div>
         <Link
           href={{
-            pathname: `/listings/${encodeURIComponent(address)}`,
+            pathname: `/listings/${listingId}`,
           }}
         >
           <div className="p-2 pb-4 ">

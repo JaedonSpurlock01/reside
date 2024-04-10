@@ -4,8 +4,13 @@ import React, { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import Button from "./Button";
 import useFilterModal from "@/hooks/useFilterModal";
+import { RentCastListing } from "@/types/RentCastListing";
 
-export default function FilterHeader() {
+interface FilterHeaderProps {
+  listings: RentCastListing[];
+}
+
+export default function FilterHeader({ listings = [] }: FilterHeaderProps) {
   const filterModal = useFilterModal();
 
   return (
@@ -15,7 +20,7 @@ export default function FilterHeader() {
       </div>
 
       <div className="flex flex-row">
-        <p className="font-medium text-[#c8c8c8]">100 results</p>
+        <p className="font-medium text-[#c8c8c8]">{listings?.length} results</p>
         <button className="ml-auto text-blue-400 flex flex-row items-center">
           Sort: Recommended <IoIosArrowDown />
         </button>
