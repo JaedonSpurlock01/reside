@@ -1,14 +1,14 @@
 "use client";
 
 import { AiOutlineMenu } from "react-icons/ai";
-import Search from "./Search";
+import Search from "../Search";
 import Avatar from "./Avatar";
 import Logo from "../Logo";
 import UserMenu from "./UserMenu";
 
 export default function Header() {
   return (
-    <div className="bg-[#262626] w-full border-b-[1px] border-[#373737] h-[14vh] py-4 px-16 flex items-center justify-center z-20">
+    <div className="bg-[#262626] w-full border-b-[1px] border-[#373737] h-[6rem] py-4 px-16 flex items-center justify-center z-20">
       <div className="w-full h-full relative font-light text-white">
         <div className="absolute left-1/2 top-1/2 text-3xl tracking-wider font-semibold transform -translate-x-1/2 -translate-y-1/2">
           <a href="/">

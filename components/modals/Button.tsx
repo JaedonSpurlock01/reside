@@ -20,7 +20,7 @@ const Button: React.FC<ButtonProps> = ({
   outline,
   small,
   icon: Icon,
-  className
+  className,
 }) => {
   return (
     <button
@@ -28,8 +28,8 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       className={`relative disabled:opacity-70 disabled:cursor-not-allowed rounded-lg
       hover:opacity-80 transition w-full ${className}
-      ${outline ? "bg-transparent" : "bg-rose-500"}
-      ${outline ? "border-neutral-300" : "border-rose-500"}
+      ${outline ? "bg-transparent" : "bg-[#4189e8]"}
+      ${outline ? "border-neutral-300" : "border-[#4189e8]"}
       ${outline ? "text-neutral-300" : "text-white"}
       ${small ? "py-1" : "py-3"}
       ${small ? "text-sm" : "text-base"}

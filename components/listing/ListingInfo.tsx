@@ -64,7 +64,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
 
       <div className="text-lg font-semibold text-neutral-300">
         <Heading title="Location" />
-        <div className="relative rounded-xl h-[20rem] w-full mt-1">
+        <div className="relative rounded-xl h-[20rem] w-full mt-1 overflow-hidden">
           <LocationMap lat={listing.latitude} lon={listing.longitude} />
         </div>
       </div>

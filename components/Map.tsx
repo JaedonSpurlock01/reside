@@ -171,6 +171,12 @@ export default function ResideMap({
   };
 
   useEffect(() => {
+    if (mapReady) {
+      mapRef.current?.resize();
+    }
+  }, [mapReady]);
+
+  useEffect(() => {
     if (loadingRentals) {
       const timeoutId = setTimeout(() => {
         setLoadingRentals(false);
@@ -183,14 +189,14 @@ export default function ResideMap({
   return (
     <Map
       {...viewport}
-      maxBounds={[
-        [-136.736342, 17.521208], //Southwest
-        [-60.945392, 58.382808], //Northeast
-      ]}
+      // maxBounds={[
+      //   [-136.736342, 17.521208], //Southwest
+      //   [-60.945392, 58.382808], //Northeast
+      // ]}
       onMove={(evt) => setViewport(evt.viewState)}
       mapboxAccessToken={MAPBOX_TOKEN}
       ref={mapRef}
-      mapStyle="mapbox://styles/mapbox/navigation-night-v1"
+      mapStyle="mapbox://styles/mapbox/dark-v11"
       attributionControl={false}
       onMouseMove={handleMouseMove}
       onClick={handleMouseClick}

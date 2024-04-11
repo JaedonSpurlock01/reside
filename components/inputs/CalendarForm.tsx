@@ -26,8 +26,8 @@ import {
 import { toast } from "@/components/ui/use-toast";
 
 const FormSchema = z.object({
-  dob: z.date({
-    required_error: "A date of birth is required.",
+  selectedDate: z.date({
+    required_error: "Select a date to estimate your price",
   }),
 });
 
@@ -57,7 +57,7 @@ export function CalendarForm({ title, label }: CalendarFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="dob"
+          name="selectedDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel className="text-lg">{title}</FormLabel>

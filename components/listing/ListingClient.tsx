@@ -60,7 +60,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
           <Seperator />
 
           <div className="text-lg font-semibold text-neutral-300">
-            <div className="relative rounded-xl h-[30rem] w-full mt-1">
+            <div className="relative rounded-xl h-[30rem] w-full mt-1 overflow-hidden">
               <LocationMap lat={listing.latitude} lon={listing.longitude} />
             </div>
           </div>
@@ -93,8 +93,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
           <Seperator className="bg-transparent my-10" />
         </div>
-
-        <Footer />
       </div>
     </Container>
   );

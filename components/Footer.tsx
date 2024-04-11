@@ -1,8 +1,9 @@
+import Image from "next/image";
 import Seperator from "./Seperator";
 
 export default function Footer() {
   return (
-    <footer className="bg-transparent dark:bg-gray-900">
+    <footer className="bg-transparent dark:bg-gray-900 flex flex-col items-center">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
@@ -82,7 +83,7 @@ export default function Footer() {
 
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-            © 2023{" "}
+            © 2024{" "}
             <a href="/" className="hover:underline">
               Reside™
             </a>

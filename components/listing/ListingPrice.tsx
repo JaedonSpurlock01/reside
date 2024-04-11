@@ -65,14 +65,14 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
       <Seperator className="bg-neutral-600" />
 
       <div className="p-4">
-        <Button label="Contact For Sales" onClick={() => {}} />
+        <Button label="Visit rental" onClick={() => {}} />
         <div className="text-center w-full text-neutral-500 mt-1">
           You won&apos;t be charged yet
         </div>
       </div>
 
       <TextRow
-        leftText={`Total before taxes`}
+        leftText="Estimated total"
         rightText={`$ ${(totalPrice + 90 + 205).toLocaleString()}`}
         className="text-neutral-100 font-semibold"
       />
