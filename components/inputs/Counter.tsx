@@ -31,8 +31,8 @@ const Counter: React.FC<CounterProps> = ({
   return (
     <div className="flex flex-row items-center justify-between">
       <div className="flex flex-col">
-        <div className="font-medium">{title}</div>
-        <div className="font-light text-gray-600">{subtitle}</div>
+        <div className="font-medium text-neutral-200">{title}</div>
+        <div className="font-light text-gray-300">{subtitle}</div>
       </div>
       <div className="flex flex-row items-center gap-4">
         <div
@@ -46,7 +46,7 @@ const Counter: React.FC<CounterProps> = ({
             flex
             items-center
             justify-center
-            text-neutral-600
+            text-neutral-300
             cursor-pointer
             hover:opacity-80
             transition
@@ -58,7 +58,7 @@ const Counter: React.FC<CounterProps> = ({
           className="
             font-light 
             text-xl 
-            text-neutral-600
+            text-neutral-300
           "
         >
           {value}
@@ -74,7 +74,7 @@ const Counter: React.FC<CounterProps> = ({
             flex
             items-center
             justify-center
-            text-neutral-600
+            text-neutral-300
             cursor-pointer
             hover:opacity-80
             transition
