@@ -146,7 +146,7 @@ export default function ListingPage({ city, state }: IParams) {
           withHandle
         />
         <ResizablePanel
-          minSize={32}
+          minSize={28}
           maxSize={95}
           defaultSize={35}
           style={{ overflow: "auto" }}
