@@ -35,17 +35,17 @@ export default function ExampleListing({
       className="group mb-3 sm:mb-8 last:mb-0"
     >
       <HoverBorderGradient
-        className="rounded-lg max-w-[42rem] sm:group-even:even:pl-8 bg-neutral-700 hover:bg-neutral-600 sm:pr-8 sm:h-[19rem] "
-        containerClassName="rounded-lg overflow-hidden relative transition text-white text-left"
+        className="rounded-lg max-w-[34rem] sm:group-even:even:pl-8 bg-neutral-700 hover:bg-neutral-600 sm:pr-8 sm:h-[19rem] "
+        containerClassName="rounded-lg overflow-hidden relative transition text-white text-left text-sm"
       >
         <a href={link} target="_blank">
-          <div className="pt-4 pb-7 px-5 sm:pl-10 sm:pr-2 sm:pt-10 sm:max-w-[50%] flex flex-col h-full sm:group-even:ml-[20rem]">
+          <div className="pb-7 px-5 sm:pr-2 sm:pt-10 sm:max-w-[50%] sm:group-even:sm:max-w-[65%] flex flex-col h-full sm:group-even:ml-[16rem]">
             <h3 className="text2xl font-semibold">{title}</h3>
             <p className="mt-2 leading-relaxed text-white/70">{description}</p>
             <ul className="flex flex-wrap mt-4 gap-2 sm:mt-auto">
               {tags.map((tag, index) => (
                 <li
-                  className="bg-neutral-900 px-3 py-1 text-[0.7rem] uppercase tracking-wider rounded-lg text-white/70"
+                  className="bg-neutral-900 text-xs px-3 py-1 text-[0.7rem] uppercase tracking-wider rounded-lg text-white/70"
                   key={index}
                 >
                   {tag}
@@ -60,7 +60,7 @@ export default function ExampleListing({
             height={1000}
             alt="ExampleListing"
             quality={95}
-            className="absolute hidden sm:block top-8 -right-40 w-[28.25rem] rounded-t-lg shadow-2xl transition
+            className="absolute hidden sm:block top-12 -right-40 w-[26.25rem] rounded-t-lg shadow-2xl transition
             group-hover:-translate-x-3
             group-hover:translate-y-3
             group-hover:-rotate-2

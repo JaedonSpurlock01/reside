@@ -129,7 +129,7 @@ const Benefits = () => {
 
   return (
     <>
-      <div className="w-full px-10 md:px-0 md:w-[36%]">
+      <div className="w-full px-10 md:px-0 md:w-[45%] md:max-w-[48rem]">
         <h1 className="text-4xl font-semibold text-neutral-300 text-left mb-6">
           Make housing affordable and sustainable,
           <br />

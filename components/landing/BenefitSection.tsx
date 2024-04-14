@@ -23,7 +23,7 @@ const BenefitSection: React.FC<BenefitSectionProps> = ({
 }) => {
   return (
     <div
-      className={` w-full px-10 md:px-0 md:w-[36%] h-full text-neutral-300 justify-between flex flex-col text-left ${
+      className={` w-full px-10 md:px-0 md:w-[45%] md:max-w-[48rem] h-full text-neutral-300 justify-between flex flex-col text-left ${
         visible ? "block" : "hidden"
       }`}
     >

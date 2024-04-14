@@ -3,7 +3,7 @@ import Seperator from "./Seperator";
 
 export default function Footer() {
   return (
-    <footer className="bg-transparent dark:bg-gray-900 flex flex-col items-center">
+    <footer className="bg-transparent px-10 dark:bg-gray-900 flex flex-col items-center">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
