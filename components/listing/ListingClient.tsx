@@ -10,6 +10,7 @@ import Seperator from "../Seperator";
 import Image from "next/image";
 import ListingHost from "./ListingHost";
 import LocationMap from "./LocationMap";
+import MatrixMap from "./MatrixMap";
 
 interface ListingClientProps {
   listing: any;
@@ -40,11 +41,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <ListingInfo
               listing={listing}
-              description="Built in the 19th century, with a 360 degrees view over the sea and surroundings on the top floor.
-              It features a Bedroom with a king size bed, a very well-decorated living room with kitchenette, and a WC.
-              Free WiFi, air conditioning, Led TV and DVD player.
-              Private parking inside the premises, providing extra security.
-              Perfect for an unforgettable honeymoon experience."
+              description="There is no description yet. This feature will be soon implemented!"
               propertyType={listing.propertyType}
             />
 
@@ -60,8 +57,8 @@ const ListingClient: React.FC<ListingClientProps> = ({
           <Seperator />
 
           <div className="text-lg font-semibold text-neutral-300">
-            <div className="relative rounded-xl h-[30rem] w-full mt-1 overflow-hidden">
-              <LocationMap lat={listing.latitude} lon={listing.longitude} />
+            <div className="relative rounded-xl h-[30rem] w-full mt-1 overflow-hidden border-neutral-600 border-2">
+              <MatrixMap lat={listing.latitude} lon={listing.longitude} />
             </div>
           </div>
 

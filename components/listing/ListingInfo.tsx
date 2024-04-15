@@ -1,9 +1,7 @@
 import React from "react";
-import { IconType } from "react-icons/lib";
 import Avatar from "../navbar/Avatar";
 import Seperator from "../Seperator";
 import ListingCategory from "./ListingCategory";
-import Image from "next/image";
 import { amenities, facilities, propertyTypes } from "@/lib/categories";
 import AmenityItem from "./AmenityItem";
 import Button from "../modals/Button";
@@ -64,7 +62,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
 
       <div className="text-lg font-semibold text-neutral-300">
         <Heading title="Location" />
-        <div className="relative rounded-xl h-[20rem] w-full mt-1 overflow-hidden">
+        <div className="relative rounded-xl h-[20rem] w-full mt-1 overflow-hidden border-neutral-600 border-2">
           <LocationMap lat={listing.latitude} lon={listing.longitude} />
         </div>
       </div>

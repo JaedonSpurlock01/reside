@@ -35,8 +35,8 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
       </div>
 
       <div className="my-10 flex flex-row justify-between gap-1 px-4">
-        <CalendarForm title="Starting month" label="Choose date" />
-        <CalendarForm title="Ending month" label="Choose date" />
+        <CalendarForm title="Starting month" label="Choose" />
+        <CalendarForm title="Ending month" label="Choose" />
       </div>
 
       <Seperator className="bg-neutral-600" />
@@ -49,14 +49,7 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
       />
 
       <TextRow
-        leftText={`Utilites Cost`}
-        rightText={`$ ${(90).toLocaleString()}`}
-        leftClassName="underline text-neutral-400"
-        rightClassName="text-neutral-100"
-      />
-
-      <TextRow
-        leftText={`Amneities Cost`}
+        leftText={`Additional Fees`}
         rightText={`$ ${(205).toLocaleString()}`}
         leftClassName="underline text-neutral-400"
         rightClassName="text-neutral-100"
@@ -73,7 +66,7 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
 
       <TextRow
         leftText="Estimated total"
-        rightText={`$ ${(totalPrice + 90 + 205).toLocaleString()}`}
+        rightText={`$ ${(totalPrice + 205).toLocaleString()}`}
         className="text-neutral-100 font-semibold"
       />
     </HoverBorderGradient>

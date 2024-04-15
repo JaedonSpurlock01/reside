@@ -23,20 +23,7 @@ const LocationMap: React.FC<LocationMapProps> = ({ lat = 45, lon = 100 }) => {
   const mapRef = useRef<any>();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const newBearing = viewport.bearing - 360 / 240;
-      setViewport((prevViewport: any) => ({
-        ...prevViewport,
-        bearing: newBearing,
-      }));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [viewport]);
-
-  useEffect(() => {
     if (!mapLoaded) return;
-
     mapRef.current?.resize();
   }, [mapLoaded]);
 
@@ -51,11 +38,12 @@ const LocationMap: React.FC<LocationMapProps> = ({ lat = 45, lon = 100 }) => {
     <Map
       {...viewport}
       mapboxAccessToken="pk.eyJ1IjoiamFlZG9uMDEiLCJhIjoiY2x0eXlodHVjMGlhejJrczNpaHBxNXJhMiJ9.RNn_iXR_1qqPXVoU6FYDEw"
-      mapStyle="mapbox://styles/mapbox/standard"
+      mapStyle="mapbox://styles/mapbox/dark-v11"
       onMove={(evt) => setViewport(evt.viewState)}
       onMouseDown={handleInteraction}
       onDragStart={handleInteraction}
       attributionControl={false}
+      dragRotate={false}
       ref={mapRef}
       onLoad={() => setMapLoaded(true)}
     >
