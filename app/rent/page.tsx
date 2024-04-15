@@ -7,7 +7,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { searchCity } from "@/lib/geosearch/citySearch";
 import { stateCodes } from "@/lib/stateConversion";
 import ListContainer from "@/components/listings/ListContainer";
@@ -36,6 +36,7 @@ export default function ListingPage() {
   });
   const [listings, setListings] = useState<RentCastListing[]>([]);
   const [invalid, setInvalid] = useState<boolean>(false);
+
   const searchParams = useSearchParams();
 
   const gatherListings = useCallback(async () => {
@@ -45,9 +46,7 @@ export default function ListingPage() {
       setInvalid(false);
       const response = await fetch(
         `/api/fetchListings/?city=${city}&state=${
-          state.length === 2
-            ? state.toUpperCase()
-            : stateCodes[state.toLowerCase()]
+          stateCodes[state.toLowerCase()]
         }`,
         {
           method: "GET",
@@ -111,27 +110,33 @@ export default function ListingPage() {
     }
   }, [city, state, searchParams]);
 
+  const setEmptyState = () => {
+    setListings([]);
+    setCity("");
+    setState("");
+    setInvalid(true);
+  };
+
+  useEffect(() => {
+    setLoadingRentals(true);
+    setListings([]); // When a user clicks on the map, clear out the listings
+  }, [selectedCity, selectedStateCode]);
+
   useEffect(() => {
     let currentQuery: any = {};
     if (searchParams) {
       currentQuery = qs.parse(searchParams.toString());
     }
-    setSelectedCity(currentQuery.city);
-    setSelectedStateCode(stateCodes[currentQuery.state.toLowerCase()]);
-    setCity(currentQuery.city);
-    setState(currentQuery.state);
 
-    if (currentQuery.city && currentQuery.state) {
-      gatherListings();
-    }
-  }, [searchParams, selectedCity, selectedStateCode, gatherListings]);
+    const queryCity: any = currentQuery.city;
+    const queryState: any = currentQuery.state;
 
-  useEffect(() => {
-    if (city && state && state.toLowerCase() in stateCodes) {
-      searchCity(city, state, (cityFound) => {
+    console.log(queryCity, queryState);
+
+    if (queryCity && queryState) {
+      searchCity(queryCity, queryState, (cityFound) => {
         if (!cityFound) {
-          setInvalid(true);
-          setListings([]);
+          setEmptyState();
         } else {
           setViewport({
             width: "100%",
@@ -142,15 +147,20 @@ export default function ListingPage() {
             pitch: 0,
             bearing: 0,
           });
+
+          setSelectedCity(queryCity);
+          setSelectedStateCode(stateCodes[queryState.toLowerCase()]);
+
+          setState(queryState);
+          setCity(queryCity);
+
+          gatherListings();
         }
       });
     } else {
-      setListings([]);
-      setCity("");
-      setState("");
-      setInvalid(true);
+      setEmptyState();
     }
-  }, [city, state, searchParams]);
+  }, [searchParams, gatherListings]);
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-neutral-800">
