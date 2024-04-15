@@ -6,7 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import getNearbyFacilities from "@/actions/getNearbyFacilities";
 import axios from "axios";
 
-const profile = "mapbox/driving-traffic";
+const profile = "mapbox/driving";
 const accessToken =
   "pk.eyJ1IjoiamFlZG9uMDEiLCJhIjoiY2x0eXlodHVjMGlhejJrczNpaHBxNXJhMiJ9.RNn_iXR_1qqPXVoU6FYDEw";
 
@@ -35,39 +35,32 @@ const MatrixMap: React.FC<MatrixMapProps> = ({ lat = 45, lon = 100 }) => {
 
     const getFacilities = async () => {
       const nearbyFacilities: any = await getNearbyFacilities({ lat, lon });
-
-      console.log("DATA: ", nearbyFacilities);
-
-      setMatrixData(nearbyFacilities);
-      return;
       let destinationParameters = "";
-
-      console.log("Found POIs, gathering traffic data...", nearbyFacilities);
-
-      for (let facility of nearbyFacilities) {
+      for (let facility of nearbyFacilities.features) {
         destinationParameters +=
           facility.center[0] + "," + facility.center[1] + ";";
       }
-
       destinationParameters = destinationParameters.slice(
         0,
         destinationParameters.length - 2
       ); // Remove the last semicolon
 
+      console.log("PARAMETERS: ", destinationParameters);
+
       try {
         const response = await axios.get(
-          `https://api.mapbox.com/directions-matrix/v1/${profile}/${lon},${lat};${destinationParameters}?sources=1&annotations=distance,duration&access_token=${accessToken}`
+          `https://api.mapbox.com/directions/v5/${profile}/${lon},${lat};${destinationParameters}?geometries=geojson&access_token=${accessToken}`
         );
         console.log(response);
         console.log(response.data);
-        setMatrixData(response.data.destinations);
+        //setMatrixData(response.data.destinations);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     getFacilities();
-  }, [mapLoaded]);
+  }, [mapLoaded, lat, lon]);
 
   const handleInteraction = () => {
     setViewport((prevViewport: any) => ({
@@ -93,9 +86,9 @@ const MatrixMap: React.FC<MatrixMapProps> = ({ lat = 45, lon = 100 }) => {
         <NavigationControl />
       </div>
       <Marker latitude={lat} longitude={lon} />
-      {matrixData?.features?.map((data: any) => (
+      {/* {matrixData?.features?.map((data: any) => (
         <Marker latitude={data.center[1]} longitude={data.center[0]} />
-      ))}
+      ))} */}
     </Map>
   );
 };
