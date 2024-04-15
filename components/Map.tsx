@@ -103,62 +103,65 @@ export default function ResideMap({
     }
   };
 
-  const handleMouseClick = (e: MapMouseEvent) => {
-    if (!mapReady) return;
+  const handleMouseClick = useCallback(
+    (e: MapMouseEvent) => {
+      if (!mapReady) return;
 
-    setLoadingRentals(true);
-    setListings([]);
+      setLoadingRentals(true);
+      setListings([]);
 
-    const features = mapRef.current.queryRenderedFeatures(e.point, {
-      layers: ["state-fills"],
-    });
-    if (features <= 0) {
-      return;
-    }
-    const stateCode: string =
-      stateCodes[features[0].properties.STATE_NAME.toLowerCase()];
-    mapRef.current?.flyTo({
-      center: [stateCenter[stateCode][1], stateCenter[stateCode][0]],
-      duration: 2000,
-      zoom: 6,
-    });
-    setSelectedStateCode(stateCode);
-
-    const cityFeatures = mapRef.current?.queryRenderedFeatures(e.point, {
-      layers: ["city-fills"],
-    });
-
-    let newCity = null;
-
-    if (cityFeatures && cityFeatures.length > 0) {
-      newCity = cityFeatures[0].properties.NAMELSAD.replace(" city", "");
-      setSelectedCity(newCity);
-      mapRef.current?.flyTo({
-        center: [e.lngLat.lng, e.lngLat.lat],
-        duration: 3000,
-        zoom: 11,
+      const features = mapRef.current.queryRenderedFeatures(e.point, {
+        layers: ["state-fills"],
       });
-    }
+      if (features <= 0) {
+        return;
+      }
+      const stateCode: string =
+        stateCodes[features[0].properties.STATE_NAME.toLowerCase()];
+      mapRef.current?.flyTo({
+        center: [stateCenter[stateCode][1], stateCenter[stateCode][0]],
+        duration: 2000,
+        zoom: 6,
+      });
+      setSelectedStateCode(stateCode);
 
-    let currentQuery = {};
+      const cityFeatures = mapRef.current?.queryRenderedFeatures(e.point, {
+        layers: ["city-fills"],
+      });
 
-    if (searchParams) {
-      currentQuery = qs.parse(searchParams.toString());
-    }
+      let newCity = null;
 
-    const updatedQuery: any = {
-      ...currentQuery,
-      city: newCity,
-      state: stateName[stateCode],
-    };
+      if (cityFeatures && cityFeatures.length > 0) {
+        newCity = cityFeatures[0].properties.NAMELSAD.replace(" city", "");
+        setSelectedCity(newCity);
+        mapRef.current?.flyTo({
+          center: [e.lngLat.lng, e.lngLat.lat],
+          duration: 3000,
+          zoom: 11,
+        });
+      }
 
-    const url = qs.stringifyUrl(
-      { url: "rent/", query: updatedQuery },
-      { skipNull: true }
-    );
+      let currentQuery = {};
 
-    router.push(url);
-  };
+      if (searchParams) {
+        currentQuery = qs.parse(searchParams.toString());
+      }
+
+      const updatedQuery: any = {
+        ...currentQuery,
+        city: newCity,
+        state: stateName[stateCode],
+      };
+
+      const url = qs.stringifyUrl(
+        { url: "rent/", query: updatedQuery },
+        { skipNull: true }
+      );
+
+      router.push(url);
+    },
+    [mapReady]
+  );
 
   useEffect(() => {
     if (mapReady) {
