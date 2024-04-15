@@ -45,7 +45,7 @@ export default function ExampleListing({
             <ul className="flex flex-wrap mt-4 gap-2 sm:mt-auto">
               {tags.map((tag, index) => (
                 <li
-                  className="bg-neutral-900 text-xs px-3 py-1 text-[0.7rem] uppercase tracking-wider rounded-lg text-white/70"
+                  className="bg-cyan-700 text-xs height p-1 uppercase tracking-wider rounded-lg text-white font-extralight"
                   key={index}
                 >
                   {tag}
