@@ -6,8 +6,8 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { useCallback, useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { searchCity } from "@/lib/geosearch/citySearch";
 import { stateCodes } from "@/lib/stateConversion";
 import ListContainer from "@/components/listings/ListContainer";
@@ -16,8 +16,6 @@ import qs from "query-string";
 import { RentCastListing } from "@/types/RentCastListing";
 
 export default function ListingPage() {
-  const [city, setCity] = useState<string>("");
-  const [state, setState] = useState<string>("");
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [selectedCity, setSelectedCity] = useState<string>("");
   const [hoveredCity, setHoveredCity] = useState<any>(null);
@@ -102,8 +100,6 @@ export default function ListingPage() {
 
   const setEmptyState = () => {
     setListings([]);
-    setCity("");
-    setState("");
     setInvalid(true);
   };
 
@@ -139,9 +135,6 @@ export default function ListingPage() {
           setSelectedCity(cityQuery);
           setSelectedStateCode(stateCodes[stateQuery.toLowerCase()]);
 
-          setState(stateQuery);
-          setCity(cityQuery);
-
           gatherListings(cityQuery, stateQuery);
         }
       });
@@ -151,51 +144,53 @@ export default function ListingPage() {
   }, [searchParams]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-neutral-800">
-      <ResizablePanelGroup direction="horizontal" style={{ height: "100%" }}>
-        <ResizablePanel className="z-0" defaultSize={100}>
-          <ResideMap
-            viewport={viewport}
-            setViewport={setViewport}
-            setShowPopup={setShowPopup}
-            setSelectedCity={setSelectedCity}
-            setHoveredCity={setHoveredCity}
-            selectedStateCode={selectedStateCode}
-            setSelectedStateCode={setSelectedStateCode}
-            setLoadingRentals={setLoadingRentals}
-            setListings={setListings}
-          />
-        </ResizablePanel>
-
-        <ResizableHandle
-          className="bg-transparent w-[0.2rem] hover:bg-gray-400"
-          withHandle
-        />
-        <ResizablePanel
-          minSize={28}
-          maxSize={95}
-          defaultSize={35}
-          style={{ overflow: "auto" }}
-        >
-          {!invalid ? (
-            <ListContainer
-              selectedCity={selectedCity}
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="relative w-full h-full overflow-hidden bg-neutral-800">
+        <ResizablePanelGroup direction="horizontal" style={{ height: "100%" }}>
+          <ResizablePanel className="z-0" defaultSize={100}>
+            <ResideMap
+              viewport={viewport}
+              setViewport={setViewport}
+              setShowPopup={setShowPopup}
+              setSelectedCity={setSelectedCity}
+              setHoveredCity={setHoveredCity}
               selectedStateCode={selectedStateCode}
-              loadingRentals={loadingRentals}
-              className="p-5 bg-neutral-800"
-              listings={listings}
+              setSelectedStateCode={setSelectedStateCode}
+              setLoadingRentals={setLoadingRentals}
+              setListings={setListings}
             />
-          ) : (
-            <EmptyState />
-          )}
-        </ResizablePanel>
-      </ResizablePanelGroup>
+          </ResizablePanel>
 
-      {showPopup && (
-        <div className="absolute bottom-[6rem] left-2 w-72 p-3 bg-neutral-800 font-light rounded-lg">
-          <h1 className=" text-neutral-100 truncate">{hoveredCity?.name}</h1>
-        </div>
-      )}
-    </div>
+          <ResizableHandle
+            className="bg-transparent w-[0.2rem] hover:bg-gray-400"
+            withHandle
+          />
+          <ResizablePanel
+            minSize={28}
+            maxSize={95}
+            defaultSize={35}
+            style={{ overflow: "auto" }}
+          >
+            {!invalid ? (
+              <ListContainer
+                selectedCity={selectedCity}
+                selectedStateCode={selectedStateCode}
+                loadingRentals={loadingRentals}
+                className="p-5 bg-neutral-800"
+                listings={listings}
+              />
+            ) : (
+              <EmptyState />
+            )}
+          </ResizablePanel>
+        </ResizablePanelGroup>
+
+        {showPopup && (
+          <div className="absolute bottom-[6rem] left-2 w-72 p-3 bg-neutral-800 font-light rounded-lg">
+            <h1 className=" text-neutral-100 truncate">{hoveredCity?.name}</h1>
+          </div>
+        )}
+      </div>
+    </Suspense>
   );
 }
