@@ -26,6 +26,8 @@ type ResideMapProps = {
   setSelectedStateCode: Dispatch<SetStateAction<string | null>>;
   viewport: any;
   setViewport: Dispatch<SetStateAction<any>>;
+  setLoadingRentals: Dispatch<SetStateAction<any>>;
+  setListings: Dispatch<SetStateAction<any>>;
 };
 
 export default function ResideMap({
@@ -36,6 +38,8 @@ export default function ResideMap({
   setHoveredCity,
   selectedStateCode,
   setSelectedStateCode,
+  setLoadingRentals,
+  setListings,
 }: ResideMapProps) {
   const mapRef = useRef<any>();
   const [hoveredPolygonId, setHoveredPolygonId] = useState<
@@ -101,6 +105,10 @@ export default function ResideMap({
 
   const handleMouseClick = (e: MapMouseEvent) => {
     if (!mapReady) return;
+
+    setLoadingRentals(true);
+    setListings([]);
+
     const features = mapRef.current.queryRenderedFeatures(e.point, {
       layers: ["state-fills"],
     });

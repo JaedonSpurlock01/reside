@@ -39,14 +39,20 @@ export default function ListingPage() {
 
   const searchParams = useSearchParams();
 
-  const gatherListings = useCallback(async () => {
-    if (!city || !state) return;
+  const gatherListings = async (
+    cityQuery: any,
+    stateQuery: any,
+    roomCount?: any,
+    bathroomCount?: any,
+    propertyType?: any
+  ) => {
+    if (!cityQuery || !stateQuery) return;
     try {
       setLoadingRentals(true);
       setInvalid(false);
       const response = await fetch(
-        `/api/fetchListings/?city=${city}&state=${
-          stateCodes[state.toLowerCase()]
+        `/api/fetchListings/?city=${cityQuery}&state=${
+          stateCodes[stateQuery.toLowerCase()]
         }`,
         {
           method: "GET",
@@ -61,7 +67,7 @@ export default function ListingPage() {
 
       setLoadingRentals(false);
 
-      console.log("STATE: ", state, "CITY: ", city);
+      console.log("STATE: ", stateQuery, "CITY: ", cityQuery);
       console.log("GOT LISTINGS: ", listings);
 
       if (!listings) {
@@ -71,31 +77,15 @@ export default function ListingPage() {
       }
 
       let filteredListings = [];
-      let currentQuery: any = {};
-
-      if (searchParams) {
-        currentQuery = qs.parse(searchParams.toString());
-      }
-
       for (let listing of listings) {
         let passFilter = true;
-
-        if (
-          currentQuery.roomCount &&
-          currentQuery.roomCount !== listing.body.bedrooms
-        ) {
+        if (roomCount && roomCount !== listing.body.bedrooms) {
           passFilter = false;
         }
-        if (
-          currentQuery.bathroomCount &&
-          currentQuery.bathroomCount !== listing.body.bathrooms
-        ) {
+        if (bathroomCount && bathroomCount !== listing.body.bathrooms) {
           passFilter = false;
         }
-        if (
-          currentQuery.propertyType &&
-          currentQuery.propertyType !== listing.body.propertyType
-        ) {
+        if (propertyType && propertyType !== listing.body.propertyType) {
           passFilter = false;
         }
 
@@ -108,7 +98,7 @@ export default function ListingPage() {
     } catch (error) {
       console.log("Error in gathering listings: ", error);
     }
-  }, [city, state, searchParams]);
+  };
 
   const setEmptyState = () => {
     setListings([]);
@@ -118,23 +108,21 @@ export default function ListingPage() {
   };
 
   useEffect(() => {
-    setLoadingRentals(true);
-    setListings([]); // When a user clicks on the map, clear out the listings
-  }, [selectedCity, selectedStateCode]);
-
-  useEffect(() => {
     let currentQuery: any = {};
     if (searchParams) {
       currentQuery = qs.parse(searchParams.toString());
     }
 
-    const queryCity: any = currentQuery.city;
-    const queryState: any = currentQuery.state;
+    const cityQuery: any = currentQuery.city;
+    const stateQuery: any = currentQuery.state;
+    const roomCount: any = currentQuery.roomCount;
+    const bathroomCount: any = currentQuery.bathroomCount;
+    const propertyType: any = currentQuery.propertyType;
 
-    console.log(queryCity, queryState);
+    console.log("ON MOUNT OR WHEN SELECTED: ", cityQuery, stateQuery);
 
-    if (queryCity && queryState) {
-      searchCity(queryCity, queryState, (cityFound) => {
+    if (cityQuery && stateQuery) {
+      searchCity(cityQuery, stateQuery, (cityFound) => {
         if (!cityFound) {
           setEmptyState();
         } else {
@@ -148,19 +136,19 @@ export default function ListingPage() {
             bearing: 0,
           });
 
-          setSelectedCity(queryCity);
-          setSelectedStateCode(stateCodes[queryState.toLowerCase()]);
+          setSelectedCity(cityQuery);
+          setSelectedStateCode(stateCodes[stateQuery.toLowerCase()]);
 
-          setState(queryState);
-          setCity(queryCity);
+          setState(stateQuery);
+          setCity(cityQuery);
 
-          gatherListings();
+          gatherListings(cityQuery, stateQuery);
         }
       });
     } else {
       setEmptyState();
     }
-  }, [searchParams, gatherListings]);
+  }, [searchParams]);
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-neutral-800">
@@ -174,6 +162,8 @@ export default function ListingPage() {
             setHoveredCity={setHoveredCity}
             selectedStateCode={selectedStateCode}
             setSelectedStateCode={setSelectedStateCode}
+            setLoadingRentals={setLoadingRentals}
+            setListings={setListings}
           />
         </ResizablePanel>
 
