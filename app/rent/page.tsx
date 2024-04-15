@@ -111,9 +111,11 @@ export default function ListingPage() {
 
     const cityQuery: any = currentQuery.city;
     const stateQuery: any = currentQuery.state;
-    const roomCount: any = currentQuery.roomCount;
-    const bathroomCount: any = currentQuery.bathroomCount;
-    const propertyType: any = currentQuery.propertyType;
+    const roomCountQuery: any = currentQuery.roomCount;
+    const bathroomCountQuery: any = currentQuery.bathroomCount;
+    const propertyTypeQuery: any = currentQuery.propertyType;
+
+    console.log("QUERIES: ", currentQuery);
 
     console.log("ON MOUNT OR WHEN SELECTED: ", cityQuery, stateQuery);
 
@@ -135,7 +137,13 @@ export default function ListingPage() {
           setSelectedCity(cityQuery);
           setSelectedStateCode(stateCodes[stateQuery.toLowerCase()]);
 
-          gatherListings(cityQuery, stateQuery);
+          gatherListings(
+            cityQuery,
+            stateQuery,
+            Number(roomCountQuery),
+            Number(bathroomCountQuery),
+            propertyTypeQuery
+          );
         }
       });
     } else {

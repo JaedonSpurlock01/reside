@@ -19,9 +19,9 @@ const SearchModal = () => {
   const searchModal = useFilterModal();
   const params = useSearchParams();
 
-  const [roomCount, setRoomCount] = useState(1);
-  const [bathroomCount, setBathroomCount] = useState(1);
-  const [propertyType, setPropertyType] = useState("");
+  const [roomCount, setRoomCount] = useState<number | null>(1);
+  const [bathroomCount, setBathroomCount] = useState<number | null>(1);
+  const [propertyType, setPropertyType] = useState<string | null>("");
 
   const onSubmit = useCallback(async () => {
     let currentQuery = {};
@@ -39,7 +39,7 @@ const SearchModal = () => {
 
     const url = qs.stringifyUrl(
       {
-        url: "/",
+        url: "rent/",
         query: updatedQuery,
       },
       { skipNull: true }
@@ -48,6 +48,32 @@ const SearchModal = () => {
     searchModal.onClose();
     router.push(url);
   }, [searchModal, router, roomCount, bathroomCount, params, propertyType]);
+
+  const onReset = useCallback(async () => {
+    let currentQuery = {};
+
+    if (params) {
+      currentQuery = qs.parse(params.toString());
+    }
+
+    const updatedQuery: any = {
+      ...currentQuery,
+      roomCount: null,
+      bathroomCount: null,
+      propertyType: null,
+    };
+
+    const url = qs.stringifyUrl(
+      {
+        url: "rent/",
+        query: updatedQuery,
+      },
+      { skipNull: true }
+    );
+
+    searchModal.onClose();
+    router.push(url);
+  }, []);
 
   const actionLabel = useMemo(() => {
     return "Show places";
@@ -107,7 +133,7 @@ const SearchModal = () => {
       actionLabel={actionLabel}
       onSubmit={onSubmit}
       secondaryActionLabel={secondaryActionLabel}
-      secondaryAction={searchModal.onClose}
+      secondaryAction={onReset}
       onClose={searchModal.onClose}
       body={bodyContent}
     />

@@ -18,10 +18,14 @@ export default async function generateListings(params: IParams) {
       city = city.replace(" city", "");
     }
 
+    console.log("ABOUT TO GENERATE LISTINGS FOR, ", city, state);
+
     const response = await fetch(
-      `https://reside-backend-b43qx6tlcq-uw.a.run.app/listings/createByCityState?city=${city}&state=${state?.toUpperCase()}`,
+      `  /listings/createByCityState?city=${city}&state=${state?.toUpperCase()}`,
       requestOptions
     );
+
+    console.log("GENERATED SOMETHING...");
 
     const listings = await response.json();
 
