@@ -10,7 +10,7 @@ interface ListContainerProps {
   selectedStateCode?: string | null;
   loadingRentals?: boolean;
   className?: string;
-  listings?: RentCastListing[];
+  listings: RentCastListing[];
 }
 
 export default function ListContainer({

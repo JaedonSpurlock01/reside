@@ -16,11 +16,8 @@ const createImageCards = (images: string[]) => {
     });
   }
 
-  if (imageCards.length > 2) {
-    imageCards[2].className = "hidden md:block col-span-1";
-  } else {
-    imageCards[0].className = "col-span-2 row-span-2";
-    imageCards[1].className = "hidden md:block col-span-2 row-span-2";
+  if (imageCards.length > 0) {
+    imageCards[0].className = "md:col-span-3 md:row-span-2";
   }
 
   if (imageCards.length > 1) {
@@ -29,8 +26,8 @@ const createImageCards = (images: string[]) => {
     imageCards[0].className = "col-span-4 row-span-2";
   }
 
-  if (imageCards.length > 0) {
-    imageCards[0].className = "md:col-span-3 md:row-span-2";
+  if (imageCards.length > 2) {
+    imageCards[2].className = "hidden md:block col-span-1";
   }
 
   return imageCards;

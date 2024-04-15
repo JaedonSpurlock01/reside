@@ -1,17 +1,13 @@
 "use client";
 
 import qs from "query-string";
-import dynamic from "next/dynamic";
 import { useCallback, useMemo, useState } from "react";
-import { Range } from "react-date-range";
-import { formatISO } from "date-fns";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import useFilterModal from "@/hooks/useFilterModal";
 
 import Modal from "./Modal";
 import Counter from "../inputs/Counter";
-import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
 import Heading from "../Heading";
 import { propertyTypes } from "@/lib/categories";
 import { Button } from "../ui/button";
@@ -25,6 +21,7 @@ const SearchModal = () => {
 
   const [roomCount, setRoomCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
+  const [propertyType, setPropertyType] = useState("");
 
   const onSubmit = useCallback(async () => {
     let currentQuery = {};
@@ -37,6 +34,7 @@ const SearchModal = () => {
       ...currentQuery,
       roomCount,
       bathroomCount,
+      propertyType,
     };
 
     const url = qs.stringifyUrl(
@@ -49,7 +47,7 @@ const SearchModal = () => {
 
     searchModal.onClose();
     router.push(url);
-  }, [searchModal, router, roomCount, bathroomCount, params]);
+  }, [searchModal, router, roomCount, bathroomCount, params, propertyType]);
 
   const actionLabel = useMemo(() => {
     return "Show places";
@@ -68,7 +66,14 @@ const SearchModal = () => {
       />
       <div className="flex flex-row items-center justify-center flex-wrap gap-2">
         {propertyTypes.map((type) => (
-          <Button variant="red" className="h-[5rem] w-[10rem]">
+          <Button
+            key={type.label}
+            variant="ghost"
+            className={`py-2 px-4 ${
+              propertyType === type.label ? "bg-neutral-700" : ""
+            }`}
+            onClick={() => setPropertyType(type.label)}
+          >
             <AmenityItem
               icon={type.icon}
               label={type.label}

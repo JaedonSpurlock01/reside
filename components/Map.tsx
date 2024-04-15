@@ -12,6 +12,7 @@ import Map, { Marker, Layer, Source, MapMouseEvent, Popup } from "react-map-gl";
 import { stateCenter, stateCodes, stateName } from "@/lib/stateConversion";
 import "mapbox-gl/dist/mapbox-gl.css"; // For some reason mapbox doesn't handle attribution/children attributes
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import qs from "query-string";
 
 // Define your mapbox access token
 const MAPBOX_TOKEN =
@@ -21,10 +22,6 @@ type ResideMapProps = {
   setShowPopup: Dispatch<SetStateAction<boolean>>;
   setSelectedCity: Dispatch<SetStateAction<any>>;
   setHoveredCity: Dispatch<SetStateAction<any>>;
-  loadingRentals: boolean;
-  setLoadingRentals: Dispatch<SetStateAction<boolean>>;
-  mapDraggable: boolean;
-  setMapDraggable: Dispatch<SetStateAction<boolean>>;
   selectedStateCode: string | null;
   setSelectedStateCode: Dispatch<SetStateAction<string | null>>;
   viewport: any;
@@ -34,13 +31,9 @@ type ResideMapProps = {
 export default function ResideMap({
   viewport,
   setViewport,
-  loadingRentals,
-  setLoadingRentals,
   setShowPopup,
   setSelectedCity,
   setHoveredCity,
-  mapDraggable,
-  setMapDraggable,
   selectedStateCode,
   setSelectedStateCode,
 }: ResideMapProps) {
@@ -52,22 +45,6 @@ export default function ResideMap({
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-
-      params.set(name, value);
-
-      if (name === "state") {
-        params.delete("city");
-      }
-
-      return params.toString();
-    },
-    [searchParams]
-  );
 
   const handleMouseLeave = (e: MapMouseEvent) => {
     if (!mapReady) return;
@@ -128,9 +105,6 @@ export default function ResideMap({
       layers: ["state-fills"],
     });
     if (features <= 0) {
-      router.push(pathname);
-      setSelectedStateCode(null);
-      setSelectedCity(null);
       return;
     }
     const stateCode: string =
@@ -142,32 +116,40 @@ export default function ResideMap({
     });
     setSelectedStateCode(stateCode);
 
-    router.push(
-      pathname + "?" + createQueryString("state", stateName[stateCode])
-    );
-
     const cityFeatures = mapRef.current?.queryRenderedFeatures(e.point, {
       layers: ["city-fills"],
     });
 
+    let newCity = null;
+
     if (cityFeatures && cityFeatures.length > 0) {
-      setSelectedCity(cityFeatures[0].properties.NAMELSAD);
-      setLoadingRentals(true);
+      newCity = cityFeatures[0].properties.NAMELSAD.replace(" city", "");
+      setSelectedCity(newCity);
       mapRef.current?.flyTo({
         center: [e.lngLat.lng, e.lngLat.lat],
         duration: 3000,
         zoom: 11,
       });
-      router.push(
-        pathname +
-          "?" +
-          createQueryString("city", cityFeatures[0].properties.NAMELSAD)
-      );
-    } else {
-      setMapDraggable(true);
-      setLoadingRentals(false);
-      setSelectedCity(null);
     }
+
+    let currentQuery = {};
+
+    if (searchParams) {
+      currentQuery = qs.parse(searchParams.toString());
+    }
+
+    const updatedQuery: any = {
+      ...currentQuery,
+      city: newCity,
+      state: stateName[stateCode],
+    };
+
+    const url = qs.stringifyUrl(
+      { url: "rent/", query: updatedQuery },
+      { skipNull: true }
+    );
+
+    router.push(url);
   };
 
   useEffect(() => {
@@ -176,23 +158,9 @@ export default function ResideMap({
     }
   }, [mapReady]);
 
-  useEffect(() => {
-    if (loadingRentals) {
-      const timeoutId = setTimeout(() => {
-        setLoadingRentals(false);
-      }, 1500);
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [loadingRentals, setLoadingRentals]);
-
   return (
     <Map
       {...viewport}
-      // maxBounds={[
-      //   [-136.736342, 17.521208], //Southwest
-      //   [-60.945392, 58.382808], //Northeast
-      // ]}
       onMove={(evt) => setViewport(evt.viewState)}
       mapboxAccessToken={MAPBOX_TOKEN}
       ref={mapRef}
@@ -202,7 +170,6 @@ export default function ResideMap({
       onClick={handleMouseClick}
       onMouseLeave={handleMouseLeave}
       cursor={hoveredPolygonId ? "pointer" : "default"}
-      dragPan={mapDraggable}
       onLoad={() => setMapReady(true)}
     >
       <Source
