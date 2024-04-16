@@ -3,6 +3,7 @@
 import EmptyState from "@/components/EmptyState";
 import ListingClient from "@/components/listing/ListingClient";
 import getListingById from "@/actions/getListingById";
+import { Suspense } from "react";
 
 interface IParams {
   listingId?: string;
@@ -15,5 +16,9 @@ export default async function ListingPage({ params }: { params: IParams }) {
     return <EmptyState />;
   }
 
-  return <ListingClient listing={listing.body} images={listing.images} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ListingClient listing={listing.body} images={listing.images} />
+    </Suspense>
+  );
 }
