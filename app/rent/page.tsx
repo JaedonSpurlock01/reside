@@ -166,6 +166,7 @@ export default function ListingPage() {
               setSelectedStateCode={setSelectedStateCode}
               setLoadingRentals={setLoadingRentals}
               setListings={setListings}
+              listings={listings}
             />
           </ResizablePanel>
 
