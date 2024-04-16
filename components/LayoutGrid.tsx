@@ -36,12 +36,18 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
           i < 3 ? (
             <div key={i} className={cn(card.className, "")}>
               <motion.div
-                onClick={() => handleClick(card)}
+                onClick={() => {
+                  if (!selected) {
+                    handleClick(card);
+                  } else {
+                    handleOutsideClick();
+                  }
+                }}
                 className={cn(
                   card.className,
                   "relative overflow-hidden",
                   selected?.id === card.id
-                    ? "rounded-lg cursor-pointer absolute inset-0 h-1/2 w-full md:w-1/2 m-auto z-50 flex justify-center items-center flex-wrap flex-col"
+                    ? "rounded-lg cursor-pointer absolute inset-0 h-auto m-4 w-auto z-50 flex justify-center items-center flex-wrap flex-col"
                     : lastSelected?.id === card.id
                     ? "z-40 bg-transparent rounded-xl h-full w-full"
                     : "bg-transparent rounded-xl h-full w-full"
