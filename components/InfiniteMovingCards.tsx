@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 import Avatar from "./navbar/Avatar";
+import { FaStar, FaStarHalf } from "react-icons/fa6";
 
 export const InfiniteMovingCards = ({
   items,
@@ -15,6 +16,7 @@ export const InfiniteMovingCards = ({
     quote: string;
     name: string;
     title: string;
+    stars?: number;
   }[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
@@ -100,9 +102,21 @@ export const InfiniteMovingCards = ({
                 {item.quote}
               </div>
               <div className="relative z-20 flex flex-row items-center">
-                <span className="text-sm leading-[1.6] text-white font-normal flex flex-row items-center gap-2">
-                  <Avatar /> {item.name}
-                </span>
+                <div className="w-full flex flex-row items-center justify-between">
+                  <span className="text-sm leading-[1.6] text-white font-normal flex flex-row items-center gap-2">
+                    <Avatar /> {item.name}
+                  </span>
+                  <div className="flex flex-row items-center gap-2">
+                    {item.stars &&
+                      Array.from({ length: item.stars }, (_, index) => (
+                        <FaStar key={index} className="text-white" />
+                      ))}
+                    {item.stars &&
+                      Array.from({ length: 5 - item.stars }, (_, index) => (
+                        <FaStar key={index} className="text-neutral-600" />
+                      ))}
+                  </div>
+                </div>
               </div>
             </blockquote>
           </li>
