@@ -3,7 +3,7 @@
 import React from "react";
 
 interface MenuItemProps {
-  onClick: () => void;
+  onClick?: () => void;
   label: string;
 }
 

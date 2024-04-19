@@ -4,6 +4,8 @@ import "./globals.css";
 import Header from "../components/navbar/Header";
 import FilterModal from "../components/modals/FilterModal";
 import Footer from "@/components/Footer";
+import LoginModal from "@/components/modals/LoginModal";
+import RegisterModal from "@/components/modals/RegisterModal";
 
 const inter = Inter({ subsets: ["latin"] });
 const font = Nunito_Sans({ subsets: ["latin"] });
@@ -24,6 +26,8 @@ export default function RootLayout({
         <div className="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(23,144,209,0.3),rgba(255,255,255,0))]">
           <Header />
           <FilterModal />
+          <LoginModal />
+          <RegisterModal />
           {children}
           <Footer />
         </div>

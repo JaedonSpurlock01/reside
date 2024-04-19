@@ -5,6 +5,8 @@ import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
 import MenuItem from "./MenuItem";
 import { HoverBorderGradient } from "../HoverBorderGradient";
+import LoginButton from "../auth/LoginButton";
+import RegisterButton from "../auth/RegisterButton";
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -39,10 +41,14 @@ const UserMenu = () => {
 
       {isOpen && (
         <div className="absolute rounded-xl shadow-md w-[15vw] bg-neutral-700 overflow-hidden right-0 top-[4.5rem] text-sm">
-          <div className="flex flex-col cursor-pointer">
+          <div className="flex flex-col">
             <>
-              <MenuItem onClick={() => {}} label="Login" />
-              <MenuItem onClick={() => {}} label="Sign up" />
+              <LoginButton mode="modal">
+                <MenuItem label="Login" />
+              </LoginButton>
+              <RegisterButton mode="modal">
+                <MenuItem label="Sign up" />
+              </RegisterButton>
             </>
           </div>
         </div>
