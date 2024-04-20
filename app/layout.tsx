@@ -6,6 +6,7 @@ import FilterModal from "../components/modals/FilterModal";
 import Footer from "@/components/Footer";
 import LoginModal from "@/components/modals/LoginModal";
 import RegisterModal from "@/components/modals/RegisterModal";
+import ErrorModal from "@/components/modals/ErrorModal";
 
 const inter = Inter({ subsets: ["latin"] });
 const font = Nunito_Sans({ subsets: ["latin"] });
@@ -28,6 +29,7 @@ export default function RootLayout({
           <FilterModal />
           <LoginModal />
           <RegisterModal />
+          <ErrorModal />
           {children}
           <Footer />
         </div>

@@ -5,8 +5,8 @@ import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
 import MenuItem from "./MenuItem";
 import { HoverBorderGradient } from "../HoverBorderGradient";
-import LoginButton from "../auth/LoginButton";
-import RegisterButton from "../auth/RegisterButton";
+import LoginButton from "../auth/login/LoginButton";
+import RegisterButton from "../auth/register/RegisterButton";
 
 const UserMenu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const UserMenu = () => {
                 <MenuItem label="Login" />
               </LoginButton>
               <RegisterButton mode="modal">
-                <MenuItem label="Sign up" />
+                <MenuItem label="Create an account" />
               </RegisterButton>
             </>
           </div>
