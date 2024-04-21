@@ -21,7 +21,6 @@ export default function Header() {
         </div>
 
         <div className="absolute right-0 top-1/2 text-lg transform -translate-y-1/2 flex flex-row space-x-8 z-20">
-          <button className="hidden sm:block">Help</button>
           <UserMenu />
         </div>
       </div>
