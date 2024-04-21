@@ -1,12 +1,13 @@
 "use client";
 
-import { AiOutlineMenu } from "react-icons/ai";
 import Search from "../Search";
-import Avatar from "./Avatar";
 import Logo from "../Logo";
 import UserMenu from "./UserMenu";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 export default function Header() {
+  const user = useCurrentUser();
+
   return (
     <div className="bg-[#262626] w-full border-b-[1px] border-[#373737] h-[6rem] py-4 px-16 flex items-center justify-center z-20">
       <div className="w-full h-full relative font-light text-white">
@@ -21,7 +22,7 @@ export default function Header() {
         </div>
 
         <div className="absolute right-0 top-1/2 text-lg transform -translate-y-1/2 flex flex-row space-x-8 z-20">
-          <UserMenu />
+          <UserMenu user={user} />
         </div>
       </div>
     </div>
