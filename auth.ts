@@ -38,6 +38,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
       if (token.role && session.user) {
         session.user.role = token.role as UserRole;
+        session.user.favListingIds = token.favListingIds as string[];
       }
 
       console.log({
@@ -55,6 +56,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (!existingUser) return token;
 
       token.role = existingUser.role;
+      token.favListingIds = existingUser.favListingIds;
 
       return token;
     },
