@@ -64,11 +64,12 @@ const ListingHead: React.FC<ListingHeadProps> = ({
           <HeartButton />
         </div>
 
-        <div className="absolute bottom-5 bg-neutral-700 text-white rounded-xl right-5 z-[999] flex flex-row items-center">
+        {/* TO-DO: 'Add show-all-photos' functionality */}
+        {/* <div className="absolute bottom-5 bg-neutral-700 text-white rounded-xl right-5 z-[999] flex flex-row items-center">
           <Button variant={"group"}>
             <PiDotsNineBold size={25} /> Show all {images.length} photos
           </Button>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -48,7 +48,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
             <div className="relative order-first md:order-last md:col-span-3">
               <ListingPrice
                 price={listing.price}
-                totalPrice={listing.price * 12}
                 onSubmit={() => {}}
               />
             </div>

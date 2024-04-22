@@ -8,15 +8,10 @@ import { CalendarForm } from "../inputs/CalendarForm";
 
 interface ListingPriceProps {
   price: number;
-  totalPrice: number;
   onSubmit: () => void;
 }
 
-const ListingPrice: React.FC<ListingPriceProps> = ({
-  price,
-  totalPrice,
-  onSubmit,
-}) => {
+const ListingPrice: React.FC<ListingPriceProps> = ({ price, onSubmit }) => {
   return (
     <HoverBorderGradient
       containerClassName="rounded-xl p-1 sticky top-8 w-full mb-10 md:mb-0"
@@ -30,7 +25,7 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
         <div className="font-light text-neutral-300 mb-[1px]">month</div>
       </div>
 
-      <div className="p-4 flex flex-row items-center text-neutral-300 font-light text-lg -my-6 mt-1">
+      {/* <div className="p-4 flex flex-row items-center text-neutral-300 font-light text-lg -my-6 mt-1">
         Estimate your cost at this rental
       </div>
 
@@ -55,7 +50,7 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
         rightClassName="text-neutral-100"
       />
 
-      <Seperator className="bg-neutral-600" />
+      <Seperator className="bg-neutral-600" /> */}
 
       <div className="p-4">
         <Button label="Visit rental" onClick={() => {}} />
@@ -66,7 +61,7 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
 
       <TextRow
         leftText="Estimated total"
-        rightText={`$ ${(totalPrice + 205).toLocaleString()}`}
+        rightText={`$ ${price.toLocaleString()}`}
         className="text-neutral-100 font-semibold"
       />
     </HoverBorderGradient>

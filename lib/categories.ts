@@ -1,25 +1,19 @@
 import {
-  MdFireplace,
+  MdEmojiTransportation,
   MdHeatPump,
-  MdOutlineBalcony,
-  MdOutlineDeck,
+  MdLocalGroceryStore,
   MdOutlineHolidayVillage,
-  MdOutlinePets,
-  MdOutlinePool,
-  MdOutlineSportsBasketball,
-  MdOutlineSportsTennis,
   MdOutlineVilla,
+  MdSchool,
 } from "react-icons/md";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { TbAirConditioning, TbBoxSeam, TbToolsKitchen } from "react-icons/tb";
-import { FaWheelchair, FaWifi } from "react-icons/fa6";
+import { FaWifi } from "react-icons/fa6";
 import { IoCarOutline } from "react-icons/io5";
-import { IoIosFitness } from "react-icons/io";
-import { BiCctv, BiSolidDryer, BiSolidWasher } from "react-icons/bi";
-import { GrElevator, GrHostMaintenance } from "react-icons/gr";
-import { CgCommunity } from "react-icons/cg";
-import { GiFamilyHouse, GiHomeGarage, GiStaticGuard } from "react-icons/gi";
+import { IoIosFitness, IoMdRestaurant } from "react-icons/io";
+import { BiSolidDryer, BiSolidWasher } from "react-icons/bi";
+import { GiFamilyHouse, GiHomeGarage } from "react-icons/gi";
 
 export const propertyTypes = [
   {
@@ -67,11 +61,7 @@ export const amenities = [
     icon: IoCarOutline,
   },
   {
-    label: "Swimming Pool",
-    icon: MdOutlinePool,
-  },
-  {
-    label: "Gym/Fitness Center",
+    label: "Gym",
     icon: IoIosFitness,
   },
   {
@@ -91,182 +81,34 @@ export const amenities = [
     icon: MdHeatPump,
   },
   {
-    label: "Elevator",
-    icon: GrElevator,
-  },
-  {
-    label: "Balcony/Patio",
-    icon: MdOutlineBalcony,
-  },
-  {
-    label: "Security System",
-    icon: BiCctv,
-  },
-  {
-    label: "Pet Friendly",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Wheelchair Accessible",
-    icon: FaWheelchair,
-  },
-  {
-    label: "Fireplace",
-    icon: MdFireplace,
-  },
-  {
-    label: "Community Room",
-    icon: CgCommunity,
-  },
-  {
-    label: "On-site Maintenance",
-    icon: GrHostMaintenance,
-  },
-  {
     label: "Storage Space",
     icon: TbBoxSeam,
   },
   {
-    label: "Roof Deck",
-    icon: MdOutlineDeck,
-  },
-  {
-    label: "Tennis Court",
-    icon: MdOutlineSportsTennis,
-  },
-  {
-    label: "Basketball Court",
-    icon: MdOutlineSportsBasketball,
-  },
-  {
     label: "Garage",
     icon: GiHomeGarage,
-  },
-  {
-    label: "Security Guard",
-    icon: GiStaticGuard,
   },
 ];
 
 export const facilities = [
   {
     label: "Public Transportation",
-    icon: MdOutlinePets,
+    icon: MdEmojiTransportation,
   },
   {
     label: "Grocery Store",
-    icon: MdOutlinePets,
+    icon: MdLocalGroceryStore,
   },
   {
-    label: "Schools",
-    icon: MdOutlinePets,
+    label: "Schools/Universities",
+    icon: MdSchool,
   },
   {
-    label: "Hospitals/Clinics",
-    icon: MdOutlinePets,
+    label: "Restaurants",
+    icon: IoMdRestaurant,
   },
   {
-    label: "Pharmacy",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Restaurants/Cafes",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Parks/Recreational Areas",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Shopping Centers/Malls",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Gyms/Fitness Centers",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Banks/ATMs",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Post Office",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Entertainment",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Libraries",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Police Station",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Fire Station",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Gas Station",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Car Wash",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Car Rental",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Veterinary Clinic",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Daycare",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Laundromat",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Barber/Beauty Salon",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Hardware Store",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "ATM",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Public Library",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Dog Park",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Golf Course",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Tennis Court",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Public Pool",
-    icon: MdOutlinePets,
-  },
-  {
-    label: "Public Beach",
-    icon: MdOutlinePets,
+    label: "Fitness Centers",
+    icon: IoIosFitness,
   },
 ];

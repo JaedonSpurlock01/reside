@@ -80,12 +80,12 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             />
           ))}
         </div>
-        <Button
+        {/* <Button
           label="Show all amenities"
           onClick={() => {}}
           className="!w-1/3"
           outline
-        />
+        /> */}
       </div>
 
       <Seperator />
@@ -101,12 +101,12 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             />
           ))}
         </div>
-        <Button
+        {/* <Button
           label="Show all facilities"
           onClick={() => {}}
           className="!w-1/3"
           outline
-        />
+        /> */}
       </div>
 
       <Seperator />
