@@ -26,10 +26,15 @@ import Link from "next/link";
 
 interface LoginFormProps {
   handleBackRef?: () => void;
+  handlePasswordReset?: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ handleBackRef }) => {
+const LoginForm: React.FC<LoginFormProps> = ({
+  handleBackRef,
+  handlePasswordReset,
+}) => {
   const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
       ? "Email already in use with different provider"
@@ -52,7 +57,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleBackRef }) => {
     setSuccess("");
 
     startTransition(() => {
-      login(values).then((data) => {
+      login(values, callbackUrl).then((data) => {
         if (data) {
           setError(data.error);
           setSuccess(data.success);
@@ -105,9 +110,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ handleBackRef }) => {
                     asChild
                     className="px-0 font-normal text-neutral-400"
                   >
-                    <Link href="/auth/reset">Forgot password?</Link>
+                    <BackButton
+                      handleBackRef={handlePasswordReset}
+                      label="Forgot password?"
+                      center={false}
+                    />
                   </Button>
-                  
+
                   <FormMessage />
                 </FormItem>
               )}

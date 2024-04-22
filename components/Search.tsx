@@ -1,12 +1,10 @@
-"use client";
-
-import { Input } from "@/components/ui/input";
-import { City, searchCities } from "@/lib/geosearch/citySearch";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import MenuItem from "./navbar/MenuItem";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { City, searchCities } from "@/lib/geosearch/citySearch";
 
 export default function Search({
   className,
@@ -18,6 +16,7 @@ export default function Search({
   const [results, setResults] = useState<City[]>([]);
   const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
   const router = useRouter();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = event.target.value;
@@ -32,6 +31,47 @@ export default function Search({
     });
   };
 
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setResults([]);
+        setShowSearchResults(false);
+      }
+    },
+    [dropdownRef]
+  );
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        console.log(results);
+
+        if (results.length > 1) {
+          router.push(
+            `/rent/?city=${results[0].city}&state=${results[0].state_name}`
+          );
+          router.refresh();
+        }
+
+        setResults([]);
+        setShowSearchResults(false);
+      }
+    },
+    [results, router]
+  );
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleClickOutside, handleKeyDown]);
+
   return (
     <div
       className={className}
@@ -45,6 +85,7 @@ export default function Search({
           placeholder="Enter city or state"
           className="bg-transparent border-none"
           onChange={handleSearch}
+          disableRing
         />
         <button type="submit">
           <IoIosSearch />
@@ -53,6 +94,7 @@ export default function Search({
 
       {showSearchResults && (
         <div
+          ref={dropdownRef}
           className={cn(
             "absolute z-20 rounded-xl shadow-md border w-[50vw] sm:w-[40vw] md:w-[30vw] lg:w-[20vw] bg-neutral-700 bg-opacity-20 top-12 space-y-1",
             resultsClassName
@@ -72,6 +114,8 @@ export default function Search({
                       `/rent/?city=${location.city}&state=${location.state_name}`
                     );
                     router.refresh();
+                    setShowSearchResults(false);
+                    setResults([]);
                   }}
                   label={`${location.city}, ${location.state_name}`}
                 />

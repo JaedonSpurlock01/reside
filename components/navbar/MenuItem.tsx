@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { IconType } from "react-icons/lib";
 
 interface MenuItemProps {
   onClick?: () => void;
@@ -7,6 +8,7 @@ interface MenuItemProps {
   borderTop?: boolean;
   borderBottom?: boolean;
   disabled?: boolean;
+  icon?: IconType;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
@@ -15,6 +17,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   borderBottom,
   borderTop,
   disabled,
+  icon: Icon,
 }) => {
   return (
     <div
@@ -26,9 +29,10 @@ const MenuItem: React.FC<MenuItemProps> = ({
         disabled
           ? "font-semibold"
           : "font-light cursor-pointer hover:bg-neutral-600 transition"
-      }`}
+      }
+      ${Icon ? "flex items-center gap-2" : ""}`}
     >
-      {label}
+      {Icon && <Icon />} {label}
     </div>
   );
 };

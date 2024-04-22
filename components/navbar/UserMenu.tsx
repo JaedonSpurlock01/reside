@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import Avatar from "./Avatar";
 import MenuItem from "./MenuItem";
@@ -10,6 +8,9 @@ import RegisterButton from "../auth/register/RegisterButton";
 import useLoginModal from "@/hooks/useLoginModal";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { BiLogOut } from "react-icons/bi";
+import { IoMdAdd, IoMdSettings } from "react-icons/io";
+import { MdFavorite } from "react-icons/md";
 
 interface UserMenuProps {
   user: any;
@@ -17,7 +18,7 @@ interface UserMenuProps {
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const loginModal = useLoginModal();
   const router = useRouter();
 
@@ -25,10 +26,29 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
     setIsOpen((v) => !v);
   }, []);
 
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    },
+    [dropdownRef]
+  );
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
+
   return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
-        {/* <div
+        <div
           onClick={() => {
             if (!user) {
               loginModal.onOpen();
@@ -37,7 +57,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           className="hidden md:block py-3 px-4 rounded-full hover:bg-neutral-700 transition cursor-pointer"
         >
           My Favorites
-        </div> */}
+        </div>
         <HoverBorderGradient
           containerClassName="rounded-xl"
           className="bg-neutral-700 shadow-2xl"
@@ -54,8 +74,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
       </div>
 
       {isOpen && (
-        <div className="absolute rounded-xl shadow-md w-[15rem] bg-neutral-700 overflow-hidden right-0 top-[4.5rem] text-sm">
-          <div className="flex flex-col">
+        <div
+          ref={dropdownRef}
+          className="absolute rounded-xl shadow-md w-[15rem] bg-neutral-700 overflow-hidden right-0 top-[4.5rem] text-sm"
+        >
+          <div className="flex flex-col ">
             {!user ? (
               <>
                 <LoginButton mode="modal">
@@ -68,13 +91,22 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             ) : (
               <>
                 <MenuItem borderBottom disabled label={`${user.name}`} />
-                <MenuItem label="Add listing" onClick={() => {}} />
-                <MenuItem label="My favorites" onClick={() => {}} />
+                <MenuItem
+                  label="Add listing"
+                  onClick={() => {}}
+                  icon={IoMdAdd}
+                />
+                <MenuItem
+                  label="My favorites"
+                  onClick={() => {}}
+                  icon={MdFavorite}
+                />
                 <MenuItem
                   label="Settings"
                   onClick={() => {
                     router.push("/settings");
                   }}
+                  icon={IoMdSettings}
                 />
                 <MenuItem
                   label="Log out"
@@ -82,6 +114,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                     signOut();
                   }}
                   borderTop
+                  icon={BiLogOut}
                 />
               </>
             )}

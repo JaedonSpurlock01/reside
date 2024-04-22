@@ -10,6 +10,7 @@ import ErrorModal from "@/components/modals/ErrorModal";
 
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
+import PasswordResetModal from "@/components/modals/PasswordResetModal";
 
 const inter = Inter({ subsets: ["latin"] });
 const font = Nunito_Sans({ subsets: ["latin"] });
@@ -36,6 +37,7 @@ export default async function RootLayout({
             <LoginModal />
             <RegisterModal />
             <ErrorModal />
+            <PasswordResetModal />
             {children}
             <Footer />
           </div>
