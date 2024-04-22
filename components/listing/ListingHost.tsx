@@ -33,7 +33,7 @@ const ListingHost: React.FC<ListingHostProps> = ({
   return (
     <div className="text-lg text-neutral-300 grid grid-cols-1 sm:grid-cols-2 gap-8">
       {heading && (
-        <span className="col-span-2">
+        <span className="col-span-1 sm:col-span-2">
           <Heading title="Meet your hosts" />
         </span>
       )}
@@ -43,7 +43,7 @@ const ListingHost: React.FC<ListingHostProps> = ({
           containerClassName="rounded-xl w-full"
           className="bg-neutral-700 shadow-2xl w-full"
         >
-          <div className="py-2 sm:py-4 justify-between flex flex-row items-center">
+          <div className="py-2 sm:py-4 justify-between flex flex-row items-center flex-wrap">
             <div className="text-center font-bold text-2xl mx-auto md:ml-auto">
               <Avatar size={100} imageSrc={imageSrc} />
               <span>{hostName}</span>
@@ -76,15 +76,16 @@ const ListingHost: React.FC<ListingHostProps> = ({
       </div>
 
       <div className="col-span-1 space-y-8 -mt-8">
-        <Heading title="Host details" />
-
-        <p className="font-semibold text-neutral-400">{description}</p>
+        <Heading title="Host details" className="hidden sm:block" />
+        <p className="font-semibold text-neutral-400 hidden sm:block">
+          {description}
+        </p>
 
         <Button label="Message Host" onClick={() => {}} />
 
         <Seperator />
 
-        <div className="flex flex-row items-center justify-between gap-2 text-neutral-400">
+        <div className="sm:flex sm:flex-row items-center justify-between gap-2 text-neutral-400 hidden">
           <GiStaticGuard size={100} />
           <p>
             To protect your payment, never transfer money or communicate outside

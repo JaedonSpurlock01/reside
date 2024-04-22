@@ -5,7 +5,7 @@ import React from "react";
 
 interface AvatarProps {
   size?: number;
-  imageSrc?: string;
+  imageSrc?: string | null;
 }
 
 export default function Avatar({ size, imageSrc }: AvatarProps) {

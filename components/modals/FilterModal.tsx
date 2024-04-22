@@ -96,7 +96,7 @@ const SearchModal = () => {
             key={type.label}
             variant="ghost"
             className={`py-2 px-4 ${
-              propertyType === type.label ? "bg-neutral-700" : ""
+              propertyType === type.label ? "bg-neutral-800" : ""
             }`}
             onClick={() => setPropertyType(type.label)}
           >
@@ -108,13 +108,14 @@ const SearchModal = () => {
           </Button>
         ))}
       </div>
+      <Seperator className="bg-[#525252]" />
       <Counter
         onChange={(value) => setRoomCount(value)}
         value={roomCount}
         title="Rooms"
         subtitle="How many rooms do you need?"
       />
-      <Seperator />
+      <Seperator className="bg-[#525252]" />
       <Counter
         onChange={(value) => {
           setBathroomCount(value);
