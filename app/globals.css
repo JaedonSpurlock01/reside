@@ -3,6 +3,10 @@
 @tailwind utilities;
 @import "~react-image-gallery/styles/css/image-gallery.css";
 
+:root {
+  color-scheme: dark;
+}
+
 .image-gallery-slide img {
   border-radius: 0.75rem;
   height: 200px !important;

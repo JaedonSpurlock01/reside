@@ -4,6 +4,14 @@ import HeartButton from "../listings/HeartButton";
 import { LayoutGrid } from "../LayoutGrid";
 import { PiDotsNineBold } from "react-icons/pi";
 import { Button } from "../ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import Image from "next/image";
 
 const createImageCards = (images: string[]) => {
   let imageCards = [];
@@ -66,12 +74,30 @@ const ListingHead: React.FC<ListingHeadProps> = ({
           <HeartButton listingId={listingId as string} />
         </div>
 
-        {/* TO-DO: 'Add show-all-photos' functionality */}
-        {/* <div className="absolute bottom-5 bg-neutral-700 text-white rounded-xl right-5 z-[999] flex flex-row items-center">
-          <Button variant={"group"}>
-            <PiDotsNineBold size={25} /> Show all {images.length} photos
-          </Button>
-        </div> */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant={"group"}
+              className="absolute bottom-5 bg-neutral-700 text-white rounded-xl right-5 z-[999] flex flex-row items-center"
+            >
+              <PiDotsNineBold size={25} /> Show all {images.length} photos
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent className="overflow-y-auto h-3/4 bg-neutral-700 border-[#202020] text-neutral-300">
+            <DialogTitle className="font-bold text-2xl">All photos</DialogTitle>
+            {images.map((image, index) => (
+              <Image
+                key={index}
+                src={image}
+                alt="Listing image"
+                width={1920}
+                height={1080}
+                className="w-full rounded-lg"
+              />
+            ))}
+          </DialogContent>
+        </Dialog>
       </div>
     </>
   );
