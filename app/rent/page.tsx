@@ -6,7 +6,13 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { Suspense, useEffect, useState } from "react";
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import { useSearchParams } from "next/navigation";
 import { searchCity } from "@/lib/geosearch/citySearch";
 import { stateCodes } from "@/lib/stateConversion";
@@ -14,12 +20,10 @@ import ListContainer from "@/components/listings/ListContainer";
 import ResideMap from "@/components/Map";
 import qs from "query-string";
 import { RentCastListing } from "@/types/RentCastListing";
+import getListings from "@/actions/getListings";
 
 export default function ListingPage() {
-  const [showPopup, setShowPopup] = useState<boolean>(false);
   const [selectedCity, setSelectedCity] = useState<string>("");
-  const [hoveredCity, setHoveredCity] = useState<any>(null);
-  const [loadingRentals, setLoadingRentals] = useState<boolean>(false);
   const [selectedStateCode, setSelectedStateCode] = useState<string | null>(
     null
   );
@@ -32,95 +36,81 @@ export default function ListingPage() {
     pitch: 0,
     bearing: 0,
   });
+  const [isPending, startTransition] = useTransition();
   const [listings, setListings] = useState<RentCastListing[]>([]);
   const [invalid, setInvalid] = useState<boolean>(false);
 
   const searchParams = useSearchParams();
-
-  const gatherListings = async (
-    cityQuery: any,
-    stateQuery: any,
-    roomCount?: any,
-    bathroomCount?: any,
-    propertyType?: any
-  ) => {
-    if (!cityQuery || !stateQuery) return;
-    try {
-      setLoadingRentals(true);
-      setInvalid(false);
-      const response = await fetch(
-        `/api/fetchListings/?city=${cityQuery}&state=${
-          stateCodes[stateQuery.toLowerCase()]
-        }`,
-        {
-          method: "GET",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Request failed with status: ${response.status}`);
-      }
-
-      const listings: RentCastListing[] = await response.json();
-
-      setLoadingRentals(false);
-
-      console.log("STATE: ", stateQuery, "CITY: ", cityQuery);
-      console.log("GOT LISTINGS: ", listings);
-
-      if (!listings) {
-        setListings([]);
-        setInvalid(true);
-        return;
-      }
-
-      let filteredListings = [];
-      for (let listing of listings) {
-        let passFilter = true;
-        if (roomCount && roomCount !== listing.body.bedrooms) {
-          passFilter = false;
-        }
-        if (bathroomCount && bathroomCount !== listing.body.bathrooms) {
-          passFilter = false;
-        }
-        if (propertyType && propertyType !== listing.body.propertyType) {
-          passFilter = false;
-        }
-
-        if (passFilter) {
-          filteredListings.push(listing);
-        }
-      }
-
-      setListings(filteredListings);
-    } catch (error) {
-      console.log("Error in gathering listings: ", error);
-    }
-  };
 
   const setEmptyState = () => {
     setListings([]);
     setInvalid(true);
   };
 
-  useEffect(() => {
-    let currentQuery: any = {};
-    if (searchParams) {
-      currentQuery = qs.parse(searchParams.toString());
-    }
+  const gatherListings = (city: string, state: string) => {
+    if (!city || !state) return;
 
-    const cityQuery: any = currentQuery.city;
-    const stateQuery: any = currentQuery.state;
-    const roomCountQuery: any = currentQuery.roomCount;
-    const bathroomCountQuery: any = currentQuery.bathroomCount;
-    const propertyTypeQuery: any = currentQuery.propertyType;
+    const currentQuery: any = qs.parse(searchParams?.toString()) || {};
+    const { roomCount, bathroomCount, propertyType } = currentQuery;
 
-    console.log("QUERIES: ", currentQuery);
+    startTransition(() => {
+      getListings({
+        city,
+        state: stateCodes[state].toUpperCase() || "CA",
+      })
+        .then((data: RentCastListing[]) => {
+          setInvalid(false);
 
-    console.log("ON MOUNT OR WHEN SELECTED: ", cityQuery, stateQuery);
+          if (!data) {
+            setListings([]);
+            setInvalid(true);
+            return;
+          }
 
-    if (cityQuery && stateQuery) {
-      searchCity(cityQuery, stateQuery, (cityFound) => {
+          console.log(
+            "SUCCESSFULLY FETCHED",
+            data.length,
+            "LISTINGS FROM ",
+            city.toUpperCase(),
+            state.toUpperCase()
+          );
+
+          let filteredListings = [];
+
+          for (let listing of data) {
+            let passFilter = true;
+            if (
+              Number(roomCount) &&
+              Number(roomCount) !== listing.body.bedrooms
+            ) {
+              passFilter = false;
+            }
+            if (
+              Number(bathroomCount) &&
+              Number(bathroomCount) !== listing.body.bathrooms
+            ) {
+              passFilter = false;
+            }
+            if (propertyType && propertyType !== listing.body.propertyType) {
+              passFilter = false;
+            }
+
+            if (passFilter) {
+              filteredListings.push(listing);
+            }
+          }
+
+          setListings(filteredListings);
+        })
+        .catch((error) => {
+          console.log("Error in gathering listings: ", error);
+        });
+    });
+  };
+
+  const updateListingGrid = (city: string, state: string) => {
+    if (city && state) {
+      searchCity(city, state, (cityFound) => {
         if (!cityFound) {
           setEmptyState();
         } else {
@@ -134,21 +124,20 @@ export default function ListingPage() {
             bearing: 0,
           });
 
-          setSelectedCity(cityQuery);
-          setSelectedStateCode(stateCodes[stateQuery.toLowerCase()]);
+          setSelectedCity(city);
+          setSelectedStateCode(stateCodes[state.toLowerCase()]);
 
-          gatherListings(
-            cityQuery,
-            stateQuery,
-            Number(roomCountQuery),
-            Number(bathroomCountQuery),
-            propertyTypeQuery
-          );
+          gatherListings(city, state.toLowerCase());
         }
       });
     } else {
       setEmptyState();
     }
+  };
+
+  useEffect(() => {
+    const currentQuery: any = qs.parse(searchParams?.toString()) || {};
+    updateListingGrid(currentQuery.city, currentQuery.state);
   }, [searchParams]);
 
   return (
@@ -159,13 +148,9 @@ export default function ListingPage() {
             <ResideMap
               viewport={viewport}
               setViewport={setViewport}
-              setShowPopup={setShowPopup}
               setSelectedCity={setSelectedCity}
-              setHoveredCity={setHoveredCity}
               selectedStateCode={selectedStateCode}
               setSelectedStateCode={setSelectedStateCode}
-              setLoadingRentals={setLoadingRentals}
-              setListings={setListings}
               listings={listings}
             />
           </ResizablePanel>
@@ -184,7 +169,7 @@ export default function ListingPage() {
               <ListContainer
                 selectedCity={selectedCity}
                 selectedStateCode={selectedStateCode}
-                loadingRentals={loadingRentals}
+                loadingRentals={isPending}
                 className="p-5 bg-neutral-800"
                 listings={listings}
               />
@@ -193,12 +178,6 @@ export default function ListingPage() {
             )}
           </ResizablePanel>
         </ResizablePanelGroup>
-
-        {showPopup && (
-          <div className="absolute bottom-[6rem] left-2 w-72 p-3 bg-neutral-800 font-light rounded-lg">
-            <h1 className=" text-neutral-100 truncate">{hoveredCity?.name}</h1>
-          </div>
-        )}
       </div>
     </Suspense>
   );

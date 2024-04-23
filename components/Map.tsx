@@ -6,7 +6,6 @@ import React, {
   useEffect,
   Dispatch,
   SetStateAction,
-  useCallback,
 } from "react";
 import Map, { Marker, Layer, Source, MapMouseEvent, Popup } from "react-map-gl";
 import { stateCenter, stateCodes, stateName } from "@/lib/stateConversion";
@@ -20,157 +19,127 @@ const MAPBOX_TOKEN =
   "pk.eyJ1IjoiamFlZG9uMDEiLCJhIjoiY2x0eXlodHVjMGlhejJrczNpaHBxNXJhMiJ9.RNn_iXR_1qqPXVoU6FYDEw";
 
 type ResideMapProps = {
-  setShowPopup: Dispatch<SetStateAction<boolean>>;
   setSelectedCity: Dispatch<SetStateAction<any>>;
-  setHoveredCity: Dispatch<SetStateAction<any>>;
   selectedStateCode: string | null;
   setSelectedStateCode: Dispatch<SetStateAction<string | null>>;
   viewport: any;
   setViewport: Dispatch<SetStateAction<any>>;
-  setLoadingRentals: Dispatch<SetStateAction<any>>;
-  setListings: Dispatch<SetStateAction<any>>;
   listings?: RentCastListing[];
 };
 
 export default function ResideMap({
   viewport,
   setViewport,
-  setShowPopup,
   setSelectedCity,
-  setHoveredCity,
   selectedStateCode,
   setSelectedStateCode,
-  setLoadingRentals,
-  setListings,
   listings,
 }: ResideMapProps) {
   const mapRef = useRef<any>();
-  const [hoveredPolygonId, setHoveredPolygonId] = useState<
-    string | number | null
-  >(null);
   const [mapReady, setMapReady] = useState<boolean>(false);
+  const [hoveredPolygonId, setHoveredPolygonId] = useState<string | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handleMouseLeave = useCallback(
-    (e: MapMouseEvent) => {
-      if (!mapReady) return;
-      if (hoveredPolygonId !== null) {
-        mapRef.current?.setFeatureState(
-          { source: "states", id: hoveredPolygonId },
-          { hover: false }
-        );
-      }
-      setHoveredPolygonId(null);
-    },
-    [mapReady]
-  );
-
-  const handleMouseMove = useCallback(
-    (e: MapMouseEvent) => {
-      if (!mapReady) return;
-      const features = mapRef.current?.queryRenderedFeatures(e.point, {
-        layers: ["state-fills"],
-      });
-
-      if (hoveredPolygonId !== null) {
-        mapRef.current?.setFeatureState(
-          { source: "states", id: hoveredPolygonId },
-          { hover: false }
-        );
-      }
-
-      if (features && features.length > 0) {
-        setHoveredPolygonId(features[0].id);
-        mapRef.current.setFeatureState(
-          { source: "states", id: features[0].id },
-          { hover: true }
-        );
-      } else {
-        setHoveredPolygonId(null);
-      }
-
-      if (selectedStateCode) {
-        const cityFeatures = mapRef.current?.queryRenderedFeatures(e.point, {
-          layers: ["city-fills"],
-        });
-
-        if (cityFeatures && cityFeatures.length > 0) {
-          setHoveredCity({
-            name: cityFeatures[0].properties.NAMELSAD,
-            lat: e.lngLat.lat,
-            lon: e.lngLat.lng,
-          });
-          setShowPopup(true);
-        } else {
-          setHoveredCity(null);
-          setShowPopup(false);
-        }
-      }
-    },
-    [mapReady]
-  );
-
-  const handleMouseClick = useCallback(
-    (e: MapMouseEvent) => {
-      if (!mapReady) return;
-
-      const features = mapRef.current.queryRenderedFeatures(e.point, {
-        layers: ["state-fills"],
-      });
-      if (features <= 0) {
-        return;
-      }
-
-      setLoadingRentals(true);
-      setListings([]);
-      const stateCode: string =
-        stateCodes[features[0].properties.STATE_NAME.toLowerCase()];
-      mapRef.current?.flyTo({
-        center: [stateCenter[stateCode][1], stateCenter[stateCode][0]],
-        duration: 2000,
-        zoom: 6,
-      });
-      setSelectedStateCode(stateCode);
-
-      const cityFeatures = mapRef.current?.queryRenderedFeatures(e.point, {
-        layers: ["city-fills"],
-      });
-
-      let newCity = null;
-
-      if (cityFeatures && cityFeatures.length > 0) {
-        newCity = cityFeatures[0].properties.NAMELSAD.replace(" city", "");
-        setSelectedCity(newCity);
-        mapRef.current?.flyTo({
-          center: [e.lngLat.lng, e.lngLat.lat],
-          duration: 3000,
-          zoom: 11,
-        });
-      }
-
-      let currentQuery = {};
-
-      if (searchParams) {
-        currentQuery = qs.parse(searchParams.toString());
-      }
-
-      const updatedQuery: any = {
-        ...currentQuery,
-        city: newCity,
-        state: stateName[stateCode],
-      };
-
-      const url = qs.stringifyUrl(
-        { url: "rent/", query: updatedQuery },
-        { skipNull: true }
+  const handleMouseLeave = (e: MapMouseEvent) => {
+    if (!mapReady) return;
+    if (hoveredPolygonId !== null) {
+      mapRef.current?.setFeatureState(
+        { source: "states", id: hoveredPolygonId },
+        { hover: false }
       );
+    }
+    setHoveredPolygonId(null);
+  };
 
-      router.push(url);
-    },
-    [mapReady]
-  );
+  const handleMouseMove = (e: MapMouseEvent) => {
+    if (!mapReady) return;
+
+    const features = mapRef.current?.queryRenderedFeatures(e.point, {
+      layers: ["state-fills"],
+    });
+
+    if (hoveredPolygonId !== null) {
+      mapRef.current?.setFeatureState(
+        { source: "states", id: hoveredPolygonId },
+        { hover: false }
+      );
+    }
+
+    if (features && features.length > 0) {
+      setHoveredPolygonId(features[0].id);
+      mapRef.current.setFeatureState(
+        { source: "states", id: features[0].id },
+        { hover: true }
+      );
+    } else {
+      setHoveredPolygonId(null);
+    }
+  };
+
+  const handleMouseClick = (e: MapMouseEvent) => {
+    if (!mapReady) return;
+
+    const features = mapRef.current.queryRenderedFeatures(e.point, {
+      layers: ["state-fills"],
+    });
+
+    if (features <= 0) {
+      return;
+    }
+
+    const stateCode: string =
+      stateCodes[features[0].properties.STATE_NAME.toLowerCase()];
+
+    // TO-DO FOR SOME REASON, ROUTER.PUSH IS BEING BLOCKED UNTIL ANIMATION FINISHES
+    // mapRef.current?.flyTo({
+    //   center: [stateCenter[stateCode][1], stateCenter[stateCode][0]],
+    //   duration: 2000,
+    //   zoom: 6,
+    // });
+
+    setSelectedStateCode(stateCode);
+
+    const cityFeatures = mapRef.current?.queryRenderedFeatures(e.point, {
+      layers: ["city-fills"],
+    });
+
+    let newCity = null;
+
+    if (cityFeatures && cityFeatures.length > 0) {
+      newCity = cityFeatures[0].properties.NAMELSAD.replace(" city", "");
+      setSelectedCity(newCity);
+    }
+
+    let currentQuery = {};
+
+    if (searchParams) {
+      currentQuery = qs.parse(searchParams.toString());
+    }
+
+    const updatedQuery: any = {
+      ...currentQuery,
+      city: newCity,
+      state: stateName[stateCode],
+    };
+
+    const url = qs.stringifyUrl(
+      { url: "rent/", query: updatedQuery },
+      { skipNull: true }
+    );
+
+    router.push(url);
+
+    // TO-DO FOR SOME REASON, ROUTER.PUSH IS BEING BLOCKED UNTIL ANIMATION FINISHES
+    // if (cityFeatures && cityFeatures.length > 0) {
+    //   mapRef.current?.flyTo({
+    //     center: [e.lngLat.lng, e.lngLat.lat],
+    //     duration: 3000,
+    //     zoom: 11,
+    //   });
+    // }
+  };
 
   useEffect(() => {
     if (mapReady) {

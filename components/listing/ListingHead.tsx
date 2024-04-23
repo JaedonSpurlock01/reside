@@ -39,6 +39,7 @@ interface ListingHeadProps {
   city: string;
   state: string;
   zipCode?: number;
+  listingId?: string;
 }
 
 const ListingHead: React.FC<ListingHeadProps> = ({
@@ -47,6 +48,7 @@ const ListingHead: React.FC<ListingHeadProps> = ({
   city,
   state,
   zipCode,
+  listingId,
 }) => {
   const listingImages = createImageCards(images);
 
@@ -61,7 +63,7 @@ const ListingHead: React.FC<ListingHeadProps> = ({
         <LayoutGrid cards={listingImages} />
 
         <div className="absolute top-5 right-5">
-          <HeartButton />
+          <HeartButton listingId={listingId as string} />
         </div>
 
         {/* TO-DO: 'Add show-all-photos' functionality */}

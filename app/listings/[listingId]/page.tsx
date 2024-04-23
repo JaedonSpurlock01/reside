@@ -18,7 +18,11 @@ export default async function ListingPage({ params }: { params: IParams }) {
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ListingClient listing={listing.body} images={listing.images} />
+      <ListingClient
+        listing={listing.body}
+        images={listing.images}
+        listingId={listing.id}
+      />
     </Suspense>
   );
 }

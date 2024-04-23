@@ -52,7 +52,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           onClick={() => {
             if (!user) {
               loginModal.onOpen();
+              return;
             }
+            router.push("/favorites");
           }}
           className="hidden md:block py-3 px-4 rounded-full hover:bg-neutral-700 transition cursor-pointer"
         >
@@ -98,7 +100,14 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 />
                 <MenuItem
                   label="My favorites"
-                  onClick={() => {}}
+                  onClick={() => {
+                    if (!user) {
+                      loginModal.onOpen();
+                      return;
+                    }
+
+                    router.push("/favorites");
+                  }}
                   icon={MdFavorite}
                 />
                 <MenuItem

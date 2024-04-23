@@ -12,6 +12,7 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import PasswordResetModal from "@/components/modals/PasswordResetModal";
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 const font = Nunito_Sans({ subsets: ["latin"] });
@@ -41,6 +42,7 @@ export default async function RootLayout({
             <PasswordResetModal />
             {children}
             <Footer />
+            <Toaster />
             <Analytics /> {/* Measure website analytics such as page visits */}
           </div>
         </body>

@@ -57,7 +57,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
               }))}
             />
             <div className="absolute top-6 right-6 z-30">
-              <HeartButton />
+              <HeartButton listingId={listingId} />
             </div>
           </div>
         </div>

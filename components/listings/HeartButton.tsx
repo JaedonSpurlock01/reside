@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import useFavorite from "@/hooks/useFavorite";
+import React from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
-const HeartButton = () => {
-  const [hasFavorited, setHasFavorited] = useState<boolean>(false);
-  const toggleFavorite = () => {
-    setHasFavorited(!hasFavorited);
-  };
+interface HeartButtonProps {
+  listingId: string;
+}
+
+const HeartButton: React.FC<HeartButtonProps> = ({ listingId }) => {
+  const { toggleFavorite, hasFavorited } = useFavorite({ listingId });
 
   return (
     <div

@@ -1,4 +1,4 @@
-import generateListings from "./generateListings";
+"use server";
 
 export interface IParams {
   city: string | null;
@@ -20,30 +20,29 @@ export default async function getListings(params: IParams) {
       city = city.replace(" city", "");
     }
 
-    console.log("CITY: ", city);
-
     const response = await fetch(
       `https://reside-backend-b43qx6tlcq-uw.a.run.app/listings/getByCityState?city=${city}&state=${state?.toUpperCase()}`,
       requestOptions
     );
 
-    console.log("RESPONSE STATUS: ", response.status);
-
     if (!response.ok) {
-      // if (response.status === 404) {
-      //   console.log("No listings found. Generating new listings...");
-      //   const createdListings = await generateListings(params);
-      //   console.log("NEW LISTINGS CREATED: ", createdListings);
-      //   if (!createdListings) return null; // City, State invalid
-      //   return createdListings;
-      // } else {
-      // Handle other error responses
-      console.error("Error response:", await response.text());
+      console.log(
+        "STATUS: ",
+        response.status,
+        "- COULD NOT FETCH LISTINGS FROM BACKEND"
+      );
       return null;
-      //}
     } else {
       const data = await response.json();
-      console.log("LISTINGS RECEIVED: ", data);
+
+      console.log(
+        "STATUS: ",
+        response.status,
+        "- SUCCESSFULLY FETCHED ",
+        data.length,
+        " LISTINGS FROM RENTCAST & REDFIN"
+      );
+
       return data;
     }
   } catch (error: any) {

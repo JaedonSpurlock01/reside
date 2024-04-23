@@ -15,11 +15,13 @@ import MatrixMap from "./MatrixMap";
 interface ListingClientProps {
   listing: any;
   images?: string[];
+  listingId: string;
 }
 
 const ListingClient: React.FC<ListingClientProps> = ({
   listing,
   images = [],
+  listingId,
 }) => {
   return (
     <Container>
@@ -31,6 +33,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             city={listing.city}
             state={listing.state}
             zipCode={listing.zipCode}
+            listingId={listingId}
           />
 
           <span className="flex flex-row items-center space-x-2">
@@ -46,10 +49,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             />
 
             <div className="relative order-first md:order-last md:col-span-3">
-              <ListingPrice
-                price={listing.price}
-                onSubmit={() => {}}
-              />
+              <ListingPrice price={listing.price} onSubmit={() => {}} />
             </div>
           </div>
 
