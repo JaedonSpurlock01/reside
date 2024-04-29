@@ -69,7 +69,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
 
       <Seperator />
 
-      <div className="text-2xl font-bold text-neutral-300 flex flex-col gap-4">
+      {/* <div className="text-2xl font-bold text-neutral-300 flex flex-col gap-4">
         What this place offers
         <div className="grid grid-cols-2 gap-1">
           {amenities.map((amenity) => (
@@ -80,12 +80,12 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             />
           ))}
         </div>
-        {/* <Button
+        <Button
           label="Show all amenities"
           onClick={() => {}}
           className="!w-1/3"
           outline
-        /> */}
+        />
       </div>
 
       <Seperator />
@@ -101,15 +101,15 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             />
           ))}
         </div>
-        {/* <Button
+        <Button
           label="Show all facilities"
           onClick={() => {}}
           className="!w-1/3"
           outline
-        /> */}
+        />
       </div>
 
-      <Seperator />
+      <Seperator /> */}
 
       <div className="text-lg text-neutral-300 flex flex-col -space-y-4">
         <span className="text-2xl font-bold mb-4">Rental History</span>

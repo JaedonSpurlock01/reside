@@ -44,7 +44,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <ListingInfo
               listing={listing}
-              description="There is no description yet. This feature will be soon implemented!"
+              description="Step into a beautifully maintained rental property located in the heart of the city, perfect for those seeking a blend of comfort and convenience. This apartment offers a functional layout that maximizes space without sacrificing style."
               propertyType={listing.propertyType}
             />
 
@@ -72,6 +72,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             description="Helps real estate investors and property managers grow, track and
             optimize their rental property portfolios."
             imageSrc="/images/RentCast.png"
+            link="https://www.rentcast.io"
           />
 
           <Seperator className="bg-transparent my-8" />
@@ -85,6 +86,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             description="Provides residential real estate brokerage and mortgage origination services."
             imageSrc="/images/Redfin.png"
             heading={false}
+            link="https://www.redfin.com/"
           />
 
           <Seperator className="bg-transparent my-10" />

@@ -38,7 +38,7 @@ export default function ListContainer({
       ) : listings.length > 0 ? (
         <>
           <Grid listings={listings} />
-          <ListingPagination />
+          {/* <ListingPagination /> */}
         </>
       ) : (
         <EmptyState />

@@ -56,7 +56,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
                 thumbnail: imageSrc,
               }))}
             />
-            <div className="absolute top-6 right-6 z-30">
+            <div className="absolute top-6 right-6">
               <HeartButton listingId={listingId} />
             </div>
           </div>

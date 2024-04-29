@@ -14,7 +14,7 @@ const HeartButton: React.FC<HeartButtonProps> = ({ listingId }) => {
   return (
     <div
       onClick={toggleFavorite}
-      className="relative hover:opacity-80 transition cursor-pointer z-[9999]"
+      className="relative hover:opacity-80 transition cursor-pointer z-10"
     >
       <AiOutlineHeart
         size={34}

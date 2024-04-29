@@ -19,23 +19,32 @@ interface UserMenuProps {
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
+
   const loginModal = useLoginModal();
   const router = useRouter();
 
-  const toggleOpen = useCallback(() => {
-    setIsOpen((v) => !v);
+  const toggleOpen = useCallback((event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    } else {
+      setIsOpen(true);
+    }
   }, []);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
       }
     },
-    [dropdownRef]
+    [buttonRef]
   );
 
   useEffect(() => {
@@ -64,9 +73,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           containerClassName="rounded-xl"
           className="bg-neutral-700 shadow-2xl"
           as="div"
-          onClick={toggleOpen}
+          onClick={(e) => toggleOpen(e as any)}
         >
-          <div className="p-4 md:py-1 md:px-2 flex flex-row items-center gap-3 rounded-lg cursor-pointer hover:shadow-sm transition">
+          <div
+            ref={buttonRef}
+            className="p-4 md:py-1 md:px-2 flex flex-row items-center gap-3 rounded-lg cursor-pointer hover:shadow-sm transition"
+          >
             <AiOutlineMenu />
             <div className="hidden md:block">
               <Avatar imageSrc={user && user.image} />
@@ -80,7 +92,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           ref={dropdownRef}
           className="absolute rounded-xl shadow-md w-[15rem] bg-neutral-700 overflow-hidden right-0 top-[4.5rem] text-sm"
         >
-          <div className="flex flex-col ">
+          <div className="flex flex-col z-50">
             {!user ? (
               <>
                 <LoginButton mode="modal">

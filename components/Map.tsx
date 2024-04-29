@@ -38,6 +38,7 @@ export default function ResideMap({
   const mapRef = useRef<any>();
   const [mapReady, setMapReady] = useState<boolean>(false);
   const [hoveredPolygonId, setHoveredPolygonId] = useState<string | null>(null);
+  const [popupInfo, setPopupInfo] = useState<RentCastListing | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -156,7 +157,7 @@ export default function ResideMap({
       mapStyle="mapbox://styles/mapbox/dark-v11"
       attributionControl={false}
       onMouseMove={handleMouseMove}
-      onClick={handleMouseClick}
+      onClick={popupInfo ? () => {} : handleMouseClick}
       onMouseLeave={handleMouseLeave}
       cursor={hoveredPolygonId ? "pointer" : "default"}
       onLoad={() => setMapReady(true)}
@@ -224,8 +225,30 @@ export default function ResideMap({
           key={listing.id}
           latitude={listing.body.latitude}
           longitude={listing.body.longitude}
+          onClick={(e) => {
+            // If we let the click event propagates to the map, it will immediately close the popup
+            // with `closeOnClick: true`
+            e.originalEvent.stopPropagation();
+            setPopupInfo(listing);
+          }}
         />
       ))}
+
+      {popupInfo && (
+        <Popup
+          anchor="bottom"
+          longitude={Number(popupInfo.body.longitude)}
+          latitude={Number(popupInfo.body.latitude)}
+          onClose={() => setPopupInfo(null)}
+        >
+          <div className="text-bold text-base">
+            <a target="_new" href={`/listings/${popupInfo.id}`}>
+              {popupInfo.body.addressLine1}
+            </a>
+          </div>
+          <img width="100%" src={popupInfo.images[0]} />
+        </Popup>
+      )}
     </Map>
   );
 }

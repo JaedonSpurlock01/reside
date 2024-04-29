@@ -18,6 +18,7 @@ interface ListingHostProps {
   location: string;
   description: string;
   heading?: boolean;
+  link?: string;
 }
 
 const ListingHost: React.FC<ListingHostProps> = ({
@@ -29,6 +30,7 @@ const ListingHost: React.FC<ListingHostProps> = ({
   location,
   description,
   heading = true,
+  link,
 }) => {
   return (
     <div className="text-lg text-neutral-300 grid grid-cols-1 sm:grid-cols-2 gap-8">
@@ -81,7 +83,9 @@ const ListingHost: React.FC<ListingHostProps> = ({
           {description}
         </p>
 
-        <Button label="Message Host" onClick={() => {}} />
+        <a href={link} target="_blank">
+          <Button label="Message Host" onClick={() => {}} />
+        </a>
 
         <Seperator />
 
