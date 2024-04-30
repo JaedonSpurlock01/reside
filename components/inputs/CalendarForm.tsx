@@ -28,14 +28,14 @@ const monthMap: Map<number, string> = new Map([
 interface CalendarFormProps {
   title?: string;
   label?: string;
-  date?: Date | null;
+  date?: Date | undefined;
   onSelect?: any;
 }
 
 export function CalendarForm({
   title,
   label,
-  date = null,
+  date = undefined,
   onSelect,
 }: CalendarFormProps) {
   return (

@@ -19,32 +19,25 @@ interface UserMenuProps {
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLDivElement>(null);
 
   const loginModal = useLoginModal();
   const router = useRouter();
 
   const toggleOpen = useCallback((event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setIsOpen(false);
-    } else {
-      setIsOpen(true);
-    }
+    event.stopPropagation();
+    setIsOpen((isOpen) => !isOpen);
   }, []);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
       if (
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target as Node)
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
       }
     },
-    [buttonRef]
+    [dropdownRef]
   );
 
   useEffect(() => {
@@ -75,10 +68,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           as="div"
           onClick={(e) => toggleOpen(e as any)}
         >
-          <div
-            ref={buttonRef}
-            className="p-4 md:py-1 md:px-2 flex flex-row items-center gap-3 rounded-lg cursor-pointer hover:shadow-sm transition"
-          >
+          <div className="p-4 md:py-1 md:px-2 flex flex-row items-center gap-3 rounded-lg cursor-pointer hover:shadow-sm transition">
             <AiOutlineMenu />
             <div className="hidden md:block">
               <Avatar imageSrc={user && user.image} />
@@ -105,11 +95,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             ) : (
               <>
                 <MenuItem borderBottom disabled label={`${user.name}`} />
-                <MenuItem
+                {/* <MenuItem
                   label="Add listing"
                   onClick={() => {}}
                   icon={IoMdAdd}
-                />
+                /> */}
                 <MenuItem
                   label="My favorites"
                   onClick={() => {

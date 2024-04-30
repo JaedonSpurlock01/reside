@@ -8,12 +8,12 @@ import { CalendarForm } from "../inputs/CalendarForm";
 
 interface ListingPriceProps {
   price: number;
-  onSubmit: () => void;
+  onSubmitLink: string;
 }
 
-const ListingPrice: React.FC<ListingPriceProps> = ({ price, onSubmit }) => {
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
+const ListingPrice: React.FC<ListingPriceProps> = ({ price, onSubmitLink }) => {
+  const [startDate, setStartDate] = useState<Date | undefined>();
+  const [endDate, setEndDate] = useState<Date | undefined>();
   const [monthRange, setMonthRange] = useState<number>(12);
 
   useEffect(() => {
@@ -79,7 +79,12 @@ const ListingPrice: React.FC<ListingPriceProps> = ({ price, onSubmit }) => {
       {/* <Seperator className="bg-neutral-600" /> */}
 
       <div className="p-4">
-        <Button label="Visit rental" onClick={() => {}} />
+        <a
+          href={`https://www.google.com/search?q=${onSubmitLink}`}
+          target="_blank"
+        >
+          <Button label="Visit rental" onClick={() => {}} />
+        </a>
         <div className="text-center w-full text-neutral-500 mt-1">
           You won&apos;t be charged yet
         </div>

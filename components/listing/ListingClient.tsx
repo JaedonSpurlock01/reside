@@ -49,7 +49,10 @@ const ListingClient: React.FC<ListingClientProps> = ({
             />
 
             <div className="relative order-first md:order-last md:col-span-3">
-              <ListingPrice price={listing.price} onSubmit={() => {}} />
+              <ListingPrice
+                price={listing.price}
+                onSubmitLink={listing.formattedAddress}
+              />
             </div>
           </div>
 
