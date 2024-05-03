@@ -132,15 +132,17 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
               <AlertDialogContent className="bg-neutral-700 border-0">
                 <AlertDialogHeader>
                   <AlertDialogTitle className="text-neutral-100">
-                    Are you absolutely sure?
+                    Remove from watchlist?
                   </AlertDialogTitle>
                   <AlertDialogDescription className="text-neutral-400">
-                    This action cannot be undone. This will remove the listing
-                    from your roommate searches.
+                    <p>
+                      Removing this will remove you from the emailing list
+                      involving other students interested in this listing.
+                    </p>
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel className="bg-[#4189e8] hover:bg-[#4189e8]/70 text-white border-0 hover:text-neutral-300">
+                  <AlertDialogCancel className="bg-neutral-500 hover:bg-neutral-600 text-white border-0 hover:text-neutral-300">
                     Cancel
                   </AlertDialogCancel>
                   <AlertDialogAction className="bg-destructive hover:bg-destructive/80 hover:text-neutral-300">

@@ -6,6 +6,19 @@ import TextRow from "./TextRow";
 import { HoverBorderGradient } from "../HoverBorderGradient";
 import { CalendarForm } from "../inputs/CalendarForm";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { BsExclamationTriangle } from "react-icons/bs";
+
 interface ListingPriceProps {
   price: number;
   onSubmitLink: string;
@@ -78,23 +91,89 @@ const ListingPrice: React.FC<ListingPriceProps> = ({ price, onSubmitLink }) => {
 
       {/* <Seperator className="bg-neutral-600" /> */}
 
-      <div className="p-4">
+      <div className="p-4 space-y-4">
         <a
           href={`https://www.google.com/search?q=${onSubmitLink}`}
           target="_blank"
         >
           <Button label="Visit rental" onClick={() => {}} />
         </a>
+
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button label="Add to roommate search" onClick={() => {}} />
+          </AlertDialogTrigger>
+          <AlertDialogContent className="bg-neutral-700 border-0">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-neutral-100">
+                Add to roommate watchlist?
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-neutral-400">
+                <p>
+                  Adding this to your watchlist means that you will be on a
+                  emailing list with other students who are interested in the
+                  same listing.
+                </p>
+                <br />
+                <p className="text-destructive flex flex-row gap-2 items-center justify-center">
+                  <BsExclamationTriangle size={30} /> If you do not wish to
+                  recieve emails, please cancel this action or go to your
+                  settings and disable emails
+                </p>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="bg-neutral-500 hover:bg-neutral-600 text-white border-0 hover:text-neutral-300">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction className="bg-[#4189e8] hover:bg-[#4189e8]/70 hover:text-neutral-300">
+                Subscribe
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              label="Remove from watchlist?"
+              onClick={() => {}}
+              className="bg-destructive !border-0"
+            />
+          </AlertDialogTrigger>
+          <AlertDialogContent className="bg-neutral-700 border-0">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-neutral-100">
+                Remove from watchlist?
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-neutral-400">
+                <p>
+                  Removing this will remove you from the emailing list involving
+                  other students interested in this listing.
+                </p>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="bg-neutral-500 hover:bg-neutral-600 text-white border-0 hover:text-neutral-300">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction className="bg-destructive hover:bg-destructive/70 hover:text-neutral-300">
+                Unsubscribe
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
         <div className="text-center w-full text-neutral-500 mt-1">
           You won&apos;t be charged yet
         </div>
       </div>
 
-      <TextRow
+      {/* <TextRow
         leftText="Estimated total"
         rightText={`$ ${(price * monthRange).toLocaleString()}`}
         className="text-neutral-100 font-semibold"
-      />
+      /> */}
     </HoverBorderGradient>
   );
 };
