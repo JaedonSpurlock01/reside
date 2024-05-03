@@ -9,9 +9,10 @@ import useLoginModal from "@/hooks/useLoginModal";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { BiLogOut } from "react-icons/bi";
-import { IoMdAdd, IoMdSettings } from "react-icons/io";
+import { IoMdAdd, IoMdPerson, IoMdSettings } from "react-icons/io";
 import { MdFavorite, MdPrivacyTip } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
+import { RiLoginBoxFill } from "react-icons/ri";
 
 interface UserMenuProps {
   user: any;
@@ -87,11 +88,18 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             {!user ? (
               <>
                 <LoginButton mode="modal">
-                  <MenuItem label="Log in" />
+                  <MenuItem label="Log in" icon={RiLoginBoxFill} />
                 </LoginButton>
                 <RegisterButton mode="modal">
-                  <MenuItem label="Sign up" />
+                  <MenuItem label="Sign up" icon={IoMdPerson} />
                 </RegisterButton>
+                <MenuItem
+                  label="Privacy Policy"
+                  onClick={() => {
+                    router.push("/policy");
+                  }}
+                  icon={MdPrivacyTip}
+                />
               </>
             ) : (
               <>
@@ -127,7 +135,9 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                 />
                 <MenuItem
                   label="Privacy Policy"
-                  onClick={() => {}}
+                  onClick={() => {
+                    router.push("/policy");
+                  }}
                   icon={MdPrivacyTip}
                 />
                 <MenuItem

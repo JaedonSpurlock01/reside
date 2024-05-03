@@ -8,6 +8,8 @@ export const publicRoutes = [
   "/listings",
   "/rent",
   "/auth/new-verification",
+  "/policy",
+  "/terms",
 ];
 
 /**
