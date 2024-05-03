@@ -10,7 +10,8 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { BiLogOut } from "react-icons/bi";
 import { IoMdAdd, IoMdSettings } from "react-icons/io";
-import { MdFavorite } from "react-icons/md";
+import { MdFavorite, MdPrivacyTip } from "react-icons/md";
+import { FaUserFriends } from "react-icons/fa";
 
 interface UserMenuProps {
   user: any;
@@ -101,7 +102,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                   icon={IoMdAdd}
                 /> */}
                 <MenuItem
-                  label="My favorites"
+                  label="My Favorites"
                   onClick={() => {
                     if (!user) {
                       loginModal.onOpen();
@@ -111,6 +112,23 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                     router.push("/favorites");
                   }}
                   icon={MdFavorite}
+                />
+                <MenuItem
+                  label="Roommates"
+                  onClick={() => {
+                    if (!user) {
+                      loginModal.onOpen();
+                      return;
+                    }
+
+                    router.push("/roommates");
+                  }}
+                  icon={FaUserFriends}
+                />
+                <MenuItem
+                  label="Privacy Policy"
+                  onClick={() => {}}
+                  icon={MdPrivacyTip}
                 />
                 <MenuItem
                   label="Settings"

@@ -16,6 +16,7 @@ const ResideTeam = () => {
           location="Oceanside, CA"
           language="English"
           role="Fullstack Developer"
+          imageSrc="/images/jaedon.jpg"
         />
         <AvatarCard
           hostName="Yashaswi"
@@ -25,9 +26,9 @@ const ResideTeam = () => {
         />
         <AvatarCard
           hostName="Gabriel"
-          location="Somewhere, CA"
+          location="Poway, CA"
           language="English & Spanish"
-          role="Backend Developer"
+          role="Fullstack Developer"
         />
       </div>
     </div>

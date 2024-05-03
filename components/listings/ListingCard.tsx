@@ -23,6 +23,8 @@ interface ListingCardProps {
   squareFootage?: number;
   address: string;
   listingId: string;
+  showNav?: boolean;
+  showFullscreen?: boolean;
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -33,6 +35,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
   squareFootage = 0,
   address = "No Address",
   listingId,
+  showNav = true,
+  showFullscreen = true,
 }) => {
   return (
     <motion.li
@@ -46,9 +50,9 @@ const ListingCard: React.FC<ListingCardProps> = ({
         <div className="flex-grow">
           <div className="w-full min-h-full">
             <ImageGallery
-              showNav={true}
+              showNav={showNav}
               showBullets={false}
-              showFullscreenButton={true}
+              showFullscreenButton={showFullscreen}
               showPlayButton={false}
               showThumbnails={false}
               items={images.map((imageSrc) => ({

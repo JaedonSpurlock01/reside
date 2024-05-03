@@ -1,5 +1,6 @@
 import React from "react";
 import Search from "../Search";
+import FormError from "../FormError";
 
 const Hero = () => {
   return (
@@ -13,9 +14,13 @@ const Hero = () => {
       </p>
 
       <Search
-        className="w-[30rem] text-white rounded-lg py-3 !bg-neutral-800 mb-32 relative z-[999]"
+        className="w-[30rem] text-white rounded-lg py-3 !bg-neutral-800 mb-16 relative z-[999]"
         resultsClassName="!top-20 !w-[30rem] text-left !bg-neutral-800"
       />
+
+      <div className="mb-16">
+        <FormError message="Only California cities are working at the moment" />
+      </div>
     </>
   );
 };

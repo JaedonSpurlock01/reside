@@ -1,34 +1,28 @@
 "use client";
 
 import React from "react";
-import ListingCard from "./ListingCard";
 import { RentCastListing } from "@/types/RentCastListing";
+import ListingInterest from "./ListingInterest";
 
-interface GridProps {
+interface RoommateGridProps {
   listings: RentCastListing[];
   showNav?: boolean;
   showFullscren?: boolean;
 }
 
-export default function Grid({
-  listings = [],
-  showNav = true,
-  showFullscren = true,
-}: GridProps) {
+export default function RoommateGrid({ listings = [] }: RoommateGridProps) {
   return (
-    <ul className="mt-4 grid gap-[12px] grid-cols-auto-fill min-w-[286px] grid-flow-row mb-16">
+    <ul className="mt-4 gap-8 min-w-[286px] flex flex-col mb-16 items-center w-full  max-w-[1000px]">
       {listings?.map((listing, index) => (
-        <ListingCard
+        <ListingInterest
           key={index}
-          address={listing.body.formattedAddress}
+          address={listing.body.addressLine1}
           price={listing.body.price}
           bedrooms={listing.body.bedrooms}
           bathrooms={listing.body.bathrooms}
           squareFootage={listing.body.squareFootage}
           images={listing.images}
           listingId={listing.id}
-          showFullscreen={showFullscren}
-          showNav={showNav}
         />
       ))}
     </ul>
