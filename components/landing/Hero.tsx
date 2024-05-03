@@ -14,7 +14,7 @@ const Hero = () => {
       </p>
 
       <Search
-        className="w-[30rem] text-white rounded-lg py-3 !bg-neutral-800 mb-16 relative z-[999]"
+        className="w-full sm:w-[30rem] text-white rounded-lg py-3 !bg-neutral-800 mb-16 relative z-[999]"
         resultsClassName="!top-20 !w-[30rem] text-left !bg-neutral-800"
       />
 

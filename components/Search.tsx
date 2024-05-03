@@ -80,7 +80,7 @@ export default function Search({
         backgroundColor: "rgb(58 56 56)",
       }}
     >
-      <form className="w-[95%] flex">
+      <form className="w-full sm:w-[95%] flex">
         <Input
           placeholder="Enter city or state"
           className="bg-transparent border-none"

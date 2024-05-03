@@ -141,7 +141,7 @@ const Benefits = () => {
           a smooth experience for finding a new homestead.
         </p>
 
-        <div className="flex flex-row justify-between mb-10 font-semibold">
+        <div className="flex flex-row justify-between mb-10 font-semibold overflow-x-auto gap-6 sm:gap-0">
           {typesOfAmenities.map((amenity: AmenityType) => (
             <AmenityItem
               title={amenity.id}

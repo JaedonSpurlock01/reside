@@ -91,7 +91,7 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
           <div className="flex flex-col gap-2">
             <Popover>
               <PopoverTrigger asChild>
-                <Button className="flex flex-row gap-2 items-center justify-center text-white font-bold text-2xl bg-neutral-800 rounded-lg p-1 py-6">
+                <Button className="flex flex-row gap-2 items-center hover:bg-neutral-700 justify-center text-[#41cfe8] bg-transparent border-neutral-500 border font-bold text-2xl rounded-lg p-1 py-6">
                   <IoMdPerson size={30} /> 20
                 </Button>
               </PopoverTrigger>
