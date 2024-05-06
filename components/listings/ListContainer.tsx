@@ -12,7 +12,7 @@ interface ListContainerProps {
   loadingRentals?: boolean;
   className?: string;
   listings: RentCastListing[];
-  setListings: any; // Used for sorting
+  setListings?: any; // Used for sorting
   showFilter?: boolean;
 }
 
@@ -32,7 +32,10 @@ export default function ListContainer({
       </h1>
 
       {showFilter && (
-        <FilterHeader setListings={setListings} listings={listings} />
+        <FilterHeader
+          setListings={setListings ? setListings : () => {}}
+          listings={listings}
+        />
       )}
 
       {loadingRentals ? (
