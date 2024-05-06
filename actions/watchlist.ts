@@ -4,7 +4,11 @@ import { auth } from "@/auth";
 import { RentCastListing } from "@/types/RentCastListing";
 import getListingById from "./getListingById";
 import { db } from "@/lib/db";
-import { sendWatchlistConfirmationEmail } from "@/lib/mail";
+import {
+  sendRoommateInterestEmail,
+  sendWatchlistConfirmationEmail,
+} from "@/lib/mail";
+import { getUserById } from "@/data/user";
 
 export const getWatchlist = async () => {
   const session = await auth();
@@ -68,15 +72,31 @@ export const addToWatchlist = async (listingId: string) => {
 
   // TODO: Check whether or not user has disabled recieving emails
   if (user) {
-    sendWatchlistConfirmationEmail(user.email as string, listing.body.formattedAddress);
+    sendWatchlistConfirmationEmail(
+      user.email as string,
+      listing.body.formattedAddress
+    );
   }
 
-  // Add userId and listingId to java backend seenBy Array
-  // Fetch users from seenBy array
-  // If user < 2, skip the following
-  // For each user, grab their email
-  // Add email to temporary array
-  // Call function to send emails to all users with the array, listingId, and listingAddress
+  // TODO: Add userId and listingId to java backend seenBy Array
+
+  if (listing.viewedBy.length > 1) {
+    let userEmails: string[] = [];
+    console.log("SENDING ROOMMATE INTEREST EMAIL TO: ", ...userEmails);
+
+    for (const userId of listing.viewedBy) {
+      const currentUser = await getUserById(userId);
+      if (currentUser) {
+        userEmails.push(currentUser.email as string);
+      }
+    }
+
+    sendRoommateInterestEmail(
+      userEmails,
+      listing.id,
+      listing.body.formattedAddress
+    );
+  }
 
   return {
     success:
@@ -96,6 +116,8 @@ export const removeFromWatchlist = async (listingId: string) => {
     " ON LISTING ",
     listingId
   );
+
+  // TODO: Remove userId and listingId to java backend seenBy Array
 
   let watchlistIds = [...(user.watchlist || [])];
   watchlistIds = watchlistIds.filter((id) => id !== listingId);

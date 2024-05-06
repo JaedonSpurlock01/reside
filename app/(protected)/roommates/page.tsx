@@ -7,7 +7,7 @@ import { getWatchlist } from "@/actions/watchlist";
 
 const RoomatesPage = async () => {
   const listings = await getWatchlist();
-
+  
   return (
     <div className="w-full py-12 px-10 md:px-48">
       {listings && listings.length > 0 ? (

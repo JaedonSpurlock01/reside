@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   AlertDialog,
@@ -24,6 +24,8 @@ import { IoMdPerson } from "react-icons/io";
 import { ScrollArea } from "../ui/scroll-area";
 import Seperator from "../Seperator";
 import useWatchlist from "@/hooks/useWatchlist";
+import { getUserEmails } from "@/actions/getUserEmails";
+import { useRouter } from "next/navigation";
 
 const fadeInAnimationVariants = {
   initial: { opacity: 0, y: 100 },
@@ -44,8 +46,6 @@ interface ListingInterestProps {
   listingId: string;
 }
 
-const emails = Array.from({ length: 50 }).map((_) => "test@gmail.com");
-
 const ListingInterest: React.FC<ListingInterestProps> = ({
   images = [],
   price = 0,
@@ -56,6 +56,21 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
   listingId,
 }) => {
   const { toggleWatchlist } = useWatchlist({ listingId });
+  const [userEmails, setUserEmails] = useState<string[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const emails = await getUserEmails(listingId);
+        setUserEmails(emails);
+      } catch (error) {
+        console.error("Error fetching user emails:", error);
+      }
+    };
+
+    fetchData();
+  }, [listingId]);
 
   return (
     <motion.li
@@ -94,7 +109,7 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
             <Popover>
               <PopoverTrigger asChild>
                 <Button className="flex flex-row gap-2 items-center hover:bg-neutral-700 justify-center text-white bg-transparent border-neutral-500 border font-bold text-2xl rounded-lg p-1 py-6">
-                  <IoMdPerson size={30} /> 20
+                  <IoMdPerson size={30} /> {userEmails?.length || 1}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="gap-4 bg-neutral-700 border-0 overflow-y-scroll h-[300px]">
@@ -112,14 +127,18 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
                     <h4 className="mb-4 text-sm font-medium leading-none text-neutral-100">
                       Emails
                     </h4>
-                    {emails.map((email) => (
-                      <>
-                        <div key={email} className="text-sm text-neutral-400">
-                          {email}
-                        </div>
-                        <Seperator className="my-2 bg-transparent" />
-                      </>
-                    ))}
+                    {userEmails && userEmails.length > 1 ? (
+                      userEmails.map((email) => (
+                        <>
+                          <div key={email} className="text-sm text-neutral-400">
+                            {email}
+                          </div>
+                          <Seperator className="my-2 bg-transparent" />
+                        </>
+                      ))
+                    ) : (
+                      <p className="text-destructive text-sm">You are the only one watching this listing</p>
+                    )}
                   </div>
                 </ScrollArea>
               </PopoverContent>
@@ -153,7 +172,10 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
                   >
                     <Button
                       className="!w-32"
-                      onClick={(e) => toggleWatchlist(e)}
+                      onClick={(e) => {
+                        toggleWatchlist(e);
+                        router.refresh();
+                      }}
                     >
                       Unsubscribe
                     </Button>
