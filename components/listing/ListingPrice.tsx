@@ -143,7 +143,7 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
                 >
                   <Button
                     label="Subscribe"
-                    className="!w-32"
+                    className="w-full sm:!w-32"
                     onClick={(e) => toggleWatchlist(e)}
                   />
                 </AlertDialogAction>
@@ -181,7 +181,7 @@ const ListingPrice: React.FC<ListingPriceProps> = ({
                 >
                   <Button
                     label="Unsubscribe"
-                    className="!w-32"
+                    className="w-full sm:!w-32"
                     onClick={(e) => toggleWatchlist(e)}
                   />
                 </AlertDialogAction>

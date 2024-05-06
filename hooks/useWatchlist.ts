@@ -25,13 +25,11 @@ const useWatchlist = ({ listingId }: IUseWatchlist) => {
     async (
       e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
     ) => {
-      console.log("TOGGLINGGG");
       e.stopPropagation();
 
       if (!user) {
         return loginModal.onOpen();
       }
-      console.log("TOGGLINGGG2222");
 
       try {
         if (inWatchlist) {

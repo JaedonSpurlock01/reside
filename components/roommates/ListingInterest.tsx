@@ -25,7 +25,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import Seperator from "../Seperator";
 import useWatchlist from "@/hooks/useWatchlist";
 import { getUserEmails } from "@/actions/getUserEmails";
-import { useRouter } from "next/navigation";
+import { RentCastListing } from "@/types/RentCastListing";
 
 const fadeInAnimationVariants = {
   initial: { opacity: 0, y: 100 },
@@ -44,6 +44,7 @@ interface ListingInterestProps {
   squareFootage?: number;
   address: string;
   listingId: string;
+  setClientListings: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const ListingInterest: React.FC<ListingInterestProps> = ({
@@ -54,10 +55,25 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
   squareFootage = 0,
   address = "No Address",
   listingId,
+  setClientListings,
 }) => {
   const { toggleWatchlist } = useWatchlist({ listingId });
   const [userEmails, setUserEmails] = useState<string[]>([]);
-  const router = useRouter();
+
+  const handleUnsubscribe = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    try {
+      await toggleWatchlist(e);
+
+      // Update client listings state
+      setClientListings((prevListings: RentCastListing[]) =>
+        prevListings.filter(
+          (listing: RentCastListing) => listing.id !== listingId
+        )
+      );
+    } catch (error) {
+      console.error("Error toggling watchlist:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -137,7 +153,9 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
                         </>
                       ))
                     ) : (
-                      <p className="text-destructive text-sm">You are the only one watching this listing</p>
+                      <p className="text-destructive text-sm">
+                        You are the only one watching this listing
+                      </p>
                     )}
                   </div>
                 </ScrollArea>
@@ -171,10 +189,9 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
                     className="bg-destructive hover:bg-destructive/80 hover:text-neutral-300"
                   >
                     <Button
-                      className="!w-32"
+                      className="w-full sm:!w-32"
                       onClick={(e) => {
-                        toggleWatchlist(e);
-                        router.refresh();
+                        handleUnsubscribe(e);
                       }}
                     >
                       Unsubscribe

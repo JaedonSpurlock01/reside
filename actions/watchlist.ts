@@ -68,6 +68,21 @@ export const addToWatchlist = async (listingId: string) => {
     data: { watchlist: watchlistIds },
   });
 
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  // Send post request to delete user from viewBy array on listing
+  const response = await fetch(
+    `https://image-service-pi.vercel.app/addUserFavoriteListing?listingId=${listingId}&userId=${user?.id}`,
+    requestOptions
+  );
+
+  console.log(response);
+
   const listing: RentCastListing = await getListingById({ listingId });
 
   // TODO: Check whether or not user has disabled recieving emails
@@ -77,8 +92,6 @@ export const addToWatchlist = async (listingId: string) => {
       listing.body.formattedAddress
     );
   }
-
-  // TODO: Add userId and listingId to java backend seenBy Array
 
   if (listing.viewedBy.length > 1) {
     let userEmails: string[] = [];
@@ -117,7 +130,20 @@ export const removeFromWatchlist = async (listingId: string) => {
     listingId
   );
 
-  // TODO: Remove userId and listingId to java backend seenBy Array
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  // Send post request to delete user from viewBy array on listing
+  const response = await fetch(
+    `https://image-service-pi.vercel.app/deleteUserFavoriteListing?listingId=${listingId}&userId=${user?.id}`,
+    requestOptions
+  );
+
+  console.log(response);
 
   let watchlistIds = [...(user.watchlist || [])];
   watchlistIds = watchlistIds.filter((id) => id !== listingId);

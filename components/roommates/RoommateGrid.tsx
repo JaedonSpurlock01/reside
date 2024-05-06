@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { RentCastListing } from "@/types/RentCastListing";
 import ListingInterest from "./ListingInterest";
 
@@ -11,9 +11,11 @@ interface RoommateGridProps {
 }
 
 export default function RoommateGrid({ listings = [] }: RoommateGridProps) {
+  const [clientListings, setClientListings] = useState<RentCastListing[]>(listings);
+
   return (
     <ul className="mt-4 gap-8 min-w-[286px] flex flex-col mb-16 items-center w-full  max-w-[1000px]">
-      {listings?.map((listing, index) => (
+      {clientListings?.map((listing, index) => (
         <ListingInterest
           key={index}
           address={listing.body.addressLine1}
@@ -23,6 +25,7 @@ export default function RoommateGrid({ listings = [] }: RoommateGridProps) {
           squareFootage={listing.body.squareFootage}
           images={listing.images}
           listingId={listing.id}
+          setClientListings={setClientListings}
         />
       ))}
     </ul>
