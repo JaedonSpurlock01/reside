@@ -52,6 +52,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
               <ListingPrice
                 price={listing.price}
                 onSubmitLink={listing.formattedAddress}
+                listingId={listingId}
               />
             </div>
           </div>

@@ -40,6 +40,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (token.role && session.user) {
         session.user.role = token.role as UserRole;
         session.user.favListingIds = token.favListingIds as string[];
+        session.user.watchlist = token.watchlist as string[];
       }
 
       if (session.user) {
@@ -67,6 +68,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       token.isOAuth = !!existingAccount;
       token.role = existingUser.role;
       token.favListingIds = existingUser.favListingIds;
+      token.watchlist = existingUser.watchlist;
 
       return token;
     },

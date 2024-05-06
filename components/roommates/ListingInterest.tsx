@@ -21,9 +21,9 @@ import {
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { IoMdPerson } from "react-icons/io";
-import { Label } from "../ui/label";
 import { ScrollArea } from "../ui/scroll-area";
 import Seperator from "../Seperator";
+import useWatchlist from "@/hooks/useWatchlist";
 
 const fadeInAnimationVariants = {
   initial: { opacity: 0, y: 100 },
@@ -55,6 +55,8 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
   address = "No Address",
   listingId,
 }) => {
+  const { toggleWatchlist } = useWatchlist({ listingId });
+
   return (
     <motion.li
       className="relative list-item shadow-lg rounded-xl w-full"
@@ -91,7 +93,7 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
           <div className="flex flex-col gap-2">
             <Popover>
               <PopoverTrigger asChild>
-                <Button className="flex flex-row gap-2 items-center hover:bg-neutral-700 justify-center text-[#41cfe8] bg-transparent border-neutral-500 border font-bold text-2xl rounded-lg p-1 py-6">
+                <Button className="flex flex-row gap-2 items-center hover:bg-neutral-700 justify-center text-white bg-transparent border-neutral-500 border font-bold text-2xl rounded-lg p-1 py-6">
                   <IoMdPerson size={30} /> 20
                 </Button>
               </PopoverTrigger>
@@ -145,8 +147,16 @@ const ListingInterest: React.FC<ListingInterestProps> = ({
                   <AlertDialogCancel className="bg-neutral-500 hover:bg-neutral-600 text-white border-0 hover:text-neutral-300">
                     Cancel
                   </AlertDialogCancel>
-                  <AlertDialogAction className="bg-destructive hover:bg-destructive/80 hover:text-neutral-300">
-                    Unsubscribe
+                  <AlertDialogAction
+                    asChild
+                    className="bg-destructive hover:bg-destructive/80 hover:text-neutral-300"
+                  >
+                    <Button
+                      className="!w-32"
+                      onClick={(e) => toggleWatchlist(e)}
+                    >
+                      Unsubscribe
+                    </Button>
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

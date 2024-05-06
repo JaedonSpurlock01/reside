@@ -1,12 +1,12 @@
 "use server";
 
 import React from "react";
-import { getFavorites } from "@/actions/favorite";
 import EmptyState from "@/components/EmptyState";
 import RoommateListContainer from "@/components/roommates/RoommateListContainer";
+import { getWatchlist } from "@/actions/watchlist";
 
 const RoomatesPage = async () => {
-  const listings = await getFavorites();
+  const listings = await getWatchlist();
 
   return (
     <div className="w-full py-12 px-10 md:px-48">

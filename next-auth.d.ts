@@ -5,6 +5,7 @@ export type ExtendedUser = DefaultSession["user"] & {
   role: UserRole;
   favListingIds: string[];
   isOAuth: boolean;
+  watchlist: string[];
 };
 
 declare module "next-auth" {

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 
 import Seperator from "../Seperator";
@@ -18,16 +20,24 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { BsExclamationTriangle } from "react-icons/bs";
+import useWatchlist from "@/hooks/useWatchlist";
 
 interface ListingPriceProps {
   price: number;
   onSubmitLink: string;
+  listingId: string;
 }
 
-const ListingPrice: React.FC<ListingPriceProps> = ({ price, onSubmitLink }) => {
+const ListingPrice: React.FC<ListingPriceProps> = ({
+  price,
+  onSubmitLink,
+  listingId,
+}) => {
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
   const [monthRange, setMonthRange] = useState<number>(12);
+
+  const { inWatchlist, toggleWatchlist } = useWatchlist({ listingId });
 
   useEffect(() => {
     if (!startDate || !endDate) {
@@ -99,70 +109,86 @@ const ListingPrice: React.FC<ListingPriceProps> = ({ price, onSubmitLink }) => {
           <Button label="Visit rental" onClick={() => {}} />
         </a>
 
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button label="Add to roommate search" onClick={() => {}} />
-          </AlertDialogTrigger>
-          <AlertDialogContent className="bg-neutral-700 border-0">
-            <AlertDialogHeader>
-              <AlertDialogTitle className="text-neutral-100">
-                Add to roommate watchlist?
-              </AlertDialogTitle>
-              <AlertDialogDescription className="text-neutral-400">
-                <p>
-                  Adding this to your watchlist means that you will be on a
-                  emailing list with other students who are interested in the
-                  same listing.
-                </p>
-                <br />
-                <p className="text-destructive flex flex-row gap-2 items-center justify-center">
-                  <BsExclamationTriangle size={30} /> If you do not wish to
-                  recieve emails, please cancel this action or go to your
-                  settings and disable emails
-                </p>
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel className="bg-neutral-500 hover:bg-neutral-600 text-white border-0 hover:text-neutral-300">
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction className="bg-[#4189e8] hover:bg-[#4189e8]/70 hover:text-neutral-300">
-                Subscribe
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              label="Remove from watchlist?"
-              onClick={() => {}}
-              className="bg-destructive !border-0"
-            />
-          </AlertDialogTrigger>
-          <AlertDialogContent className="bg-neutral-700 border-0">
-            <AlertDialogHeader>
-              <AlertDialogTitle className="text-neutral-100">
-                Remove from watchlist?
-              </AlertDialogTitle>
-              <AlertDialogDescription className="text-neutral-400">
-                <p>
-                  Removing this will remove you from the emailing list involving
-                  other students interested in this listing.
-                </p>
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel className="bg-neutral-500 hover:bg-neutral-600 text-white border-0 hover:text-neutral-300">
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction className="bg-destructive hover:bg-destructive/70 hover:text-neutral-300">
-                Unsubscribe
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        {!inWatchlist ? (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button label="Add to roommate search" onClick={() => {}} />
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-neutral-700 border-0">
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-neutral-100">
+                  Add to roommate watchlist?
+                </AlertDialogTitle>
+                <AlertDialogDescription className="text-neutral-400">
+                  <p>
+                    Adding this to your watchlist means that you will be on a
+                    emailing list with other students who are interested in the
+                    same listing.
+                  </p>
+                  <br />
+                  <p className="text-destructive flex flex-row gap-2 items-center justify-center">
+                    <BsExclamationTriangle size={30} /> If you do not wish to
+                    recieve emails, please cancel this action or go to your
+                    settings and disable emails
+                  </p>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="bg-neutral-500 hover:bg-neutral-600 text-white border-0 hover:text-neutral-300">
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  asChild
+                  className="bg-[#4189e8] hover:bg-[#4189e8]/70 hover:text-neutral-300"
+                >
+                  <Button
+                    label="Subscribe"
+                    className="!w-32"
+                    onClick={(e) => toggleWatchlist(e)}
+                  />
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        ) : (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                label="Remove from watchlist?"
+                onClick={() => {}}
+                className="bg-destructive !border-0"
+              />
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-neutral-700 border-0">
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-neutral-100">
+                  Remove from watchlist?
+                </AlertDialogTitle>
+                <AlertDialogDescription className="text-neutral-400">
+                  <p>
+                    Removing this will remove you from the emailing list
+                    involving other students interested in this listing.
+                  </p>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="bg-neutral-500 hover:bg-neutral-600 text-white border-0 hover:text-neutral-300">
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  asChild
+                  className="bg-destructive hover:bg-destructive/70 hover:text-neutral-300 !border-transparent"
+                >
+                  <Button
+                    label="Unsubscribe"
+                    className="!w-32"
+                    onClick={(e) => toggleWatchlist(e)}
+                  />
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
 
         <div className="text-center w-full text-neutral-500 mt-1">
           You won&apos;t be charged yet

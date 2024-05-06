@@ -1,39 +1,45 @@
+"use client";
+
 import useLoginModal from "./useLoginModal";
 import { useCallback, useMemo, useState } from "react";
 import { useCurrentUser } from "./useCurrentUser";
 import toast from "react-hot-toast";
-import { addFavorite, removeFavorite } from "@/actions/favorite";
+import { addToWatchlist, removeFromWatchlist } from "@/actions/watchlist";
 
-interface IUseFavorite {
+interface IUseWatchlist {
   listingId: string;
 }
 
-const useFavorite = ({ listingId }: IUseFavorite) => {
+const useWatchlist = ({ listingId }: IUseWatchlist) => {
   const loginModal = useLoginModal();
   const user = useCurrentUser();
 
-  const [hasFavorited, setHasFavorited] = useState<boolean>(
+  const [inWatchlist, setInWatchlist] = useState<boolean>(
     useMemo(() => {
-      const list = user?.favListingIds || [];
+      const list = user?.watchlist || [];
       return list.includes(listingId);
     }, [user, listingId])
   );
 
-  const toggleFavorite = useCallback(
-    async (e: React.MouseEvent<HTMLDivElement>) => {
+  const toggleWatchlist = useCallback(
+    async (
+      e: React.MouseEvent<HTMLDivElement> | React.MouseEvent<HTMLButtonElement>
+    ) => {
+      console.log("TOGGLINGGG");
       e.stopPropagation();
 
       if (!user) {
         return loginModal.onOpen();
       }
+      console.log("TOGGLINGGG2222");
 
       try {
-        if (hasFavorited) {
+        if (inWatchlist) {
           toast.promise(
-            removeFavorite(listingId),
+            removeFromWatchlist(listingId),
             {
               loading: "Removing...",
-              success: "Removed favorited listing!",
+              success: "Removed from watchlist!",
               error: "Could not remove.",
             },
             {
@@ -47,11 +53,11 @@ const useFavorite = ({ listingId }: IUseFavorite) => {
           );
         } else {
           toast.promise(
-            addFavorite(listingId),
+            addToWatchlist(listingId),
             {
               loading: "Saving...",
-              success: "Listing favorited!",
-              error: "Could not add favorite.",
+              success: "Listing added to watchlist!",
+              error: "Could not add to watchlist.",
             },
             {
               style: {
@@ -63,16 +69,16 @@ const useFavorite = ({ listingId }: IUseFavorite) => {
             }
           );
         }
-        // Toggle the hasFavorited state after successfully adding/removing the favorite
-        setHasFavorited((prev) => !prev);
+        // Toggle the inWatchlist state after successfully adding/removing listing to watchlist
+        setInWatchlist((prev) => !prev);
       } catch (error) {
         toast.error("Something went wrong.");
       }
     },
-    [user, hasFavorited, listingId, loginModal]
+    [user, inWatchlist, listingId, loginModal]
   );
 
-  return { hasFavorited, toggleFavorite };
+  return { inWatchlist, toggleWatchlist };
 };
 
-export default useFavorite;
+export default useWatchlist;
