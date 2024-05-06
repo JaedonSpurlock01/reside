@@ -172,6 +172,7 @@ export default function ListingPage() {
                 loadingRentals={isPending}
                 className="p-5 bg-neutral-800"
                 listings={listings}
+                setListings={setListings}
               />
             ) : (
               <EmptyState />

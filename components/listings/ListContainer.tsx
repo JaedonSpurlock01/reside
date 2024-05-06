@@ -12,6 +12,7 @@ interface ListContainerProps {
   loadingRentals?: boolean;
   className?: string;
   listings: RentCastListing[];
+  setListings: any; // Used for sorting
   showFilter?: boolean;
 }
 
@@ -22,6 +23,7 @@ export default function ListContainer({
   className,
   listings = [],
   showFilter = true,
+  setListings,
 }: ListContainerProps) {
   return (
     <div className={className}>
@@ -29,7 +31,9 @@ export default function ListContainer({
         {selectedCity} {selectedStateCode?.toUpperCase()} Rental Listings
       </h1>
 
-      {showFilter && <FilterHeader listings={listings} />}
+      {showFilter && (
+        <FilterHeader setListings={setListings} listings={listings} />
+      )}
 
       {loadingRentals ? (
         <div className="flex flex-col items-center justify-center mt-10">
