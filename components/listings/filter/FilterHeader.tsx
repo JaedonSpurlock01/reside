@@ -88,7 +88,7 @@ export default function FilterHeader({
 
         <DropdownMenu>
           <DropdownMenuTrigger className="ml-auto bg-neutral-700 p-2 rounded-lg mb-auto text-blue-400 flex flex-row items-center gap-2 px-6">
-            {sortBy} <IoIosArrowDown />
+            Sort <IoIosArrowDown />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="bg-neutral-700 border-transparent ">
             <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
